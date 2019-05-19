@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentReservation", "ApartmentReservation\ApartmentReservation.csproj", "{A7BDCC5E-594D-4069-8B4A-A216D6F98534}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{2ED84065-13F2-4951-A69B-E981FF29F844}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4C099F0A-337C-4AFB-8F9A-A79FDAD00411}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{30E860C5-73EB-43D7-9A46-006E2C7E87A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B7B669A9-7292-4E33-9BC3-839686F73C57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7736C0C9-DA37-43E6-913B-04147DFE6468}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{EB32496E-1912-4854-BDB9-DFF20EC0BABC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D9D0C2FD-8E47-45F1-8543-381560206A91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Persistence", "ApartmentReservation.Persistence\ApartmentReservation.Persistence.csproj", "{29949C1C-30B8-4481-8BD4-5CF88C45800B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Infrastructure", "ApartmentReservation.Infrastructure\ApartmentReservation.Infrastructure.csproj", "{514C898D-BDF8-4C20-BB8D-361638202F11}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Application", "ApartmentReservation.Application\ApartmentReservation.Application.csproj", "{3508148E-48E7-4BCE-9ADB-429CC3D9A060}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Domain", "ApartmentReservation.Domain\ApartmentReservation.Domain.csproj", "{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Common", "ApartmentReservation.Common\ApartmentReservation.Common.csproj", "{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentReservation.WebUI", "ApartmentReservation.WebUI\ApartmentReservation.WebUI.csproj", "{FE0ADCE1-BACF-4707-9F4C-5520347874FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +35,45 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A7BDCC5E-594D-4069-8B4A-A216D6F98534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7BDCC5E-594D-4069-8B4A-A216D6F98534}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7BDCC5E-594D-4069-8B4A-A216D6F98534}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7BDCC5E-594D-4069-8B4A-A216D6F98534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29949C1C-30B8-4481-8BD4-5CF88C45800B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29949C1C-30B8-4481-8BD4-5CF88C45800B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29949C1C-30B8-4481-8BD4-5CF88C45800B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29949C1C-30B8-4481-8BD4-5CF88C45800B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{514C898D-BDF8-4C20-BB8D-361638202F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{514C898D-BDF8-4C20-BB8D-361638202F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{514C898D-BDF8-4C20-BB8D-361638202F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{514C898D-BDF8-4C20-BB8D-361638202F11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3508148E-48E7-4BCE-9ADB-429CC3D9A060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3508148E-48E7-4BCE-9ADB-429CC3D9A060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3508148E-48E7-4BCE-9ADB-429CC3D9A060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3508148E-48E7-4BCE-9ADB-429CC3D9A060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B7B669A9-7292-4E33-9BC3-839686F73C57} = {2ED84065-13F2-4951-A69B-E981FF29F844}
+		{7736C0C9-DA37-43E6-913B-04147DFE6468} = {2ED84065-13F2-4951-A69B-E981FF29F844}
+		{EB32496E-1912-4854-BDB9-DFF20EC0BABC} = {2ED84065-13F2-4951-A69B-E981FF29F844}
+		{D9D0C2FD-8E47-45F1-8543-381560206A91} = {2ED84065-13F2-4951-A69B-E981FF29F844}
+		{29949C1C-30B8-4481-8BD4-5CF88C45800B} = {EB32496E-1912-4854-BDB9-DFF20EC0BABC}
+		{514C898D-BDF8-4C20-BB8D-361638202F11} = {EB32496E-1912-4854-BDB9-DFF20EC0BABC}
+		{3508148E-48E7-4BCE-9ADB-429CC3D9A060} = {7736C0C9-DA37-43E6-913B-04147DFE6468}
+		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222} = {7736C0C9-DA37-43E6-913B-04147DFE6468}
+		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175} = {D9D0C2FD-8E47-45F1-8543-381560206A91}
+		{FE0ADCE1-BACF-4707-9F4C-5520347874FF} = {B7B669A9-7292-4E33-9BC3-839686F73C57}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9480C4ED-99A8-4E6C-A948-C6690F264616}
