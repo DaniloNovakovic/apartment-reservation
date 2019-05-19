@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Persistence.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+
+    public class HostConfiguration : IEntityTypeConfiguration<Host>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Host> builder)
         {
         }
     }
