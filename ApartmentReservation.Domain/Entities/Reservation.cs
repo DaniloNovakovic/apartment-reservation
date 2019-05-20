@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
 {
@@ -22,14 +23,5 @@ namespace ApartmentReservation.Domain.Entities
         public string GuestId { get; set; }
 
         public ReservationState ReservationState { get; set; }
-    }
-
-    public enum ReservationState
-    {
-        Created,
-        Denied,
-        Withdrawn,
-        Accepted,
-        Completed
     }
 }

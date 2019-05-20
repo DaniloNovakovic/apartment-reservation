@@ -2,21 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public enum ActivityState
-    {
-        Active,
-        Inactive
-    }
-
-    public enum ApartmentType
-    {
-        Full,
-        SingleRoom
-    }
-
     public class Apartment
     {
         public Apartment()
