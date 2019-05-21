@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4C099F0A-337C-4AFB-8F9A-A79FDAD00411}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{30E860C5-73EB-43D7-9A46-006E2C7E87A4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B7B669A9-7292-4E33-9BC3-839686F73C57}"
 EndProject
@@ -27,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Common", "ApartmentReservation.Common\ApartmentReservation.Common.csproj", "{2D6BB673-03D9-4A50-B54E-69E6FAF5A175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentReservation.WebUI", "ApartmentReservation.WebUI\ApartmentReservation.WebUI.csproj", "{FE0ADCE1-BACF-4707-9F4C-5520347874FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.WebUI", "ApartmentReservation.WebUI\ApartmentReservation.WebUI.csproj", "{FE0ADCE1-BACF-4707-9F4C-5520347874FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
