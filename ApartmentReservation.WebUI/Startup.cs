@@ -1,3 +1,4 @@
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +26,8 @@ namespace ApartmentReservation.WebUI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             string connectionString = Configuration.GetConnectionString("BloggingDatabase");
-            services.AddDbContext<ApartmentReservationDbContext>(options =>
-            options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
+            services.AddDbContext<IApartmentReservationDbContext, ApartmentReservationDbContext>(optionsAction: (options) =>
+           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
