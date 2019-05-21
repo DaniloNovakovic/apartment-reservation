@@ -1,11 +1,10 @@
-﻿using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Entities;
+﻿using ApartmentReservation.Domain.Entities;
 using ApartmentReservation.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Persistence
 {
-    public class ApartmentReservationDbContext : DbContext, IApartmentReservationDbContext
+    public class ApartmentReservationDbContext : DbContext
     {
         public ApartmentReservationDbContext(DbContextOptions<ApartmentReservationDbContext> options)
             : base(options)
