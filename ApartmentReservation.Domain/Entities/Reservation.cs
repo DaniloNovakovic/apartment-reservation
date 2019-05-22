@@ -20,6 +20,6 @@ namespace ApartmentReservation.Domain.Entities
 
         public string GuestId { get; set; }
 
-        public ReservationState ReservationState { get; set; }
+        public ReservationState ReservationState { get; set; } = ReservationState.Created;
     }
 }

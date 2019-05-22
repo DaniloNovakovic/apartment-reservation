@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
@@ -10,21 +8,23 @@ namespace ApartmentReservation.Domain.Entities
     {
         public Apartment()
         {
-            ForRentalDates = new HashSet<ForRentalDate>();
-            Comments = new HashSet<Comment>();
-            Images = new HashSet<Image>();
-            Amenities = new HashSet<Amenity>();
+            this.ForRentalDates = new HashSet<ForRentalDate>();
+            this.Comments = new HashSet<Comment>();
+            this.Images = new HashSet<Image>();
+            this.Amenities = new HashSet<Amenity>();
         }
 
-        public ActivityState ActivityState { get; set; }
+        public string Id { get; set; }
+
+        public ActivityState ActivityState { get; set; } = ActivityState.Active;
 
         public ICollection<Amenity> Amenities { get; set; }
 
         public ApartmentType ApartmentType { get; set; }
 
-        public DateTime CheckInTime { get; set; }
+        public DateTime? CheckInTime { get; set; }
 
-        public DateTime CheckOutTime { get; set; }
+        public DateTime? CheckOutTime { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
 
@@ -33,8 +33,6 @@ namespace ApartmentReservation.Domain.Entities
         public Host Host { get; set; }
 
         public string HostId { get; set; }
-
-        public string Id { get; set; }
 
         public ICollection<Image> Images { get; set; }
 
