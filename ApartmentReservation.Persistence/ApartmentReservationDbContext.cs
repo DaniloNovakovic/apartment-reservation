@@ -17,6 +17,7 @@ namespace ApartmentReservation.Persistence
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Host> Hosts { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
@@ -28,6 +29,7 @@ namespace ApartmentReservation.Persistence
             modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
             modelBuilder.ApplyConfiguration(new GuestConfiguration());
+            modelBuilder.ApplyConfiguration(new ImageConfiguration());
             modelBuilder.ApplyConfiguration(new HostConfiguration());
             modelBuilder.ApplyConfiguration(new LocationConfiguration());
             modelBuilder.ApplyConfiguration(new ReservationConfiguration());

@@ -12,7 +12,7 @@ namespace ApartmentReservation.Domain.Entities
         {
             ForRentalDates = new List<DateTime>();
             Comments = new HashSet<Comment>();
-            ImageUris = new HashSet<string>();
+            Images = new HashSet<Image>();
             Amenities = new HashSet<Amenity>();
         }
 
@@ -37,8 +37,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public string Id { get; set; }
 
-        [NotMapped]
-        public ICollection<string> ImageUris { get; set; }
+        public ICollection<Image> Images { get; set; }
 
         public Location Location { get; set; }
 
