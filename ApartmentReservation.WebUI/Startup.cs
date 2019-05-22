@@ -29,7 +29,7 @@ namespace ApartmentReservation.WebUI
             services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
