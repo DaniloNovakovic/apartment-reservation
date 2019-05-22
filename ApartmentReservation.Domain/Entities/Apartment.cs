@@ -10,7 +10,7 @@ namespace ApartmentReservation.Domain.Entities
     {
         public Apartment()
         {
-            ForRentalDates = new List<DateTime>();
+            ForRentalDates = new HashSet<ForRentalDate>();
             Comments = new HashSet<Comment>();
             Images = new HashSet<Image>();
             Amenities = new HashSet<Amenity>();
@@ -28,8 +28,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public ICollection<Comment> Comments { get; set; }
 
-        [NotMapped]
-        public ICollection<DateTime> ForRentalDates { get; set; }
+        public ICollection<ForRentalDate> ForRentalDates { get; set; }
 
         public Host Host { get; set; }
 
