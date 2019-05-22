@@ -8,6 +8,7 @@ namespace ApartmentReservation.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Image> builder)
         {
+            builder.Property(i => i.ImageUri).IsRequired();
         }
     }
 }
