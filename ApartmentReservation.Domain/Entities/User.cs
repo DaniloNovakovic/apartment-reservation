@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ApartmentReservation.Domain.Enumerations;
+﻿using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
 {
@@ -16,7 +13,5 @@ namespace ApartmentReservation.Domain.Entities
         public string LastName { get; set; }
 
         public string Gender { get; set; }
-
-        public RoleType Role { get; set; }
     }
 }

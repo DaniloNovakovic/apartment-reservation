@@ -17,9 +17,9 @@ namespace ApartmentReservation.Persistence
         {
             context.Database.EnsureCreated();
 
-            if (context.Users.Any())
+            if (context.Administrators.Any())
             {
-                return; // Db has been seeded
+                return; // Db is seeded
             }
         }
     }

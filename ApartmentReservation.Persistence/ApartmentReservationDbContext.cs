@@ -19,7 +19,6 @@ namespace ApartmentReservation.Persistence
         public DbSet<Host> Hosts { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +31,6 @@ namespace ApartmentReservation.Persistence
             modelBuilder.ApplyConfiguration(new HostConfiguration());
             modelBuilder.ApplyConfiguration(new LocationConfiguration());
             modelBuilder.ApplyConfiguration(new ReservationConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

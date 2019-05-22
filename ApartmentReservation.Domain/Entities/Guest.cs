@@ -2,7 +2,7 @@
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Guest
+    public class Guest : User
     {
         public Guest()
         {
@@ -10,14 +10,8 @@ namespace ApartmentReservation.Domain.Entities
             this.Reservations = new HashSet<Reservation>();
         }
 
-        public string Id { get; set; }
-
         public ICollection<Apartment> RentedApartments { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
-
-        public User User { get; set; }
-
-        public string UserId { get; set; }
     }
 }

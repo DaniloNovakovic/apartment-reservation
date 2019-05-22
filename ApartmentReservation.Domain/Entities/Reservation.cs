@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
