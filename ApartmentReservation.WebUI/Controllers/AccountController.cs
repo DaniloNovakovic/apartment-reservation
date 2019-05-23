@@ -17,11 +17,11 @@ namespace ApartmentReservation.WebUI.Controllers
         public string password { get; set; }
     }
 
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
             string username = dto.username;
@@ -45,18 +45,14 @@ namespace ApartmentReservation.WebUI.Controllers
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var authProperties = new AuthenticationProperties { AllowRefresh = true };
-
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
+                new ClaimsPrincipal(claimsIdentity));
 
             return Ok();
         }
 
         [Authorize]
-        [Route("[action]")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

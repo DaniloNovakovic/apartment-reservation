@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -36,8 +37,13 @@ namespace ApartmentReservation.WebUI
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/api/Account/Login";
+                    options.LoginPath = "";
                     options.LogoutPath = "/api/Account/Logout";
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
                 });
 
             services.AddAuthorization(options =>
