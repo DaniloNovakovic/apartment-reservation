@@ -1,13 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces;
+using FluentValidation;
 using MediatR;
 
 namespace ApartmentReservation.Application.Features.Hosts
 {
     public class GetHostQuery : IRequest<string>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 
     public class GetHostQueryHandler : IRequestHandler<GetHostQuery, string>
@@ -23,6 +24,14 @@ namespace ApartmentReservation.Application.Features.Hosts
         {
             await Task.Delay(50, cancellationToken).ConfigureAwait(false);
             return "valie " + request.Id;
+        }
+    }
+
+    public class GetHostQueryValidator : AbstractValidator<GetHostQuery>
+    {
+        public GetHostQueryValidator()
+        {
+            RuleFor(q => q.Id).NotEmpty().MinimumLength(2);
         }
     }
 }

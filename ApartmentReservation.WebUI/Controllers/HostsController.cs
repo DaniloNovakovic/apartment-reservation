@@ -31,7 +31,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<string> Get(int id)
+        public async Task<string> Get(string id)
         {
             return await this.mediator.Send(new GetHostQuery() { Id = id });
         }

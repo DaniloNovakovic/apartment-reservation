@@ -1,21 +1,20 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Infrastructure;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Persistence;
+using ApartmentReservation.WebUI.Filters;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using MediatR.Pipeline;
-using ApartmentReservation.Application.Features.Hosts;
-using System.Reflection;
 
 namespace ApartmentReservation.WebUI
 {
@@ -23,7 +22,7 @@ namespace ApartmentReservation.WebUI
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -31,17 +30,18 @@ namespace ApartmentReservation.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("BloggingDatabase");
+            string connectionString = this.Configuration.GetConnectionString("BloggingDatabase");
             services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMediatR(typeof(GetHostQueryHandler));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
-            services.AddMvc()
+            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetHostQuery>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetHostQueryValidator>());
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -80,6 +80,7 @@ namespace ApartmentReservation.WebUI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
