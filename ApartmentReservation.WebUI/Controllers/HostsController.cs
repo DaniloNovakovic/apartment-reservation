@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Features.Hosts;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,13 @@ namespace ApartmentReservation.WebUI.Controllers
     [Authorize(Policy = "AdministratorOrHostOnly")]
     public class HostsController : ControllerBase
     {
+        private readonly IMediator mediator;
+
+        public HostsController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+
         // GET: api/Hosts
         [Authorize(Policy = "AdministratorOnly")]
         public IEnumerable<string> Get()
@@ -22,9 +31,9 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<string> Get(int id)
         {
-            return "value";
+            return await this.mediator.Send(new GetHostQuery() { Id = id });
         }
 
         // POST: api/Hosts

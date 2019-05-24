@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Persistence;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,10 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using MediatR.Pipeline;
+using ApartmentReservation.Application.Features.Hosts;
+using System.Reflection;
 
 namespace ApartmentReservation.WebUI
 {
@@ -30,9 +35,13 @@ namespace ApartmentReservation.WebUI
             services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMediatR(typeof(GetHostQueryHandler));
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetHostQuery>());
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
