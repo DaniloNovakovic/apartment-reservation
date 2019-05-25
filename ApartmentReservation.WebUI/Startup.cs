@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using ApartmentReservation.Application.Infrastructure.AutoMapper;
 
 namespace ApartmentReservation.WebUI
 {
@@ -30,19 +32,26 @@ namespace ApartmentReservation.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add DbContext using SQL Server Provider
             string connectionString = this.Configuration.GetConnectionString("BloggingDatabase");
             services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            // Add AutoMapper
+            services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);
+
+            // Add MediatR
             services.AddMediatR(typeof(GetHostQueryHandler));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
+            // Setup custom exception filter & fluent validation
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetHostQueryValidator>());
 
+            // Setup Authentication and Authorization
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {

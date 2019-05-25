@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
@@ -65,9 +66,14 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<string> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            return await this.mediator.Send(new GetHostQuery() { Id = id });
+            if (!this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id) && !this.HttpContext.User.IsInRole("Administrator"))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await this.mediator.Send(new GetHostQuery() { Id = id }).ConfigureAwait(false));
         }
 
         // POST: api/Hosts

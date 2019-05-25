@@ -1,29 +1,33 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 
 namespace ApartmentReservation.Application.Features.Hosts
 {
-    public class GetHostQuery : IRequest<string>
+    public class GetHostQuery : IRequest<HostDto>
     {
         public string Id { get; set; }
     }
 
-    public class GetHostQueryHandler : IRequestHandler<GetHostQuery, string>
+    public class GetHostQueryHandler : IRequestHandler<GetHostQuery, HostDto>
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public GetHostQueryHandler(IUnitOfWork unitOfWork)
+        public GetHostQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
-        public async Task<string> Handle(GetHostQuery request, CancellationToken cancellationToken)
+        public async Task<HostDto> Handle(GetHostQuery request, CancellationToken cancellationToken)
         {
-            await Task.Delay(50, cancellationToken).ConfigureAwait(false);
-            return "valie " + request.Id;
+            var host = await unitOfWork.Hosts.GetAsync(new object[] { request.Id }, cancellationToken).ConfigureAwait(false);
+            return mapper.Map<HostDto>(host);
         }
     }
 
@@ -31,7 +35,7 @@ namespace ApartmentReservation.Application.Features.Hosts
     {
         public GetHostQueryValidator()
         {
-            RuleFor(q => q.Id).NotEmpty().MinimumLength(2);
+            RuleFor(q => q.Id).NotEmpty();
         }
     }
 }
