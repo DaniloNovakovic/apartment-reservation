@@ -1,4 +1,6 @@
-﻿using ApartmentReservation.Application.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Application.Interfaces.Repositories;
 using ApartmentReservation.Domain.Entities;
 using ApartmentReservation.Persistence.Repositories;
@@ -12,14 +14,25 @@ namespace ApartmentReservation.Persistence
         public UnitOfWork(ApartmentReservationDbContext context)
         {
             this.context = context;
-            this.Users = new Repository<User>(context);
+            this.Hosts = new Repository<Host>(context);
+            this.Administrators = new Repository<Administrator>(context);
         }
 
-        public IRepository<User> Users { get; private set; }
+        public IRepository<Address> Addresses { get; }
+        public IRepository<Administrator> Administrators { get; }
+        public IRepository<Amenity> Amenities { get; }
+        public IRepository<Apartment> Apartments { get; }
+        public IRepository<Comment> Comments { get; }
+        public IRepository<Guest> Guests { get; }
+        public IRepository<Host> Hosts { get; }
+        public IRepository<Image> Images { get; }
+        public IRepository<Location> Locations { get; }
+        public IRepository<Reservation> Reservations { get; }
+        public IRepository<ForRentalDate> ForRentalDates { get; }
 
-        public int Complete()
+        public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
         {
-            return this.context.SaveChanges();
+            return await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public void Dispose()

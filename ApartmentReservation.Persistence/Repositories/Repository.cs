@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,29 +20,34 @@ namespace ApartmentReservation.Persistence.Repositories
             this.Entities = this.Context.Set<TEntity>();
         }
 
-        public void Add(TEntity entity)
+        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            this.Entities.Add(entity);
+            await this.Entities.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            this.Entities.AddRange(entities);
+            await this.Entities.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            return this.Entities.Where(predicate);
+            return await this.Entities.Where(predicate).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public TEntity Get(int id)
+        public async Task<TEntity> GetAsync(object[] keyValues, CancellationToken cancellationToken = default)
         {
-            return this.Entities.Find(id);
+            return await this.Entities.FindAsync(keyValues, cancellationToken).ConfigureAwait(false);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<TEntity> GetAsync(params object[] keyValues)
         {
-            return this.Entities.ToList();
+            return await this.Entities.FindAsync(keyValues).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await this.Entities.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public void Remove(TEntity entity)

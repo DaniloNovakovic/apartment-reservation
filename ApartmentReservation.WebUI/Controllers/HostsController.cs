@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -16,10 +17,43 @@ namespace ApartmentReservation.WebUI.Controllers
     public class HostsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IUnitOfWork unitOfWork;
 
-        public HostsController(IMediator mediator)
+        public HostsController(IMediator mediator, IUnitOfWork unitOfWork)
         {
             this.mediator = mediator;
+            this.unitOfWork = unitOfWork;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("[action]")]
+        public async Task<IActionResult> Login([FromBody] UserDto dto)
+        {
+            string username = dto.username;
+            string password = dto.password;
+
+            var host = await this.unitOfWork.Hosts.GetAsync(username);
+
+            if (host is null)
+                return this.NotFound();
+
+            if (host.Password != password)
+                return this.Unauthorized();
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, username),
+                new Claim(ClaimTypes.Role, "Host")
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await this.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+
+            return this.Ok();
         }
 
         // GET: api/Hosts

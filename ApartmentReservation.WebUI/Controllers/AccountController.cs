@@ -39,7 +39,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.NameIdentifier, username),
                 new Claim(ClaimTypes.Role, "Administrator")
             };
 

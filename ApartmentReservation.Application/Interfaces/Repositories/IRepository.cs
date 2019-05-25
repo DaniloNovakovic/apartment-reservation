@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApartmentReservation.Application.Interfaces.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        void Add(TEntity entity);
+        Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
-        void AddRange(IEnumerable<TEntity> entities);
+        Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
-        TEntity Get(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        IEnumerable<TEntity> GetAll();
+        Task<TEntity> GetAsync(object[] keyValues, CancellationToken cancellationToken = default);
+
+        Task<TEntity> GetAsync(params object[] keyValues);
 
         void Remove(TEntity entity);
 
