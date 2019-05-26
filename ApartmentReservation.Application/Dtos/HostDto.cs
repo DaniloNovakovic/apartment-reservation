@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApartmentReservation.Application.Dtos
+﻿namespace ApartmentReservation.Application.Dtos
 {
     public class HostDto
     {

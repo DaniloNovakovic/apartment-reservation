@@ -34,8 +34,8 @@ namespace ApartmentReservation.WebUI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
-            string username = dto.username;
-            string password = dto.password;
+            string username = dto.Username;
+            string password = dto.Password;
 
             var host = await this.unitOfWork.Hosts.GetAsync(username);
 

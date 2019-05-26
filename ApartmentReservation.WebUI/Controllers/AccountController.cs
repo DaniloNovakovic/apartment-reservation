@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,12 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
 {
-    public class UserDto
-    {
-        public string username { get; set; }
-        public string password { get; set; }
-    }
-
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -25,8 +20,8 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
-            string username = dto.username;
-            string password = dto.password;
+            string username = dto.Username;
+            string password = dto.Password;
             // Todo: Check if user exists and what type of guest he is.
             if (username != "admin")
             {
