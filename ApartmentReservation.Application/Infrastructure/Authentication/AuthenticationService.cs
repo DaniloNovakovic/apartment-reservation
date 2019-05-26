@@ -17,21 +17,13 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
         public async Task Login(UserDto user, string roleName, HttpContext httpContext)
         {
             var role = this.roleFactory.GetRole(roleName);
-            await role.LoginAsync(user, httpContext);
+            await role.LoginAsync(user, httpContext).ConfigureAwait(false);
         }
 
         public async Task LogoutAsync(string roleName, HttpContext httpContext)
         {
             var role = this.roleFactory.GetRole(roleName);
-            await role.LogoutAsync(httpContext);
-        }
-    }
-
-    public class RoleFactory
-    {
-        internal Role GetRole(string roleName)
-        {
-            throw new NotImplementedException();
+            await role.LogoutAsync(httpContext).ConfigureAwait(false);
         }
     }
 }
