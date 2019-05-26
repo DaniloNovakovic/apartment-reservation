@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
 {
     [Route("api/hosts")]
     [ApiController]
-    [Authorize(Policy = "AdministratorOrHostOnly")]
+    [Authorize(Policy = Policies.AdministratorOrHostOnly)]
     public class HostsController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -45,7 +48,7 @@ namespace ApartmentReservation.WebUI.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, "Host")
+                new Claim(ClaimTypes.Role, RoleNames.Host)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -58,7 +61,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         // GET: api/Hosts
-        [Authorize(Policy = "AdministratorOnly")]
+        [Authorize(Policy = Policies.AdministratorOnly)]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -78,7 +81,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // POST: api/Hosts
         [HttpPost]
-        [Authorize(Policy = "AdministratorOnly")]
+        [Authorize(Policy = Policies.AdministratorOnly)]
         public void Post([FromBody] string value)
         {
         }

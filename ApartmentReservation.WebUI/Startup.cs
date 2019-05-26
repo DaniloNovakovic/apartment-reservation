@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using ApartmentReservation.Application.Infrastructure.AutoMapper;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 
 namespace ApartmentReservation.WebUI
 {
@@ -64,17 +65,7 @@ namespace ApartmentReservation.WebUI
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdministratorOnly", policy =>
-                {
-                    policy.RequireClaim(ClaimTypes.Role, "Administrator");
-                });
-                options.AddPolicy("AdministratorOrHostOnly", policy =>
-                {
-                    policy.RequireClaim(ClaimTypes.Role, "Administrator", "Host");
-                });
-            });
+            services.AddAuthorization(Policies.AddPolicies);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

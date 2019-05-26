@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +41,7 @@ namespace ApartmentReservation.WebUI.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, "Administrator")
+                new Claim(ClaimTypes.Role, RoleNames.Administrator)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
