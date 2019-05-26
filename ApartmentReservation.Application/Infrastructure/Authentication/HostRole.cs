@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
-
     internal class HostRole : Role
     {
-        private IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
         public HostRole(IUnitOfWork unitOfWork)
         {
@@ -20,12 +17,16 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         protected override IEnumerable<Claim> GenerateClaims(User user)
         {
-            throw new System.NotImplementedException();
+            return new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Role, RoleNames.Host)
+            };
         }
 
-        protected override Task<User> GetUser(string username)
+        protected override async Task<User> GetUserAsync(string username)
         {
-            throw new System.NotImplementedException();
+            return await this.unitOfWork.Hosts.GetAsync(username).ConfigureAwait(false);
         }
     }
 }

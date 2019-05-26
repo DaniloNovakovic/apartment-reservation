@@ -17,7 +17,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             string username = user.Username;
             string password = user.Password;
 
-            var dbUser = await this.GetUser(username).ConfigureAwait(false);
+            var dbUser = await this.GetUserAsync(username).ConfigureAwait(false);
 
             if (dbUser is null)
                 throw new NotFoundException($"Could not find user with username = '{username}'");
@@ -43,6 +43,6 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         protected abstract IEnumerable<Claim> GenerateClaims(User user);
 
-        protected abstract Task<User> GetUser(string username);
+        protected abstract Task<User> GetUserAsync(string username);
     }
 }

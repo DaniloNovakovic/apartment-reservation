@@ -48,7 +48,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
                 return null;
             }
 
-            protected override Task<User> GetUser(string username)
+            protected override Task<User> GetUserAsync(string username)
             {
                 return Task.FromResult<User>(null);
             }
