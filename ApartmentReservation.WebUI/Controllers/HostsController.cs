@@ -1,16 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Infrastructure.Authentication;
-using ApartmentReservation.Application.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -21,12 +16,12 @@ namespace ApartmentReservation.WebUI.Controllers
     public class HostsController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly AuthService authService;
 
-        public HostsController(IMediator mediator, IUnitOfWork unitOfWork)
+        public HostsController(IMediator mediator, AuthService authService)
         {
             this.mediator = mediator;
-            this.unitOfWork = unitOfWork;
+            this.authService = authService;
         }
 
         [HttpPost]
@@ -34,30 +29,9 @@ namespace ApartmentReservation.WebUI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
-            string username = dto.Username;
-            string password = dto.Password;
+            await this.authService.Login(dto, RoleNames.Host, this.HttpContext);
 
-            var host = await this.unitOfWork.Hosts.GetAsync(username);
-
-            if (host is null)
-                return this.NotFound();
-
-            if (host.Password != password)
-                return this.Unauthorized();
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, RoleNames.Host)
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await this.HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
-
-            return this.Ok();
+            return this.NoContent();
         }
 
         // GET: api/Hosts
@@ -73,10 +47,10 @@ namespace ApartmentReservation.WebUI.Controllers
         {
             if (!this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id) && !this.HttpContext.User.IsInRole("Administrator"))
             {
-                return Unauthorized();
+                return this.Unauthorized();
             }
 
-            return Ok(await this.mediator.Send(new GetHostQuery() { Id = id }).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(new GetHostQuery() { Id = id }).ConfigureAwait(false));
         }
 
         // POST: api/Hosts

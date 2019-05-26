@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
     internal class GuestRole : Role
     {
-        private IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
         public GuestRole(IUnitOfWork unitOfWork)
         {

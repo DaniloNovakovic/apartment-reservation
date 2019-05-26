@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -8,7 +6,6 @@ using ApartmentReservation.Application.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -25,12 +22,12 @@ namespace ApartmentReservation.WebUI.Controllers
             // Todo: Check if user exists and what type of guest he is.
             if (username != "admin")
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             if (password != "admin")
             {
-                return Unauthorized();
+                return this.Unauthorized();
             }
 
             var claims = new List<Claim>
@@ -41,18 +38,18 @@ namespace ApartmentReservation.WebUI.Controllers
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            await HttpContext.SignInAsync(
+            await this.HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity));
 
-            return Ok();
+            return this.Ok();
         }
 
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok();
+            await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return this.Ok();
         }
     }
 }

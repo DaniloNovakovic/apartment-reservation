@@ -40,6 +40,9 @@ namespace ApartmentReservation.WebUI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<RoleFactory>();
+            services.AddScoped<AuthService>();
+
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);
 

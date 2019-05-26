@@ -14,6 +14,9 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
     {
         public virtual async Task LoginAsync(UserDto user, HttpContext httpContext)
         {
+            if (httpContext.User.Identity.IsAuthenticated)
+                throw new AlreadyLoggedInException();
+
             string username = user.Username;
             string password = user.Password;
 

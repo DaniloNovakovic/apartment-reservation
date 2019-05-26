@@ -1,15 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
-    public class AuthenticationService
+    public class AuthService
     {
         private readonly RoleFactory roleFactory;
 
-        public AuthenticationService(RoleFactory roleFactory)
+        public AuthService(RoleFactory roleFactory)
         {
             this.roleFactory = roleFactory;
         }
