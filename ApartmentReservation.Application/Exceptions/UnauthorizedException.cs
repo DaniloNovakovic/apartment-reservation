@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ApartmentReservation.Application.Exceptions
 {
@@ -18,5 +16,4 @@ namespace ApartmentReservation.Application.Exceptions
         {
         }
     }
-}
 }
