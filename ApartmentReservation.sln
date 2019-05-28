@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Common
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.WebUI", "ApartmentReservation.WebUI\ApartmentReservation.WebUI.csproj", "{FE0ADCE1-BACF-4707-9F4C-5520347874FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentReservation.WebUI.UnitTests", "ApartmentReservation.WebUI.UnitTests\ApartmentReservation.WebUI.UnitTests.csproj", "{E3538F75-9BC9-4E24-A2ED-972E15759D70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE0ADCE1-BACF-4707-9F4C-5520347874FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3538F75-9BC9-4E24-A2ED-972E15759D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3538F75-9BC9-4E24-A2ED-972E15759D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3538F75-9BC9-4E24-A2ED-972E15759D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3538F75-9BC9-4E24-A2ED-972E15759D70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{CD0AB81E-FCB3-41A5-9DC8-D7043E25F222} = {7736C0C9-DA37-43E6-913B-04147DFE6468}
 		{2D6BB673-03D9-4A50-B54E-69E6FAF5A175} = {D9D0C2FD-8E47-45F1-8543-381560206A91}
 		{FE0ADCE1-BACF-4707-9F4C-5520347874FF} = {B7B669A9-7292-4E33-9BC3-839686F73C57}
+		{E3538F75-9BC9-4E24-A2ED-972E15759D70} = {4C099F0A-337C-4AFB-8F9A-A79FDAD00411}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9480C4ED-99A8-4E6C-A948-C6690F264616}

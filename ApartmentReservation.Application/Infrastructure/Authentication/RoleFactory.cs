@@ -15,10 +15,12 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         public RoleFactory(IUnitOfWork unitOfWork)
         {
-            this.dict = new Dictionary<string, Role>();
-            this.dict[RoleNames.Administrator] = new AdministratorRole(unitOfWork);
-            this.dict[RoleNames.Guest] = new GuestRole(unitOfWork);
-            this.dict[RoleNames.Host] = new HostRole(unitOfWork);
+            this.dict = new Dictionary<string, Role>
+            {
+                [RoleNames.Administrator] = new AdministratorRole(unitOfWork),
+                [RoleNames.Guest] = new GuestRole(unitOfWork),
+                [RoleNames.Host] = new HostRole(unitOfWork)
+            };
         }
 
         public void RegisterRole(string roleName, Role roleToRegister)

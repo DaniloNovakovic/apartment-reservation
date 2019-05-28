@@ -34,14 +34,14 @@ namespace ApartmentReservation.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add DbContext using SQL Server Provider
-            string connectionString = this.Configuration.GetConnectionString("BloggingDatabase");
+            string connectionString = this.Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<RoleFactory>();
-            services.AddScoped<AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,9 @@ namespace ApartmentReservation.WebUI.Controllers
     public class HostsController : ControllerBase
     {
         private readonly IMediator mediator;
-        private readonly AuthService authService;
+        private readonly IAuthService authService;
 
-        public HostsController(IMediator mediator, AuthService authService)
+        public HostsController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
             this.authService = authService;
@@ -29,7 +30,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
-            await this.authService.Login(dto, RoleNames.Host, this.HttpContext);
+            await this.authService.LoginAsync(dto, RoleNames.Host, this.HttpContext);
 
             return this.NoContent();
         }
