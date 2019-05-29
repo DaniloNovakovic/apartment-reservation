@@ -100,6 +100,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
 
             // Assert
             var unauthorizedResult = Assert.IsAssignableFrom<UnauthorizedResult>(result);
+            this.mediatorMock.Verify(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
@@ -127,11 +128,46 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         public async Task Post_WhenInvoked_SendCreateCommandToMediator()
         {
             var controller = this.CreateController("Admin", RoleNames.Administrator);
-
             var createCommand = new CreateHostCommand() { Username = "Djura", Password = "123" };
+
             await controller.Post(createCommand);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<CreateHostCommand>(c => c == createCommand), It.IsAny<CancellationToken>()));
+            this.mediatorMock.Verify(m => m.Send(It.Is<CreateHostCommand>(c => c == createCommand), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Put_WhenUserIsAdmin_SendUpdateCommandToMediator()
+        {
+            var controller = this.CreateController("Admin", RoleNames.Administrator);
+            var updateCommand = new UpdateHostCommand();
+
+            await controller.Put("Admin", updateCommand);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()));
+        }
+
+        [Fact]
+        public async Task Put_WhenUserIsUpdatingItsOwnInformation_SendUpdateCommandToMediator()
+        {
+            var controller = this.CreateController("Djura", RoleNames.Host);
+            var updateCommand = new UpdateHostCommand();
+
+            await controller.Put("Djura", updateCommand);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()));
+        }
+
+        [Fact]
+        public async Task Put_WhenUserIsUpdatingStrangersInformation_ReturnUnauthorized()
+        {
+            var controller = this.CreateController("Djura", RoleNames.Host);
+            var updateCommand = new UpdateHostCommand();
+
+            var result = await controller.Put("Pera", updateCommand);
+
+            var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         private HostsController CreateController(string username, string role)
