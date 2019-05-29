@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.WebUI.Controllers;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -49,7 +45,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             const string hostId = "Djura";
             var expectedResultValue = new HostDto { Id = hostId };
 
-            mediatorMock
+            this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
@@ -61,6 +57,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
             var value = Assert.IsType<HostDto>(okResult.Value);
+            Assert.Equal(expectedResultValue, value);
         }
 
         [Fact]
@@ -70,11 +67,11 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             const string hostId = "Djura";
             var expectedResultValue = new HostDto { Id = hostId };
 
-            mediatorMock
+            this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = CreateController(hostId, RoleNames.Host);
+            var controller = this.CreateController(hostId, RoleNames.Host);
 
             // Act
             var result = await controller.Get(hostId);
@@ -82,6 +79,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
             var value = Assert.IsType<HostDto>(okResult.Value);
+            Assert.Equal(expectedResultValue, value);
         }
 
         [Fact]
@@ -91,17 +89,49 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             const string hostId = "Me";
             var expectedResultValue = new HostDto { Id = hostId };
 
-            mediatorMock
+            this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = CreateController("Stranger", RoleNames.Host);
+            var controller = this.CreateController("Stranger", RoleNames.Host);
 
             // Act
             var result = await controller.Get(hostId);
 
             // Assert
             var unauthorizedResult = Assert.IsAssignableFrom<UnauthorizedResult>(result);
+        }
+
+        [Fact]
+        public async Task GetAll_WhenInvoked_ReturnHostDtosFromMediator()
+        {
+            // Arrange
+            var expectedResultValue = new List<HostDto> { new HostDto() };
+
+            this.mediatorMock
+                .Setup(m => m.Send(It.IsAny<IRequest<IEnumerable<HostDto>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedResultValue);
+
+            var controller = this.CreateController("Admin", RoleNames.Administrator);
+
+            // Act
+            var result = await controller.Get();
+
+            // Assert
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var value = Assert.IsAssignableFrom<IEnumerable<HostDto>>(okResult.Value);
+            Assert.Equal(expectedResultValue, value);
+        }
+
+        [Fact]
+        public async Task Post_WhenInvoked_SendCreateCommandToMediator()
+        {
+            var controller = this.CreateController("Admin", RoleNames.Administrator);
+
+            var createCommand = new CreateHostCommand() { Username = "Djura", Password = "123" };
+            await controller.Post(createCommand);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<CreateHostCommand>(c => c == createCommand), It.IsAny<CancellationToken>()));
         }
 
         private HostsController CreateController(string username, string role)
@@ -112,7 +142,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
                 new Claim(ClaimTypes.Role, role)
             }, "mock"));
 
-            return new HostsController(mediatorMock.Object, authServiceMock.Object)
+            return new HostsController(this.mediatorMock.Object, this.authServiceMock.Object)
             {
                 ControllerContext = new ControllerContext()
                 {

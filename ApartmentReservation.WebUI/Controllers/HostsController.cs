@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
@@ -37,9 +38,9 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts
         [Authorize(Policy = Policies.AdministratorOnly)]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(await mediator.Send(new GetAllHostsQuery()).ConfigureAwait(false));
         }
 
         // GET: api/Hosts/5
@@ -57,8 +58,10 @@ namespace ApartmentReservation.WebUI.Controllers
         // POST: api/Hosts
         [HttpPost]
         [Authorize(Policy = Policies.AdministratorOnly)]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateHostCommand command)
         {
+            await mediator.Send(command).ConfigureAwait(false);
+            return NoContent();
         }
 
         // PUT: api/Hosts/5
