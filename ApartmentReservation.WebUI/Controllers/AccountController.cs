@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,16 +22,16 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserDto dto)
         {
-            await this.authService.LoginAsync(dto, dto.RoleName, this.HttpContext);
-
+            await this.authService.LoginAsync(dto, dto.RoleName, this.HttpContext).ConfigureAwait(false);
             return this.NoContent();
         }
 
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return this.Ok();
+            string roleName = this.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value ?? "";
+            await this.authService.LogoutAsync(roleName, this.HttpContext).ConfigureAwait(false);
+            return this.NoContent();
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.WebUI.Controllers;
+using ApartmentReservation.WebUI.UnitTests.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -192,18 +191,9 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
 
         protected HostsController CreateController(string username, string role)
         {
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, role)
-            }, "mock"));
-
             return new HostsController(this.mediatorMock.Object)
             {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext() { User = user }
-                }
+                ControllerContext = ControllerContextFactory.CreateContext(username, role)
             };
         }
     }
