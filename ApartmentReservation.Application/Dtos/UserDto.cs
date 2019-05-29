@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 using FluentValidation;
 
 namespace ApartmentReservation.Application.Dtos
@@ -15,7 +16,7 @@ namespace ApartmentReservation.Application.Dtos
 
         public string Gender { get; set; } = "";
 
-        public string RoleName { get; set; } = "";
+        public string RoleName { get; set; } = RoleNames.Guest;
     }
 
     public class UserDtoValidation : AbstractValidator<UserDto>
