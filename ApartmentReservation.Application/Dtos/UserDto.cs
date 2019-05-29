@@ -14,6 +14,8 @@ namespace ApartmentReservation.Application.Dtos
         public string LastName { get; set; } = "";
 
         public string Gender { get; set; } = "";
+
+        public string RoleName { get; set; } = "";
     }
 
     public class UserDtoValidation : AbstractValidator<UserDto>
