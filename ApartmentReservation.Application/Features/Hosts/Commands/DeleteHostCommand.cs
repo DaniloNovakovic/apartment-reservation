@@ -7,5 +7,6 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
 {
     public class DeleteHostCommand : IRequest
     {
+        public string Id { get; set; }
     }
 }

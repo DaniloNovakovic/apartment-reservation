@@ -87,6 +87,13 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
+            if (IsUserAStranger(id))
+            {
+                return Unauthorized();
+            }
+
+            await mediator.Send(new DeleteHostCommand() { Id = id }).ConfigureAwait(false);
+
             return NoContent();
         }
     }

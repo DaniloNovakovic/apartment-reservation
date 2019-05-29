@@ -143,7 +143,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
 
             await controller.Put("Admin", updateCommand);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()));
+            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
 
             await controller.Put("Djura", updateCommand);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()));
+            this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -168,6 +168,41 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
 
             this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task Delete_WhenUserIsAdmin_SendDeleteCommandToMediator()
+        {
+            string userId = "Admin";
+            var controller = this.CreateController(userId, RoleNames.Administrator);
+
+            await controller.Delete(userId);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == userId), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Delete_WhenUserIsUpdatingItsOwnInformation_SendDeleteCommandToMediator()
+        {
+            string userId = "Djura";
+            var controller = this.CreateController(userId, RoleNames.Host);
+
+            await controller.Delete(userId);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == userId), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task Delete_WhenUserIsUpdatingStrangersInformation_ReturnUnauthorized()
+        {
+            string userId = "Djura";
+            var controller = this.CreateController(userId, RoleNames.Host);
+
+            var result = await controller.Delete("Steva");
+
+            var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
+
+            this.mediatorMock.Verify(m => m.Send(It.IsAny<DeleteHostCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         private HostsController CreateController(string username, string role)
