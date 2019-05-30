@@ -14,7 +14,7 @@ namespace ApartmentReservation.Domain.Entities
             this.Amenities = new HashSet<Amenity>();
         }
 
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         public ActivityState ActivityState { get; set; } = ActivityState.Active;
 
@@ -32,13 +32,13 @@ namespace ApartmentReservation.Domain.Entities
 
         public Host Host { get; set; }
 
-        public string HostId { get; set; }
+        public long? HostId { get; set; }
 
         public ICollection<Image> Images { get; set; }
 
         public Location Location { get; set; }
 
-        public string LocationId { get; set; }
+        public long LocationId { get; set; }
 
         public int NumberOfGuests { get; set; }
 
@@ -47,5 +47,6 @@ namespace ApartmentReservation.Domain.Entities
         public double PricePerNight { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

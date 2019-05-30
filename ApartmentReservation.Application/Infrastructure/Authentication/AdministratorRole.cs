@@ -19,14 +19,15 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
         {
             return new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, RoleNames.Administrator)
             };
         }
 
         protected override async Task<User> GetUserAsync(string username)
         {
-            return await this.unitOfWork.Administrators.GetAsync(username).ConfigureAwait(false);
+            return await this.unitOfWork.Users.GetAsync(username).ConfigureAwait(false);
         }
     }
 }

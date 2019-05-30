@@ -4,12 +4,13 @@ namespace ApartmentReservation.Domain.Entities
 {
     public class ForRentalDate
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public DateTime Date { get; set; }
 
         public Apartment Apartment { get; set; }
 
-        public string ApartmentId { get; set; }
+        public long ApartmentId { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

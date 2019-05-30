@@ -15,12 +15,13 @@ namespace ApartmentReservation.Persistence
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ForRentalDate> ForRentalDates { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Host> Hosts { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<ForRentalDate> ForRentalDates { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,7 @@ namespace ApartmentReservation.Persistence
             modelBuilder.ApplyConfiguration(new HostConfiguration());
             modelBuilder.ApplyConfiguration(new LocationConfiguration());
             modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

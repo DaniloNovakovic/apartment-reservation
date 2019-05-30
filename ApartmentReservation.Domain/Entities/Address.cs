@@ -2,7 +2,7 @@
 {
     public class Address
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         public string CityName { get; set; }
 
@@ -11,6 +11,8 @@
         public string StreetName { get; set; }
 
         public string StreetNumber { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
 
         public override string ToString()
         {

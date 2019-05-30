@@ -10,16 +10,17 @@ namespace ApartmentReservation.Application.Interfaces
     {
         Task<int> CompleteAsync(CancellationToken cancellationToken = default);
 
-        IRepository<Address> Addresses { get;  }
-        IRepository<Administrator> Administrators { get;  }
-        IRepository<Amenity> Amenities { get;  }
-        IRepository<Apartment> Apartments { get;  }
-        IRepository<Comment> Comments { get;  }
-        IRepository<Guest> Guests { get;  }
-        IRepository<Host> Hosts { get;  }
-        IRepository<Image> Images { get;  }
-        IRepository<Location> Locations { get;  }
-        IRepository<Reservation> Reservations { get;  }
-        IRepository<ForRentalDate> ForRentalDates { get;  }
+        IRepository<Address> Addresses { get; }
+        IRepository<Administrator> Administrators { get; }
+        IRepository<Amenity> Amenities { get; }
+        IRepository<Apartment> Apartments { get; }
+        IRepository<Comment> Comments { get; }
+        IRepository<Guest> Guests { get; }
+        IRepository<Host> Hosts { get; }
+        IRepository<Image> Images { get; }
+        IRepository<Location> Locations { get; }
+        IRepository<Reservation> Reservations { get; }
+        IRepository<ForRentalDate> ForRentalDates { get; }
+        IRepository<User> Users { get; }
     }
 }

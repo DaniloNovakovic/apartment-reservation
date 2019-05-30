@@ -8,7 +8,11 @@ namespace ApartmentReservation.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Administrator> builder)
         {
-            builder.Property(a => a.Password).IsRequired();
+            builder.HasKey(a => a.UserId);
+
+            builder.HasOne(a => a.User).WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

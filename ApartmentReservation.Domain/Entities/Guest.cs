@@ -2,7 +2,7 @@
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Guest : User
+    public class Guest
     {
         public Guest()
         {
@@ -13,5 +13,10 @@ namespace ApartmentReservation.Domain.Entities
         public ICollection<Apartment> RentedApartments { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+
+        public long UserId { get; set; }
+        public User User { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

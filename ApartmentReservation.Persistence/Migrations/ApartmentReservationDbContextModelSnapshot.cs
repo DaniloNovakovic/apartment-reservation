@@ -21,11 +21,14 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Address", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CityName")
                         .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("PostalCode")
                         .IsRequired();
@@ -43,30 +46,24 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Administrator", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("UserId");
 
-                    b.Property<string>("FirstName");
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Administrators");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Amenity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentId");
+                    b.Property<long?>("ApartmentId");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -80,8 +77,9 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Apartment", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ActivityState");
 
@@ -91,11 +89,13 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.Property<DateTime?>("CheckOutTime");
 
-                    b.Property<string>("GuestId");
+                    b.Property<long?>("GuestUserId");
 
-                    b.Property<string>("HostId");
+                    b.Property<long?>("HostId");
 
-                    b.Property<string>("LocationId");
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<long>("LocationId");
 
                     b.Property<int>("NumberOfGuests");
 
@@ -105,7 +105,7 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GuestId");
+                    b.HasIndex("GuestUserId");
 
                     b.HasIndex("HostId");
 
@@ -116,13 +116,17 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentId");
+                    b.Property<long>("ApartmentId");
 
                     b.Property<string>("GuestId");
+
+                    b.Property<long?>("GuestUserId");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<byte>("Rating");
 
@@ -133,20 +137,22 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.HasIndex("ApartmentId");
 
-                    b.HasIndex("GuestId");
+                    b.HasIndex("GuestUserId");
 
                     b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.ForRentalDate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentId");
+                    b.Property<long>("ApartmentId");
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.HasKey("Id");
 
@@ -157,52 +163,38 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Guest", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("UserId");
 
-                    b.Property<string>("FirstName");
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Host", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("UserId");
 
-                    b.Property<string>("FirstName");
+                    b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("Password")
-                        .IsRequired();
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Hosts");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Image", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentId");
+                    b.Property<long>("ApartmentId");
 
                     b.Property<string>("ImageUri")
                         .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
 
                     b.HasKey("Id");
 
@@ -213,10 +205,15 @@ namespace ApartmentReservation.Persistence.Migrations
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Location", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AddressId");
+
+                    b.Property<long?>("AddressId1");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<double>("Latitude");
 
@@ -224,20 +221,22 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId1");
 
                     b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Reservation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApartmentId");
+                    b.Property<long>("ApartmentId");
 
-                    b.Property<string>("GuestId");
+                    b.Property<long>("GuestId");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<int>("NumberOfNightsRented");
 
@@ -256,6 +255,43 @@ namespace ApartmentReservation.Persistence.Migrations
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("ApartmentReservation.Domain.Entities.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Password")
+                        .IsRequired();
+
+                    b.Property<string>("RoleName");
+
+                    b.Property<string>("Username")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("Username");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ApartmentReservation.Domain.Entities.Administrator", b =>
+                {
+                    b.HasOne("ApartmentReservation.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Amenity", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Apartment")
@@ -267,7 +303,7 @@ namespace ApartmentReservation.Persistence.Migrations
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Guest")
                         .WithMany("RentedApartments")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestUserId");
 
                     b.HasOne("ApartmentReservation.Domain.Entities.Host", "Host")
                         .WithMany("ApartmentsForRental")
@@ -275,50 +311,72 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.HasOne("ApartmentReservation.Domain.Entities.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Comment", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Apartment", "Apartment")
                         .WithMany("Comments")
-                        .HasForeignKey("ApartmentId");
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ApartmentReservation.Domain.Entities.Guest", "Guest")
                         .WithMany()
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestUserId");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.ForRentalDate", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Apartment", "Apartment")
                         .WithMany("ForRentalDates")
-                        .HasForeignKey("ApartmentId");
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("ApartmentReservation.Domain.Entities.Guest", b =>
+                {
+                    b.HasOne("ApartmentReservation.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ApartmentReservation.Domain.Entities.Host", b =>
+                {
+                    b.HasOne("ApartmentReservation.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Image", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Apartment", "Apartment")
                         .WithMany("Images")
-                        .HasForeignKey("ApartmentId");
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Location", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId1");
                 });
 
             modelBuilder.Entity("ApartmentReservation.Domain.Entities.Reservation", b =>
                 {
                     b.HasOne("ApartmentReservation.Domain.Entities.Apartment", "Apartment")
                         .WithMany("Reservations")
-                        .HasForeignKey("ApartmentId");
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ApartmentReservation.Domain.Entities.Guest", "Guest")
                         .WithMany("Reservations")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

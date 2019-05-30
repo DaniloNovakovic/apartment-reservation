@@ -4,7 +4,9 @@ namespace ApartmentReservation.Domain.Entities
 {
     public class User
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
+
+        public string Username { get; set; }
 
         public string Password { get; set; }
 
@@ -13,5 +15,9 @@ namespace ApartmentReservation.Domain.Entities
         public string LastName { get; set; }
 
         public string Gender { get; set; }
+
+        public string RoleName { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

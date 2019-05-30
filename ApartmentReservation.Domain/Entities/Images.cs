@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApartmentReservation.Domain.Entities
+﻿namespace ApartmentReservation.Domain.Entities
 {
     public class Image
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string ImageUri { get; set; }
 
         public Apartment Apartment { get; set; }
 
-        public string ApartmentId { get; set; }
+        public long ApartmentId { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

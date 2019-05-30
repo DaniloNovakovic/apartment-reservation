@@ -16,6 +16,7 @@ namespace ApartmentReservation.Persistence
             this.context = context;
             this.Hosts = new Repository<Host>(context);
             this.Administrators = new Repository<Administrator>(context);
+            this.Users = new Repository<User>(context);
         }
 
         public IRepository<Address> Addresses { get; }
@@ -29,6 +30,7 @@ namespace ApartmentReservation.Persistence
         public IRepository<Location> Locations { get; }
         public IRepository<Reservation> Reservations { get; }
         public IRepository<ForRentalDate> ForRentalDates { get; }
+        public IRepository<User> Users { get; }
 
         public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
         {
