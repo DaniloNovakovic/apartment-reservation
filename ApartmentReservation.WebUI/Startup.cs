@@ -35,10 +35,8 @@ namespace ApartmentReservation.WebUI
         {
             // Add DbContext using SQL Server Provider
             string connectionString = this.Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApartmentReservationDbContext>(optionsAction: (options) =>
+            services.AddDbContext<IApartmentReservationDbContext, ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<RoleFactory>();
             services.AddScoped<IAuthService, AuthService>();

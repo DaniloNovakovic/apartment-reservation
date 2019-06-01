@@ -12,21 +12,15 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
     {
         public class Handler : IRequestHandler<CreateHostCommand>
         {
-            private readonly IUnitOfWork unitOfWork;
+            private readonly IApartmentReservationDbContext context;
 
-            public Handler(IUnitOfWork unitOfWork)
+            public Handler(IApartmentReservationDbContext context)
             {
-                this.unitOfWork = unitOfWork;
+                this.context = context;
             }
 
             public async Task<Unit> Handle(CreateHostCommand request, CancellationToken cancellationToken)
             {
-                var host = Mapper.Map<Host>(request);
-
-                await unitOfWork.Hosts.AddAsync(host, cancellationToken).ConfigureAwait(false);
-
-                await unitOfWork.CompleteAsync(cancellationToken).ConfigureAwait(false);
-
                 return Unit.Value;
             }
         }

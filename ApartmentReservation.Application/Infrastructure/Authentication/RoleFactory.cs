@@ -13,13 +13,13 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
         private readonly Dictionary<string, Role> dict;
         private readonly NoRole emptyRole = new NoRole();
 
-        public RoleFactory(IUnitOfWork unitOfWork)
+        public RoleFactory(IApartmentReservationDbContext context)
         {
             this.dict = new Dictionary<string, Role>
             {
-                [RoleNames.Administrator] = new AdministratorRole(unitOfWork),
-                [RoleNames.Guest] = new GuestRole(unitOfWork),
-                [RoleNames.Host] = new HostRole(unitOfWork)
+                [RoleNames.Administrator] = new AdministratorRole(context),
+                [RoleNames.Guest] = new GuestRole(context),
+                [RoleNames.Host] = new HostRole(context)
             };
         }
 

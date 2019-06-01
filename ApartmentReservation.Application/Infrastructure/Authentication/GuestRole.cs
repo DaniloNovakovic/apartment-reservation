@@ -8,11 +8,11 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
     internal class GuestRole : Role
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IApartmentReservationDbContext context;
 
-        public GuestRole(IUnitOfWork unitOfWork)
+        public GuestRole(IApartmentReservationDbContext context)
         {
-            this.unitOfWork = unitOfWork;
+            this.context = context;
         }
 
         protected override IEnumerable<Claim> GenerateClaims(User user)
@@ -27,7 +27,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         protected override async Task<User> GetUserAsync(string username)
         {
-            return await this.unitOfWork.Users.GetAsync(username).ConfigureAwait(false);
+            return await this.context.Users.FindAsync(username).ConfigureAwait(false);
         }
     }
 }

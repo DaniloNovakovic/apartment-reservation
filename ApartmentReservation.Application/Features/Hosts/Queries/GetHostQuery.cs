@@ -15,19 +15,18 @@ namespace ApartmentReservation.Application.Features.Hosts
 
     public class GetHostQueryHandler : IRequestHandler<GetHostQuery, HostDto>
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IApartmentReservationDbContext context;
         private readonly IMapper mapper;
 
-        public GetHostQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetHostQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.context = context;
             this.mapper = mapper;
         }
 
         public async Task<HostDto> Handle(GetHostQuery request, CancellationToken cancellationToken)
         {
-            var host = await unitOfWork.Hosts.GetAsync(new object[] { request.Id }, cancellationToken).ConfigureAwait(false);
-            return mapper.Map<HostDto>(host);
+            return new HostDto();
         }
     }
 
