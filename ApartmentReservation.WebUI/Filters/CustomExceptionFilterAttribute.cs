@@ -28,6 +28,16 @@ namespace ApartmentReservation.WebUI.Filters
                 code = HttpStatusCode.NotFound;
             }
 
+            if (context.Exception is AlreadyLoggedInException)
+            {
+                code = HttpStatusCode.BadRequest;
+            }
+
+            if (context.Exception is UnauthorizedException)
+            {
+                code = HttpStatusCode.Unauthorized;
+            }
+
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)code;
             context.Result = new JsonResult(new

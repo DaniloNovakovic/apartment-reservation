@@ -2,7 +2,7 @@
 
 namespace ApartmentReservation.Application.Exceptions
 {
-    internal class AlreadyLoggedInException : Exception
+    public class AlreadyLoggedInException : Exception
     {
         public AlreadyLoggedInException() : base("You are already logged in.")
         {
