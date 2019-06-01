@@ -1,17 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
-    public abstract class Role
+    public class Role
     {
+        private readonly IClaimsFactory claimsFactory;
+        private readonly IApartmentReservationDbContext context;
+
+        public Role(IClaimsFactory claimsFactory, IApartmentReservationDbContext context)
+        {
+            this.claimsFactory = claimsFactory;
+            this.context = context;
+        }
+
         public virtual async Task LoginAsync(UserDto user, HttpContext httpContext)
         {
             if (httpContext.User.Identity.IsAuthenticated)
@@ -28,7 +39,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             if (dbUser.Password != password)
                 throw new UnauthorizedException("Incorrect password!");
 
-            var claims = this.GenerateClaims(dbUser);
+            var claims = this.claimsFactory.GenerateClaims(dbUser);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -44,8 +55,9 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
                 .ConfigureAwait(false);
         }
 
-        protected abstract IEnumerable<Claim> GenerateClaims(User user);
-
-        protected abstract Task<User> GetUserAsync(string username);
+        protected virtual async Task<User> GetUserAsync(string username)
+        {
+            return await this.context.Users.SingleOrDefaultAsync(u => u.Username == username && !u.IsDeleted).ConfigureAwait(false);
+        }
     }
 }

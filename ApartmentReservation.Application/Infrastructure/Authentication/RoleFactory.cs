@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
@@ -11,15 +9,15 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
     public class RoleFactory
     {
         private readonly Dictionary<string, Role> dict;
-        private readonly NoRole emptyRole = new NoRole();
+        private readonly NullObjectRole nullRole = new NullObjectRole();
 
         public RoleFactory(IApartmentReservationDbContext context)
         {
             this.dict = new Dictionary<string, Role>
             {
-                [RoleNames.Administrator] = new AdministratorRole(context),
-                [RoleNames.Guest] = new GuestRole(context),
-                [RoleNames.Host] = new HostRole(context)
+                [RoleNames.Administrator] = new Role(new AdministratorClaimsFactory(), context),
+                [RoleNames.Guest] = new Role(new GuestClaimsFactory(), context),
+                [RoleNames.Host] = new Role(new HostClaimsFactory(), context)
             };
         }
 
@@ -30,11 +28,15 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         public Role GetRole(string roleName)
         {
-            return this.dict.TryGetValue(roleName, out var role) ? role : this.emptyRole;
+            return this.dict.TryGetValue(roleName, out var role) ? role : this.nullRole;
         }
 
-        private class NoRole : Role
+        private class NullObjectRole : Role
         {
+            public NullObjectRole(IClaimsFactory claimsFactory = null, IApartmentReservationDbContext context = null) : base(claimsFactory, context)
+            {
+            }
+
             public override Task LoginAsync(UserDto user, HttpContext httpContext)
             {
                 return Task.CompletedTask;
@@ -43,16 +45,6 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             public override Task LogoutAsync(HttpContext httpContext)
             {
                 return Task.CompletedTask;
-            }
-
-            protected override IEnumerable<Claim> GenerateClaims(User user)
-            {
-                return null;
-            }
-
-            protected override Task<User> GetUserAsync(string username)
-            {
-                return Task.FromResult<User>(null);
             }
         }
     }
