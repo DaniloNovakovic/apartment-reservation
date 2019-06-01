@@ -8,7 +8,7 @@ Use these instructions to get the project up and running.
 ### Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/)
+* [Visual Studio Code or 2017-2019](https://www.visualstudio.com/downloads/)
 * [.NET Core SDK 2.1](https://www.microsoft.com/net/download/dotnet-core/2.1)
 
 ### Setup
@@ -27,7 +27,7 @@ Follow these steps to get your development environment set up:
      ```
      npm start
      ```
-  5. Once the front end has started, within the `Northwind.WebUI` directory, launch the back end by running:
+  5. Once the front end has started, within the `ApartmentReservation.WebUI` directory, launch the back end by running:
      ```
 	 dotnet run
 	 ```

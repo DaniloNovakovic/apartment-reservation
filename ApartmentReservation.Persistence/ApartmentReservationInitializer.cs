@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Entities;
@@ -8,9 +7,9 @@ namespace ApartmentReservation.Persistence
 {
     public class ApartmentReservationInitializer
     {
-        private readonly Dictionary<long, Administrator> Administrators = new Dictionary<long, Administrator>();
-        private readonly Dictionary<long, Guest> Guests = new Dictionary<long, Guest>();
-        private readonly Dictionary<long, Host> Hosts = new Dictionary<long, Host>();
+        private IEnumerable<Administrator> Administrators = new List<Administrator>();
+        private IEnumerable<Guest> Guests = new List<Guest>();
+        private IEnumerable<Host> Hosts = new List<Host>();
         private readonly Dictionary<long, User> Users = new Dictionary<long, User>();
 
         public static void Initialize(ApartmentReservationDbContext context)
@@ -36,36 +35,33 @@ namespace ApartmentReservation.Persistence
 
         private void SeedAdministrators(ApartmentReservationDbContext context)
         {
-            context.Administrators.AddRange(this.Users.Values
+            this.Administrators = this.Users.Values
                 .Where(u => u.RoleName == RoleNames.Administrator)
-                .Select(u => new Administrator()
-                {
-                    User = u
-                }));
+                .Select(u => new Administrator() { User = u });
+
+            context.Administrators.AddRange(this.Administrators);
 
             context.SaveChanges();
         }
 
         private void SeedGuests(ApartmentReservationDbContext context)
         {
-            context.Guests.AddRange(this.Users.Values
+            this.Guests = this.Users.Values
                 .Where(u => u.RoleName == RoleNames.Guest)
-                .Select(u => new Guest()
-                {
-                    User = u
-                }));
+                .Select(u => new Guest() { User = u });
+
+            context.Guests.AddRange(this.Guests);
 
             context.SaveChanges();
         }
 
         private void SeedHosts(ApartmentReservationDbContext context)
         {
-            context.Hosts.AddRange(this.Users.Values
+            this.Hosts = this.Users.Values
                 .Where(u => u.RoleName == RoleNames.Host)
-                .Select(u => new Host()
-                {
-                    User = u
-                }));
+                .Select(u => new Host() { User = u });
+
+            context.Hosts.AddRange(this.Hosts);
 
             context.SaveChanges();
         }
