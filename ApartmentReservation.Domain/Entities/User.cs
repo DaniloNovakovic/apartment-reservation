@@ -1,8 +1,6 @@
-﻿using ApartmentReservation.Domain.Enumerations;
-
-namespace ApartmentReservation.Domain.Entities
+﻿namespace ApartmentReservation.Domain.Entities
 {
-    public class User
+    public class User : Logical
     {
         public long Id { get; set; }
 
@@ -17,7 +15,5 @@ namespace ApartmentReservation.Domain.Entities
         public string Gender { get; set; }
 
         public string RoleName { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
     }
 }

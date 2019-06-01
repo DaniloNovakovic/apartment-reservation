@@ -4,7 +4,7 @@ using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Apartment
+    public class Apartment : Logical
     {
         public Apartment()
         {
@@ -47,6 +47,5 @@ namespace ApartmentReservation.Domain.Entities
         public double PricePerNight { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
-        public bool IsDeleted { get; set; } = false;
     }
 }

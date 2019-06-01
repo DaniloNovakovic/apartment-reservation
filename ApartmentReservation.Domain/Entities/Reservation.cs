@@ -3,7 +3,7 @@ using ApartmentReservation.Domain.Enumerations;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Reservation
+    public class Reservation : Logical
     {
         public long Id { get; set; }
         public Apartment Apartment { get; set; }
@@ -21,7 +21,5 @@ namespace ApartmentReservation.Domain.Entities
         public long GuestId { get; set; }
 
         public ReservationState ReservationState { get; set; } = ReservationState.Created;
-
-        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ApartmentReservation.Domain.Entities
 {
-    public class Comment
+    public class Comment : Logical
     {
         public long Id { get; set; }
 
@@ -15,6 +15,5 @@
         public byte Rating { get; set; }
 
         public string Text { get; set; }
-        public bool IsDeleted { get; set; } = false;
     }
 }

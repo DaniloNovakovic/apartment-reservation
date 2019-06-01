@@ -1,6 +1,6 @@
 ﻿namespace ApartmentReservation.Domain.Entities
 {
-    public class Image
+    public class Image : Logical
     {
         public long Id { get; set; }
 
@@ -9,6 +9,5 @@
         public Apartment Apartment { get; set; }
 
         public long ApartmentId { get; set; }
-        public bool IsDeleted { get; set; } = false;
     }
 }

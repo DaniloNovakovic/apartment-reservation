@@ -1,6 +1,6 @@
 ﻿namespace ApartmentReservation.Domain.Entities
 {
-    public class Address
+    public class Address : Logical
     {
         public long Id { get; set; }
 
@@ -11,8 +11,6 @@
         public string StreetName { get; set; }
 
         public string StreetNumber { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
 
         public override string ToString()
         {
