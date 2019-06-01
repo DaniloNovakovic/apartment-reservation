@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using ApartmentReservation.Domain.Entities;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Application.Interfaces
 {
     public interface IClaimsFactory
     {

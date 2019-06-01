@@ -22,26 +22,24 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         public async Task Login_WhenInvoked_CallsAuthService()
         {
             var controller = new AccountController(this.authServiceMock.Object);
-            var user = new UserDto() { Username = "admin", Password = "admin", RoleName = RoleNames.Administrator };
+            var user = new LoginUserDto() { Username = "admin", Password = "admin" };
 
             await controller.Login(user).ConfigureAwait(false);
 
-            this.authServiceMock.Verify(a => a.LoginAsync(user, user.RoleName, controller.HttpContext));
+            this.authServiceMock.Verify(a => a.LoginAsync(user, controller.HttpContext));
         }
 
         [Fact]
         public async Task Logout_WhenInvoked_CallsAuthService()
         {
-            var user = new UserDto() { Username = "admin", Password = "admin", RoleName = RoleNames.Administrator };
-
             var controller = new AccountController(this.authServiceMock.Object)
             {
-                ControllerContext = ControllerContextFactory.CreateContext(user.Username, user.RoleName)
+                ControllerContext = ControllerContextFactory.CreateContext(username: "Admin", role: RoleNames.Administrator)
             };
 
             await controller.Logout().ConfigureAwait(false);
 
-            this.authServiceMock.Verify(a => a.LogoutAsync(user.RoleName, controller.HttpContext));
+            this.authServiceMock.Verify(a => a.LogoutAsync(RoleNames.Administrator, controller.HttpContext));
         }
     }
 }

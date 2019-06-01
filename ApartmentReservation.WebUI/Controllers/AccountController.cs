@@ -20,9 +20,9 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserDto dto)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
-            await this.authService.LoginAsync(dto, dto.RoleName, this.HttpContext).ConfigureAwait(false);
+            await this.authService.LoginAsync(dto, this.HttpContext).ConfigureAwait(false);
             return this.NoContent();
         }
 

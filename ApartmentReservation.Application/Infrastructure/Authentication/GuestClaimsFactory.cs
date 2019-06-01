@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication

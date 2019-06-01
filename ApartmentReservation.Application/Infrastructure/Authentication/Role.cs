@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Exceptions;
@@ -8,35 +7,21 @@ using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Infrastructure.Authentication
 {
     public class Role
     {
         private readonly IClaimsFactory claimsFactory;
-        private readonly IApartmentReservationDbContext context;
 
-        public Role(IClaimsFactory claimsFactory, IApartmentReservationDbContext context)
+        public Role(IClaimsFactory claimsFactory)
         {
             this.claimsFactory = claimsFactory;
-            this.context = context;
         }
 
-        public virtual async Task LoginAsync(UserDto user, HttpContext httpContext)
+        public virtual async Task LoginAsync(LoginUserDto webUser, User dbUser, HttpContext httpContext)
         {
-            if (httpContext.User.Identity.IsAuthenticated)
-                throw new AlreadyLoggedInException();
-
-            string username = user.Username;
-            string password = user.Password;
-
-            var dbUser = await this.GetUserAsync(username).ConfigureAwait(false);
-
-            if (dbUser is null)
-                throw new NotFoundException($"Could not find user with username = '{username}'");
-
-            if (dbUser.Password != password)
+            if (dbUser.Password != webUser.Password)
                 throw new UnauthorizedException("Incorrect password!");
 
             var claims = this.claimsFactory.GenerateClaims(dbUser);
@@ -53,11 +38,6 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             await httpContext
                 .SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme)
                 .ConfigureAwait(false);
-        }
-
-        protected virtual async Task<User> GetUserAsync(string username)
-        {
-            return await this.context.Users.SingleOrDefaultAsync(u => u.Username == username && !u.IsDeleted).ConfigureAwait(false);
         }
     }
 }
