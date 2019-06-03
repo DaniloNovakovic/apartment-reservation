@@ -1,10 +1,12 @@
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Infrastructure;
+using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Infrastructure.AutoMapper;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Persistence;
 using ApartmentReservation.WebUI.Filters;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,9 +17,6 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using ApartmentReservation.Application.Infrastructure.AutoMapper;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 
 namespace ApartmentReservation.WebUI
 {
