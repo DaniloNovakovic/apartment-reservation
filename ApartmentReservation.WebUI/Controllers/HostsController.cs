@@ -30,7 +30,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(long id)
         {
             if (this.IsUserAStranger(id))
             {
@@ -40,9 +40,10 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(new GetHostQuery() { Id = id }).ConfigureAwait(false));
         }
 
-        private bool IsUserAStranger(string id)
+        private bool IsUserAStranger(long id)
         {
-            return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id) && !this.HttpContext.User.IsInRole("Administrator");
+            return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
+                && !this.HttpContext.User.IsInRole("Administrator");
         }
 
         // POST: api/Hosts
@@ -56,7 +57,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // PUT: api/Hosts/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] UpdateHostCommand command)
+        public async Task<IActionResult> Put(long id, [FromBody] UpdateHostCommand command)
         {
             if (this.IsUserAStranger(id))
             {
@@ -70,7 +71,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(long id)
         {
             if (this.IsUserAStranger(id))
             {

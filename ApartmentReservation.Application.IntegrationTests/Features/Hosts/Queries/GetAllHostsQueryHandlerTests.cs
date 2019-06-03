@@ -32,7 +32,8 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Queri
 
         public void Dispose()
         {
-            this.context.Hosts.RemoveRange(this.dbHosts);
+            this.context.Hosts.RemoveRange(context.Hosts.ToList());
+            this.context.Users.RemoveRange(context.Users.ToList());
             this.context.SaveChanges();
         }
 
@@ -45,7 +46,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Queri
             var result = await sut.Handle(new GetAllHostsQuery(), CancellationToken.None).ConfigureAwait(false);
 
             Assert.IsAssignableFrom<IEnumerable<HostDto>>(result);
-            Assert.Equal(result.Select(r => r.Username), expectedResult);
+            Assert.Equal(expectedResult, result.Select(r => r.Username));
         }
 
         private void SeedData()
@@ -53,6 +54,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Queri
             if (context.Hosts.Any())
             {
                 context.Hosts.RemoveRange(context.Hosts.ToList());
+                context.Users.RemoveRange(context.Users.ToList());
                 context.SaveChanges();
             }
 
