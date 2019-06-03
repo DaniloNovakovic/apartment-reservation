@@ -1,7 +1,7 @@
 ﻿using ApartmentReservation.Application.Infrastructure.AutoMapper;
 using AutoMapper;
 
-namespace ApartmentReservation.Application.IntegrationTests.Utils
+namespace ApartmentReservation.Application.IntegrationTests
 {
     public static class AutoMapperFactory
     {
