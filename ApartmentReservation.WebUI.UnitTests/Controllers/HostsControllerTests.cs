@@ -16,6 +16,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
     public class HostsControllerTests
     {
         protected readonly Mock<IMediator> mediatorMock;
+        private readonly long userId = 1;
 
         public HostsControllerTests()
         {
@@ -25,32 +26,29 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Delete_WhenUserIsAdmin_SendDeleteCommandToMediator()
         {
-            string userId = "Admin";
-            var controller = this.CreateController(userId, RoleNames.Administrator);
+            var controller = this.CreateController(this.userId, RoleNames.Administrator);
 
-            await controller.Delete(userId);
+            await controller.Delete(this.userId);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == userId), It.IsAny<CancellationToken>()), Times.Once);
+            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == this.userId), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task Delete_WhenUserIsUpdatingItsOwnInformation_SendDeleteCommandToMediator()
         {
-            string userId = "Djura";
-            var controller = this.CreateController(userId, RoleNames.Host);
+            var controller = this.CreateController(this.userId, RoleNames.Host);
 
-            await controller.Delete(userId);
+            await controller.Delete(this.userId);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == userId), It.IsAny<CancellationToken>()), Times.Once);
+            this.mediatorMock.Verify(m => m.Send(It.Is<DeleteHostCommand>(c => c.Id == this.userId), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task Delete_WhenUserIsUpdatingStrangersInformation_ReturnUnauthorized()
         {
-            string userId = "Djura";
-            var controller = this.CreateController(userId, RoleNames.Host);
+            var controller = this.CreateController(this.userId, RoleNames.Host);
 
-            var result = await controller.Delete("Steva");
+            var result = await controller.Delete(this.userId + 10);
 
             var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
 
@@ -61,17 +59,16 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         public async Task Get_WhenUserIsAdmin_ReturnHostDtoFromMediator()
         {
             // Arrange
-            const string hostId = "Djura";
-            var expectedResultValue = new HostDto { Id = hostId };
+            var expectedResultValue = new HostDto { Id = userId };
 
             this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = this.CreateController("Admin", RoleNames.Administrator);
+            var controller = this.CreateController(this.userId, RoleNames.Administrator);
 
             // Act
-            var result = await controller.Get(hostId);
+            var result = await controller.Get(this.userId);
 
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
@@ -83,17 +80,16 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         public async Task Get_WhenUserIsAskingForItsOwnInformation_ReturnHostDtoFromMediator()
         {
             // Arrange
-            const string hostId = "Djura";
-            var expectedResultValue = new HostDto { Id = hostId };
+            var expectedResultValue = new HostDto { Id = userId };
 
             this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = this.CreateController(hostId, RoleNames.Host);
+            var controller = this.CreateController(this.userId, RoleNames.Host);
 
             // Act
-            var result = await controller.Get(hostId);
+            var result = await controller.Get(this.userId);
 
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
@@ -104,18 +100,16 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Get_WhenUserIsAskingForStrangerInformation_ReturnUnauthorized()
         {
-            // Arrange
-            const string hostId = "Me";
-            var expectedResultValue = new HostDto { Id = hostId };
+            var expectedResultValue = new HostDto { Id = userId };
 
             this.mediatorMock
                 .Setup(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = this.CreateController("Stranger", RoleNames.Host);
+            var controller = this.CreateController(this.userId + 10, RoleNames.Host);
 
             // Act
-            var result = await controller.Get(hostId);
+            var result = await controller.Get(this.userId);
 
             // Assert
             var unauthorizedResult = Assert.IsAssignableFrom<UnauthorizedResult>(result);
@@ -132,7 +126,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
                 .Setup(m => m.Send(It.IsAny<IRequest<IEnumerable<HostDto>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResultValue);
 
-            var controller = this.CreateController("Admin", RoleNames.Administrator);
+            var controller = this.CreateController(this.userId, RoleNames.Administrator);
 
             // Act
             var result = await controller.Get();
@@ -146,7 +140,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Post_WhenInvoked_SendCreateCommandToMediator()
         {
-            var controller = this.CreateController("Admin", RoleNames.Administrator);
+            var controller = this.CreateController(this.userId, RoleNames.Administrator);
             var createCommand = new CreateHostCommand() { Username = "Djura", Password = "123" };
 
             await controller.Post(createCommand);
@@ -157,10 +151,10 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Put_WhenUserIsAdmin_SendUpdateCommandToMediator()
         {
-            var controller = this.CreateController("Admin", RoleNames.Administrator);
+            var controller = this.CreateController(this.userId, RoleNames.Administrator);
             var updateCommand = new UpdateHostCommand();
 
-            await controller.Put("Admin", updateCommand);
+            await controller.Put(this.userId + 10, updateCommand);
 
             this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -168,10 +162,10 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Put_WhenUserIsUpdatingItsOwnInformation_SendUpdateCommandToMediator()
         {
-            var controller = this.CreateController("Djura", RoleNames.Host);
+            var controller = this.CreateController(this.userId, RoleNames.Host);
             var updateCommand = new UpdateHostCommand();
 
-            await controller.Put("Djura", updateCommand);
+            await controller.Put(this.userId, updateCommand);
 
             this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -179,21 +173,21 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         [Fact]
         public async Task Put_WhenUserIsUpdatingStrangersInformation_ReturnUnauthorized()
         {
-            var controller = this.CreateController("Djura", RoleNames.Host);
+            var controller = this.CreateController(this.userId, RoleNames.Host);
             var updateCommand = new UpdateHostCommand();
 
-            var result = await controller.Put("Pera", updateCommand);
+            var result = await controller.Put(this.userId + 10, updateCommand);
 
             var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
 
             this.mediatorMock.Verify(m => m.Send(It.Is<UpdateHostCommand>(c => c == updateCommand), It.IsAny<CancellationToken>()), Times.Never);
         }
 
-        protected HostsController CreateController(string username, string role)
+        protected HostsController CreateController(long userId, string role)
         {
             return new HostsController(this.mediatorMock.Object)
             {
-                ControllerContext = ControllerContextFactory.CreateContext(username, role)
+                ControllerContext = ControllerContextFactory.CreateContext(userId, role)
             };
         }
     }

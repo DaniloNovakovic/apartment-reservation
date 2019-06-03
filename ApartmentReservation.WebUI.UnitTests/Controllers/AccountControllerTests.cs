@@ -34,7 +34,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
         {
             var controller = new AccountController(this.authServiceMock.Object)
             {
-                ControllerContext = ControllerContextFactory.CreateContext(username: "Admin", role: RoleNames.Administrator)
+                ControllerContext = ControllerContextFactory.CreateContext(userId: 1, role: RoleNames.Administrator)
             };
 
             await controller.Logout().ConfigureAwait(false);

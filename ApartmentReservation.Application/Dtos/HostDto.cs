@@ -5,7 +5,7 @@ namespace ApartmentReservation.Application.Dtos
 {
     public class HostDto
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         public string Username { get; set; }
 

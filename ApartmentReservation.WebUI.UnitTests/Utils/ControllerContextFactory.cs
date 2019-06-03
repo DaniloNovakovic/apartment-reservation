@@ -6,11 +6,11 @@ namespace ApartmentReservation.WebUI.UnitTests.Utils
 {
     public static class ControllerContextFactory
     {
-        public static ControllerContext CreateContext(string username, string role)
+        public static ControllerContext CreateContext(long userId, string role)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, username),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Role, role)
             }, "mock"));
 
