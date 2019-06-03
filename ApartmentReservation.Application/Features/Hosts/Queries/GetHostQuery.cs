@@ -30,7 +30,8 @@ namespace ApartmentReservation.Application.Features.Hosts
         {
             var host = await this.context.Hosts
                 .Include(h => h.User)
-                .SingleOrDefaultAsync(h => h.UserId == request.Id && !h.IsDeleted).ConfigureAwait(false);
+                .SingleOrDefaultAsync(h => h.UserId == request.Id && !h.IsDeleted, cancellationToken)
+                .ConfigureAwait(false);
 
             if (host == null)
             {

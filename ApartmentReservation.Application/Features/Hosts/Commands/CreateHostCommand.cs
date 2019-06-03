@@ -8,21 +8,32 @@ using MediatR;
 
 namespace ApartmentReservation.Application.Features.Hosts.Commands
 {
-    public class CreateHostCommand : UserDto, IRequest
+    public class CreateHostCommand : HostDto, IRequest
     {
-        public class Handler : IRequestHandler<CreateHostCommand>
+    }
+
+    public class CreateHostCommandHandler : IRequestHandler<CreateHostCommand>
+    {
+        private readonly IApartmentReservationDbContext context;
+        private readonly IMapper mapper;
+
+        public CreateHostCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
         {
-            private readonly IApartmentReservationDbContext context;
+            this.context = context;
+            this.mapper = mapper;
+        }
 
-            public Handler(IApartmentReservationDbContext context)
+        public async Task<Unit> Handle(CreateHostCommand request, CancellationToken cancellationToken)
+        {
+            var hostToAdd = new Host()
             {
-                this.context = context;
-            }
+                User = mapper.Map<User>(request)
+            };
 
-            public async Task<Unit> Handle(CreateHostCommand request, CancellationToken cancellationToken)
-            {
-                return Unit.Value;
-            }
+            await this.context.Hosts.AddAsync(hostToAdd, cancellationToken).ConfigureAwait(false);
+            await context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

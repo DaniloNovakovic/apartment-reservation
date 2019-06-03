@@ -1,20 +1,12 @@
-﻿using System.Text.RegularExpressions;
-using FluentValidation;
+﻿using ApartmentReservation.Application.Infrastructure.Authentication;
 
 namespace ApartmentReservation.Application.Dtos
 {
-    public class HostDto
+    public class HostDto : UserDto
     {
-        public long Id { get; set; }
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Gender { get; set; }
+        public HostDto()
+        {
+            this.RoleName = RoleNames.Host;
+        }
     }
 }

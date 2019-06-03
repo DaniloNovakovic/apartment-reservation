@@ -26,7 +26,7 @@ namespace ApartmentReservation.Application.Features.Hosts
 
             public async Task<IEnumerable<HostDto>> Handle(GetAllHostsQuery request, CancellationToken cancellationToken)
             {
-                var query = await context.Hosts.Where(h => !h.IsDeleted).ToListAsync().ConfigureAwait(false);
+                var query = await context.Hosts.Where(h => !h.IsDeleted).ToListAsync(cancellationToken).ConfigureAwait(false);
                 return query.Select(mapper.Map<Host, HostDto>);
             }
         }
