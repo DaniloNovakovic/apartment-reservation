@@ -7,7 +7,6 @@ using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Entities;
 using Xunit;
-using static ApartmentReservation.Application.Features.Hosts.GetAllHostsQuery;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Queries
 {

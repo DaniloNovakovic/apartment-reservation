@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -16,7 +13,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
 
         public CreateHostCommandHandlerTests()
         {
-            this.sut = new CreateHostCommandHandler(Context, Mapper);
+            this.sut = new CreateHostCommandHandler(this.Context, this.Mapper);
         }
 
         [Fact]
@@ -31,10 +28,10 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
             };
 
             // Act
-            await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
             // Assert
-            var host = await Context.Hosts.Include(h => h.User)
+            var host = await this.Context.Hosts.Include(h => h.User)
                 .SingleOrDefaultAsync(h => h.User.Username == request.Username, CancellationToken.None)
                 .ConfigureAwait(false);
 
