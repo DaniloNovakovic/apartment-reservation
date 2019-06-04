@@ -12,7 +12,12 @@ namespace ApartmentReservation.Persistence.Configurations
 
             builder.HasOne(a => a.User).WithMany()
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(a => a.ApartmentsForRental)
+                .WithOne(a => a.Host)
+                .HasForeignKey(a => a.HostId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
