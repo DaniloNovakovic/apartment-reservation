@@ -13,17 +13,17 @@ namespace ApartmentReservation.Persistence.Configurations
             builder.HasMany(a => a.Comments)
                 .WithOne(c => c.Apartment)
                 .HasForeignKey(c => c.ApartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(a => a.ForRentalDates)
                 .WithOne(d => d.Apartment)
                 .HasForeignKey(d => d.ApartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(a => a.Images)
                 .WithOne(i => i.Apartment)
                 .HasForeignKey(i => i.ApartmentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

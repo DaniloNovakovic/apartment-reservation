@@ -8,7 +8,7 @@ namespace ApartmentReservation.Domain.Entities
         public long Id { get; set; }
         public Apartment Apartment { get; set; }
 
-        public long ApartmentId { get; set; }
+        public long? ApartmentId { get; set; }
 
         public DateTime ReservationStartDate { get; set; }
 
@@ -18,7 +18,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public Guest Guest { get; set; }
 
-        public long GuestId { get; set; }
+        public long? GuestId { get; set; }
 
         public ReservationState ReservationState { get; set; } = ReservationState.Created;
     }

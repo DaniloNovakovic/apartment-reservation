@@ -26,17 +26,18 @@ namespace ApartmentReservation.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AddressConfiguration());
-            modelBuilder.ApplyConfiguration(new AdministratorConfiguration());
-            modelBuilder.ApplyConfiguration(new AmenityConfiguration());
-            modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
-            modelBuilder.ApplyConfiguration(new CommentConfiguration());
-            modelBuilder.ApplyConfiguration(new GuestConfiguration());
-            modelBuilder.ApplyConfiguration(new ImageConfiguration());
-            modelBuilder.ApplyConfiguration(new HostConfiguration());
-            modelBuilder.ApplyConfiguration(new LocationConfiguration());
-            modelBuilder.ApplyConfiguration(new ReservationConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            //modelBuilder.ApplyConfiguration(new AdministratorConfiguration());
+            //modelBuilder.ApplyConfiguration(new AmenityConfiguration());
+            //modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
+            //modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            //modelBuilder.ApplyConfiguration(new GuestConfiguration());
+            //modelBuilder.ApplyConfiguration(new ImageConfiguration());
+            //modelBuilder.ApplyConfiguration(new HostConfiguration());
+            //modelBuilder.ApplyConfiguration(new LocationConfiguration());
+            //modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApartmentReservationDbContext).Assembly);
         }
     }
 }

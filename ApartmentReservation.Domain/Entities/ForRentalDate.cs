@@ -10,6 +10,6 @@ namespace ApartmentReservation.Domain.Entities
 
         public Apartment Apartment { get; set; }
 
-        public long ApartmentId { get; set; }
+        public long? ApartmentId { get; set; }
     }
 }

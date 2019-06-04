@@ -38,7 +38,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public Location Location { get; set; }
 
-        public long LocationId { get; set; }
+        public long? LocationId { get; set; }
 
         public int NumberOfGuests { get; set; }
 
