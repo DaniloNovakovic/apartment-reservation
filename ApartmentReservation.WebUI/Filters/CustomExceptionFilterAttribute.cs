@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,39 +11,19 @@ namespace ApartmentReservation.WebUI.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            if (context.Exception is CustomValidationException)
+            if (context.Exception is ICustomExceptionHandler customExceptionHandler)
+            {
+                customExceptionHandler.Handle(context);
+            }
+            else
             {
                 context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Result = new JsonResult(
-                    ((CustomValidationException)context.Exception).Failures);
-
-                return;
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Result = new JsonResult(new
+                {
+                    error = new[] { context.Exception.Message }
+                });
             }
-
-            var code = HttpStatusCode.InternalServerError;
-
-            if (context.Exception is NotFoundException)
-            {
-                code = HttpStatusCode.NotFound;
-            }
-
-            if (context.Exception is AlreadyLoggedInException)
-            {
-                code = HttpStatusCode.BadRequest;
-            }
-
-            if (context.Exception is UnauthorizedException)
-            {
-                code = HttpStatusCode.Unauthorized;
-            }
-
-            context.HttpContext.Response.ContentType = "application/json";
-            context.HttpContext.Response.StatusCode = (int)code;
-            context.Result = new JsonResult(new
-            {
-                error = new[] { context.Exception.Message }
-            });
         }
     }
 }

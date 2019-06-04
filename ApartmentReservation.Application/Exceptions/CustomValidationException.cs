@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ApartmentReservation.Application.Exceptions
 {
-    public class CustomValidationException : Exception
+    public class CustomValidationException : CustomExceptionBase
     {
         public CustomValidationException()
             : base("One or more validation failures have occurred.")
@@ -39,5 +42,14 @@ namespace ApartmentReservation.Application.Exceptions
         }
 
         public IDictionary<string, string[]> Failures { get; } = new Dictionary<string, string[]>();
+        public override HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
+
+        public override void Handle(ExceptionContext context)
+        {
+            context.HttpContext.Response.ContentType = "application/json";
+            context.HttpContext.Response.StatusCode = (int)StatusCode;
+            context.Result = new JsonResult(
+                ((CustomValidationException)context.Exception).Failures);
+        }
     }
 }

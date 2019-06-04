@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Net;
 
 namespace ApartmentReservation.Application.Exceptions
 {
-    public class UnauthorizedException : Exception
+    public class UnauthorizedException : CustomExceptionBase
     {
         public UnauthorizedException() : base("You are not authorized to perform requested operation.")
         {
@@ -15,5 +16,7 @@ namespace ApartmentReservation.Application.Exceptions
         public UnauthorizedException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public override HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
     }
 }
