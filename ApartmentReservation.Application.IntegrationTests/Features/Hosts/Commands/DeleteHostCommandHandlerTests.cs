@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Hosts.Commands;
@@ -18,7 +15,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
 
         public DeleteHostCommandHandlerTests()
         {
-            sut = new DeleteHostCommandHandler(Context);
+            this.sut = new DeleteHostCommandHandler(this.Context);
         }
 
         protected override void LoadTestData()
@@ -32,9 +29,9 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
         [Fact]
         public async Task UserExists_DeletesHostLogically()
         {
-            await sut.Handle(new DeleteHostCommand() { Id = dbHost.UserId }, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(new DeleteHostCommand() { Id = this.dbHost.UserId }, CancellationToken.None).ConfigureAwait(false);
 
-            var host = await this.Context.Hosts.FindAsync(dbHost.UserId).ConfigureAwait(false);
+            var host = await this.Context.Hosts.FindAsync(this.dbHost.UserId).ConfigureAwait(false);
 
             Assert.True(host.IsDeleted);
         }

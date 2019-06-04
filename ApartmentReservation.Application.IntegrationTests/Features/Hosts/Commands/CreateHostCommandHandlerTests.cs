@@ -77,11 +77,10 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
         {
             Assert.Equal(request.Username, host.User.Username);
             Assert.Equal(request.Password, host.User.Password);
-            Assert.Equal(request.RoleName, host.User.RoleName);
             Assert.Equal(request.FirstName, host.User.FirstName);
             Assert.Equal(request.LastName, host.User.LastName);
             Assert.Equal(request.Gender, host.User.Gender);
-            Assert.Equal(request.RoleName, host.User.RoleName);
+            Assert.Equal(RoleNames.Host, host.User.RoleName);
             Assert.False(host.User.IsDeleted);
             Assert.False(host.IsDeleted);
         }
