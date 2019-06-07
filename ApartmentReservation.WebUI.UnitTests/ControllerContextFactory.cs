@@ -2,10 +2,18 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApartmentReservation.WebUI.UnitTests.Utils
+namespace ApartmentReservation.WebUI.UnitTests
 {
     public static class ControllerContextFactory
     {
+        public static ControllerContext ControllerContext()
+        {
+            return new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext()
+            };
+        }
+
         public static ControllerContext CreateContext(long userId, string role)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]

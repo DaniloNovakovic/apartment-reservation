@@ -43,7 +43,7 @@ namespace ApartmentReservation.WebUI.Controllers
         private bool IsUserAStranger(long id)
         {
             return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
-                && !this.HttpContext.User.IsInRole("Administrator");
+                && !this.HttpContext.User.IsInRole(RoleNames.Administrator);
         }
 
         // POST: api/Hosts

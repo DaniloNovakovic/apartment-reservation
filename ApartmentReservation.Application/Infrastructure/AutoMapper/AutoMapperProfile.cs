@@ -1,4 +1,5 @@
 ﻿using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Features.Guests.Commands;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Domain.Entities;
 using AutoMapper;
@@ -17,6 +18,7 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
             CreateMap<CreateHostCommand, User>();
+            CreateMap<CreateGuestCommand, User>();
         }
     }
 }

@@ -5,7 +5,6 @@ using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.WebUI.Controllers;
-using ApartmentReservation.WebUI.UnitTests.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
