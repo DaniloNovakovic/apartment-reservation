@@ -10,6 +10,9 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
     {
         public AutoMapperProfile()
         {
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
+
             CreateMap<Host, HostDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
