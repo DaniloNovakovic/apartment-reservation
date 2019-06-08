@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Exceptions;
@@ -32,7 +28,7 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
         public async Task<Unit> Handle(CreateGuestCommand request, CancellationToken cancellationToken)
         {
-            var dbGuest = await context.Guests.Include(g => g.User)
+            var dbGuest = await this.context.Guests.Include(g => g.User)
                 .SingleOrDefaultAsync(g => g.User.Username == request.Username).ConfigureAwait(false);
 
             if (dbGuest == null)
