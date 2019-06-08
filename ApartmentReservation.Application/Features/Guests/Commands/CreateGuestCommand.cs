@@ -60,9 +60,14 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
         private async Task AddNewGuestAsync(CreateGuestCommand request, CancellationToken cancellationToken)
         {
-            var guestToAdd = new Guest();
+            var guestToAdd = new Guest()
+            {
+                User = this.mapper.Map<User>(request)
+            };
 
-            CustomMapper.Map(request, guestToAdd, RoleNames.Guest, isDeleted: false);
+            guestToAdd.User.IsDeleted = false;
+            guestToAdd.IsDeleted = false;
+            guestToAdd.User.RoleName = RoleNames.Guest;
 
             await this.context.Guests.AddAsync(guestToAdd, cancellationToken).ConfigureAwait(false);
         }

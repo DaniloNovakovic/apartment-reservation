@@ -57,9 +57,14 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
 
         private async Task AddNewHostAsync(CreateHostCommand request, CancellationToken cancellationToken)
         {
-            var hostToAdd = new Host();
+            var hostToAdd = new Host()
+            {
+                User = this.mapper.Map<User>(request)
+            };
 
-            CustomMapper.Map(request, hostToAdd, RoleNames.Host, isDeleted: false);
+            hostToAdd.User.IsDeleted = false;
+            hostToAdd.IsDeleted = false;
+            hostToAdd.User.RoleName = RoleNames.Host;
 
             await this.context.Hosts.AddAsync(hostToAdd, cancellationToken).ConfigureAwait(false);
         }
