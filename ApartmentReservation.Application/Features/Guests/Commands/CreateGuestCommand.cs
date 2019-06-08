@@ -55,25 +55,14 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
         private static void CustomMap(CreateGuestCommand src, Guest dest)
         {
-            dest.User.FirstName = src.FirstName ?? dest.User.FirstName;
-            dest.User.LastName = src.LastName ?? dest.User.LastName;
-            dest.User.Password = src.Password ?? dest.User.Password;
-            dest.User.Gender = src.Gender ?? dest.User.Gender;
-            dest.User.RoleName = RoleNames.Guest;
-            dest.User.IsDeleted = false;
-            dest.IsDeleted = false;
+            CustomMapper.Map(src, dest, RoleNames.Guest, isDeleted: false);
         }
 
         private async Task AddNewGuestAsync(CreateGuestCommand request, CancellationToken cancellationToken)
         {
-            var guestToAdd = new Guest()
-            {
-                User = this.mapper.Map<User>(request)
-            };
+            var guestToAdd = new Guest();
 
-            guestToAdd.User.IsDeleted = false;
-            guestToAdd.IsDeleted = false;
-            guestToAdd.User.RoleName = RoleNames.Guest;
+            CustomMapper.Map(request, guestToAdd, RoleNames.Guest, isDeleted: false);
 
             await this.context.Guests.AddAsync(guestToAdd, cancellationToken).ConfigureAwait(false);
         }

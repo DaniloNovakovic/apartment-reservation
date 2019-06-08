@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Host : Logical
+    public class Host : Logical, IUserRoleLogical
     {
         public Host()
         {

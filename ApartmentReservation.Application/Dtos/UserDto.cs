@@ -1,10 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Domain.Interfaces;
 using FluentValidation;
 
 namespace ApartmentReservation.Application.Dtos
 {
-    public class UserDto
+    public class UserDto : IUser
     {
         public long? Id { get; set; }
 

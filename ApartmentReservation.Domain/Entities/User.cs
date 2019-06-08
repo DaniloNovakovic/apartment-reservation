@@ -1,6 +1,8 @@
-﻿namespace ApartmentReservation.Domain.Entities
+﻿using ApartmentReservation.Domain.Interfaces;
+
+namespace ApartmentReservation.Domain.Entities
 {
-    public class User : Logical
+    public class User : Logical, IUser
     {
         public long Id { get; set; }
 

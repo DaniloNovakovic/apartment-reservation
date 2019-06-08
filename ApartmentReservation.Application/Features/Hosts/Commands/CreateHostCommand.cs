@@ -52,25 +52,14 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
 
         private static void CustomMap(CreateHostCommand src, Host dest)
         {
-            dest.User.FirstName = src.FirstName ?? dest.User.FirstName;
-            dest.User.LastName = src.LastName ?? dest.User.LastName;
-            dest.User.Password = src.Password ?? dest.User.Password;
-            dest.User.Gender = src.Gender ?? dest.User.Gender;
-            dest.User.RoleName = RoleNames.Host;
-            dest.User.IsDeleted = false;
-            dest.IsDeleted = false;
+            CustomMapper.Map(src, dest, RoleNames.Host, isDeleted: false);
         }
 
         private async Task AddNewHostAsync(CreateHostCommand request, CancellationToken cancellationToken)
         {
-            var hostToAdd = new Host()
-            {
-                User = this.mapper.Map<User>(request)
-            };
+            var hostToAdd = new Host();
 
-            hostToAdd.User.IsDeleted = false;
-            hostToAdd.IsDeleted = false;
-            hostToAdd.User.RoleName = RoleNames.Host;
+            CustomMapper.Map(request, hostToAdd, RoleNames.Host, isDeleted: false);
 
             await this.context.Hosts.AddAsync(hostToAdd, cancellationToken).ConfigureAwait(false);
         }
