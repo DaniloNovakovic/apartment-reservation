@@ -27,7 +27,9 @@ namespace ApartmentReservation.Application.Features.Users.Queries
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var dbUser = await this.context.Users.SingleOrDefaultAsync(u => u.Id == request.Id && !u.IsDeleted).ConfigureAwait(false);
+            var dbUser = await this.context.Users
+                .SingleOrDefaultAsync(u => u.Id == request.Id && !u.IsDeleted, cancellationToken)
+                .ConfigureAwait(false);
 
             if (dbUser is null)
             {
