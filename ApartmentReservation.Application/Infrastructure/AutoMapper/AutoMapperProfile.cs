@@ -20,6 +20,13 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
+            CreateMap<Guest, GuestDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
+
             CreateMap<CreateHostCommand, User>();
             CreateMap<CreateGuestCommand, User>();
         }
