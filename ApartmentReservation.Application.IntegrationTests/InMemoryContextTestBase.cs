@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ApartmentReservation.Persistence;
 using AutoMapper;
 
@@ -21,9 +18,9 @@ namespace ApartmentReservation.Application.IntegrationTests
 
         protected InMemoryContextTestBase()
         {
-            Context = (ApartmentReservationDbContext)ServiceProvider.GetService(typeof(ApartmentReservationDbContext));
-            Mapper = (IMapper)ServiceProvider.GetService(typeof(IMapper));
-            LoadTestData();
+            this.Context = (ApartmentReservationDbContext)this.ServiceProvider.GetService(typeof(ApartmentReservationDbContext));
+            this.Mapper = (IMapper)this.ServiceProvider.GetService(typeof(IMapper));
+            this.LoadTestData();
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace ApartmentReservation.WebUI.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                await mediator.Send(command).ConfigureAwait(false);
+                await this.mediator.Send(command).ConfigureAwait(false);
             }
 
             return this.NoContent();

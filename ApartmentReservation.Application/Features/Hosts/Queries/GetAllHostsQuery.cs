@@ -28,8 +28,8 @@ namespace ApartmentReservation.Application.Features.Hosts
 
         public async Task<IEnumerable<HostDto>> Handle(GetAllHostsQuery request, CancellationToken cancellationToken)
         {
-            var query = await context.Hosts.Where(h => !h.IsDeleted).ToListAsync(cancellationToken).ConfigureAwait(false);
-            return query.Select(mapper.Map<Host, HostDto>);
+            var query = await this.context.Hosts.Where(h => !h.IsDeleted).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return query.Select(this.mapper.Map<Host, HostDto>);
         }
     }
 }

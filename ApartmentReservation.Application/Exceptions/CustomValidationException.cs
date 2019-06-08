@@ -47,7 +47,7 @@ namespace ApartmentReservation.Application.Exceptions
         public override void Handle(ExceptionContext context)
         {
             context.HttpContext.Response.ContentType = "application/json";
-            context.HttpContext.Response.StatusCode = (int)StatusCode;
+            context.HttpContext.Response.StatusCode = (int)this.StatusCode;
             context.Result = new JsonResult(
                 ((CustomValidationException)context.Exception).Failures);
         }

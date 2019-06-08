@@ -10,25 +10,25 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            this.CreateMap<User, UserDto>();
+            this.CreateMap<UserDto, User>();
 
-            CreateMap<Host, HostDto>()
+            this.CreateMap<Host, HostDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
-            CreateMap<Guest, GuestDto>()
+            this.CreateMap<Guest, GuestDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
-            CreateMap<CreateHostCommand, User>();
-            CreateMap<CreateGuestCommand, User>();
+            this.CreateMap<CreateHostCommand, User>();
+            this.CreateMap<CreateGuestCommand, User>();
         }
     }
 }

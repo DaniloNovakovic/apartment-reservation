@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApartmentReservation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Persistence.Configurations
 {

@@ -33,7 +33,7 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
         public async Task<Unit> Handle(UpdateGuestCommand request, CancellationToken cancellationToken)
         {
-            var dbGuest = await context.Guests
+            var dbGuest = await this.context.Guests
                 .SingleOrDefaultAsync(g => g.UserId == request.Id && !g.IsDeleted, cancellationToken)
                 .ConfigureAwait(false);
 
@@ -44,7 +44,7 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
             CustomMap(request, dbGuest);
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;
         }

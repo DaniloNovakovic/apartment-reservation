@@ -1,9 +1,7 @@
 ﻿using System;
-using ApartmentReservation.Application.Infrastructure.AutoMapper;
 using ApartmentReservation.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
 
 namespace ApartmentReservation.Application.IntegrationTests
 {
