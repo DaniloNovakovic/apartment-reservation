@@ -15,7 +15,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Comma
 
         public UpdateUserCommandHandlerTests()
         {
-            this.sut = new UpdateUserCommandHandler(this.Context, this.Mapper);
+            this.sut = new UpdateUserCommandHandler(this.Context);
         }
 
         protected override void LoadTestData()

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,22 +14,20 @@ namespace ApartmentReservation.Application.Features.Users.Commands
 
         public string Password { get; set; }
 
-        public string FirstName { get; set; } = "";
+        public string FirstName { get; set; }
 
-        public string Gender { get; set; } = "";
+        public string Gender { get; set; }
 
-        public string LastName { get; set; } = "";
+        public string LastName { get; set; }
     }
 
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public UpdateUserCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public UpdateUserCommandHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
