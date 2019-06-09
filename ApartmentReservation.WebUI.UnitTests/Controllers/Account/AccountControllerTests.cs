@@ -3,27 +3,13 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Guests.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
-using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.WebUI.Controllers;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace ApartmentReservation.WebUI.UnitTests.Controllers
+namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
 {
-    public class AccountControllerTests
+    public class AccountControllerTests : AccountControllerTestsBase
     {
-        private readonly Mock<IAuthService> authServiceMock;
-        private readonly Mock<IMediator> mediatorMock;
-
-        public AccountControllerTests()
-        {
-            this.authServiceMock = new Mock<IAuthService>();
-            this.mediatorMock = new Mock<IMediator>();
-        }
-
         [Fact]
         public async Task Login_WhenInvoked_CallsAuthService()
         {
@@ -75,22 +61,6 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers
             await controller.Register(command).ConfigureAwait(false);
 
             this.mediatorMock.Verify(m => m.Send(command, CancellationToken.None), Times.Once);
-        }
-
-        private AccountController GetAuthenticatedController(long userId = 1, string role = RoleNames.Administrator)
-        {
-            return new AccountController(this.authServiceMock.Object, this.mediatorMock.Object)
-            {
-                ControllerContext = ControllerContextFactory.CreateContext(userId, role)
-            };
-        }
-
-        private AccountController GetUnauthenticatedController()
-        {
-            return new AccountController(this.authServiceMock.Object, this.mediatorMock.Object)
-            {
-                ControllerContext = new ControllerContext() { HttpContext = new DefaultHttpContext() }
-            };
         }
     }
 }

@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace ApartmentReservation.WebUI.UnitTests.Controllers
+namespace ApartmentReservation.WebUI.UnitTests.Controllers.Users
 {
-    public class UsersControllerTests
+    public class UsersController_GetAllTests
     {
         [Fact]
-        public async Task GetAll_WhenInvoked_CallsMediator()
+        public async Task WhenInvoked_CallsMediator()
         {
             var expectedValueResult = new List<UserDto> { new UserDto() { Username = "guest", Password = "guest" } };
             var mediatorMock = new Mock<IMediator>();

@@ -40,12 +40,6 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(new GetHostQuery() { Id = id }).ConfigureAwait(false));
         }
 
-        private bool IsUserAStranger(long id)
-        {
-            return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
-                && !this.HttpContext.User.IsInRole(RoleNames.Administrator);
-        }
-
         // POST: api/Hosts
         [HttpPost]
         [Authorize(Policy = Policies.AdministratorOnly)]
@@ -55,32 +49,10 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.NoContent();
         }
 
-        // PUT: api/Hosts/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] UpdateHostCommand command)
+        private bool IsUserAStranger(long id)
         {
-            if (this.IsUserAStranger(id))
-            {
-                return this.Unauthorized();
-            }
-
-            await this.mediator.Send(command).ConfigureAwait(false);
-
-            return this.NoContent();
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
-        {
-            if (this.IsUserAStranger(id))
-            {
-                return this.Unauthorized();
-            }
-
-            await this.mediator.Send(new DeleteHostCommand() { Id = id }).ConfigureAwait(false);
-
-            return this.NoContent();
+            return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
+                && !this.HttpContext.User.IsInRole(RoleNames.Administrator);
         }
     }
 }

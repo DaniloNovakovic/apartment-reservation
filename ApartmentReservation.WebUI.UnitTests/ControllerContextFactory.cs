@@ -6,7 +6,7 @@ namespace ApartmentReservation.WebUI.UnitTests
 {
     public static class ControllerContextFactory
     {
-        public static ControllerContext ControllerContext()
+        public static ControllerContext CreateContext()
         {
             return new ControllerContext()
             {
