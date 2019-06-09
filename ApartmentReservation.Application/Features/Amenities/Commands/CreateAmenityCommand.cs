@@ -1,8 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Amenities.Commands
 {
@@ -22,9 +24,29 @@ namespace ApartmentReservation.Application.Features.Amenities.Commands
             this.mapper = mapper;
         }
 
-        public Task<Unit> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var dbAmenity = await this.context.Amenities
+                .SingleOrDefaultAsync(a => a.Name == request.Name, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (dbAmenity is null)
+            {
+                this.context.Amenities.Add(new Domain.Entities.Amenity() { Name = request.Name });
+            }
+            else if (dbAmenity.IsDeleted)
+            {
+                dbAmenity.IsDeleted = false;
+                dbAmenity.Name = request.Name;
+            }
+            else
+            {
+                throw new AlreadyCreatedException();
+            }
+
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return Unit.Value;
         }
     }
 }
