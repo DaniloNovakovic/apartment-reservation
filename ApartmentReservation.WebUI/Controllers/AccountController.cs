@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Guests.Commands;
+using ApartmentReservation.Application.Features.Users.Queries;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,7 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
             await this.authService.LoginAsync(dto, this.HttpContext).ConfigureAwait(false);
-            return this.NoContent();
+            return this.Ok(await this.mediator.Send(new GetUserByUsernameQuery() { Username = dto.Username }));
         }
 
         [Authorize]

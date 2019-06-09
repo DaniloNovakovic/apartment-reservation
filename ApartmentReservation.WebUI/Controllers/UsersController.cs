@@ -37,7 +37,7 @@ namespace ApartmentReservation.WebUI.Controllers
                 return this.Unauthorized();
             }
 
-            return this.Ok(await this.mediator.Send(new GetUserQuery() { Id = id }).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(new GetUserByIdQuery() { Id = id }).ConfigureAwait(false));
         }
 
         // PUT: api/Users/5

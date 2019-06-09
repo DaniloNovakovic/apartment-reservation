@@ -9,31 +9,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Users.Queries
 {
-    public class GetUserQuery : IRequest<UserDto>
+    public class GetUserByUsernameQuery : IRequest<UserDto>
     {
-        public long Id { get; set; }
+        public string Username { get; set; }
     }
 
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
+    public class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
         private readonly IApartmentReservationDbContext context;
         private readonly IMapper mapper;
 
-        public GetUserQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetUserByUsernameQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
-        public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
         {
             var dbUser = await this.context.Users
-                .SingleOrDefaultAsync(u => u.Id == request.Id && !u.IsDeleted, cancellationToken)
+                .SingleOrDefaultAsync(u => u.Username == request.Username && !u.IsDeleted, cancellationToken)
                 .ConfigureAwait(false);
 
             if (dbUser is null)
             {
-                throw new NotFoundException($"User with id={request.Id} could not be found!");
+                throw new NotFoundException($"Could not find user with username '{request.Username}'");
             }
 
             return this.mapper.Map<UserDto>(dbUser);

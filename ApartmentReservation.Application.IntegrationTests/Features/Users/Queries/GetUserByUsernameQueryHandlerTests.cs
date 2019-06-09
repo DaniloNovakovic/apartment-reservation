@@ -9,14 +9,14 @@ using Xunit;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Queries
 {
-    public class GetUserQueryHandlerTests : InMemoryContextTestBase
+    public class GetUserByUsernameQueryHandlerTests : InMemoryContextTestBase
     {
-        private readonly GetUserQueryHandler sut;
+        private readonly GetUserByUsernameQueryHandler sut;
         private User dbUser;
 
-        public GetUserQueryHandlerTests()
+        public GetUserByUsernameQueryHandlerTests()
         {
-            this.sut = new GetUserQueryHandler(this.Context, this.Mapper);
+            this.sut = new GetUserByUsernameQueryHandler(this.Context, this.Mapper);
         }
 
         protected override void LoadTestData()
@@ -30,17 +30,17 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Queri
         [Fact]
         public async Task WhenUserExists_ReturnUser()
         {
-            var result = await this.sut.Handle(new GetUserQuery() { Id = this.dbUser.Id }, CancellationToken.None).ConfigureAwait(false);
+            var result = await this.sut.Handle(new GetUserByUsernameQuery() { Username = this.dbUser.Username }, CancellationToken.None).ConfigureAwait(false);
 
-            Assert.IsAssignableFrom<UserDto>(result);
-            Assert.Equal(this.dbUser.Username, result.Username);
+            var resultDto = Assert.IsAssignableFrom<UserDto>(result);
+            Assert.Equal(this.dbUser.Id, resultDto.Id);
         }
 
         [Fact]
         public async Task WhenUserDoesNotExist_ThrowNotFoundException()
         {
             await Assert
-                .ThrowsAsync<NotFoundException>(async () => await this.sut.Handle(new GetUserQuery() { Id = -1 }, CancellationToken.None).ConfigureAwait(false))
+                .ThrowsAsync<NotFoundException>(async () => await this.sut.Handle(new GetUserByUsernameQuery() { Username = "" }, CancellationToken.None).ConfigureAwait(false))
                 .ConfigureAwait(false);
         }
     }
