@@ -11,10 +11,9 @@ using Xunit;
 
 namespace ApartmentReservation.WebUI.UnitTests.Controllers.Hosts
 {
-    public class HostsControllerTests : HostsControllerTestsBase
+    public class HostsController_GetTests : HostsControllerTestsBase
     {
         private readonly long userId = 1;
-
         [Fact]
         public async Task Get_WhenUserIsAdmin_ReturnHostDtoFromMediator()
         {
@@ -74,38 +73,6 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Hosts
             // Assert
             var unauthorizedResult = Assert.IsAssignableFrom<UnauthorizedResult>(result);
             this.mediatorMock.Verify(m => m.Send(It.IsAny<IRequest<HostDto>>(), It.IsAny<CancellationToken>()), Times.Never);
-        }
-
-        [Fact]
-        public async Task GetAll_WhenInvoked_ReturnHostDtosFromMediator()
-        {
-            // Arrange
-            var expectedResultValue = new List<HostDto> { new HostDto() };
-
-            this.mediatorMock
-                .Setup(m => m.Send(It.IsAny<IRequest<IEnumerable<HostDto>>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(expectedResultValue);
-
-            var controller = this.CreateController(this.userId, RoleNames.Administrator);
-
-            // Act
-            var result = await controller.Get();
-
-            // Assert
-            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-            var value = Assert.IsAssignableFrom<IEnumerable<HostDto>>(okResult.Value);
-            Assert.Equal(expectedResultValue, value);
-        }
-
-        [Fact]
-        public async Task Post_WhenInvoked_SendCreateCommandToMediator()
-        {
-            var controller = this.CreateController(this.userId, RoleNames.Administrator);
-            var createCommand = new CreateHostCommand() { Username = "Djura", Password = "123" };
-
-            await controller.Post(createCommand);
-
-            this.mediatorMock.Verify(m => m.Send(It.Is<CreateHostCommand>(c => c == createCommand), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
