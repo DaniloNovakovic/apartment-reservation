@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Amenities.Queries
 {
@@ -24,9 +25,13 @@ namespace ApartmentReservation.Application.Features.Amenities.Queries
             this.mapper = mapper;
         }
 
-        public Task<IEnumerable<AmenityDto>> Handle(GetAllAmenitiesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<AmenityDto>> Handle(GetAllAmenitiesQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var amenities = await this.context.Amenities
+                .Where(a => !a.IsDeleted)
+                .ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return amenities.Select(this.mapper.Map<AmenityDto>);
         }
     }
 }

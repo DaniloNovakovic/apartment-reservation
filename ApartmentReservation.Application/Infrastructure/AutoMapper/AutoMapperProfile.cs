@@ -27,6 +27,8 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
+            this.CreateMap<Amenity, AmenityDto>();
+
             this.CreateMap<CreateHostCommand, User>();
             this.CreateMap<CreateGuestCommand, User>();
         }
