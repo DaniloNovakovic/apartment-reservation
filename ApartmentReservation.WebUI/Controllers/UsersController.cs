@@ -23,9 +23,9 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Users
         [Authorize(Policy = Policies.AdministratorOnly)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]GetAllUsersQuery query)
         {
-            return this.Ok(await this.mediator.Send(new GetAllUsersQuery()).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
         // GET: api/Users/5

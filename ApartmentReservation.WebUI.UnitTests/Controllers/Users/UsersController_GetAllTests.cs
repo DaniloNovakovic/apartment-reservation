@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Users.Queries;
+using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Domain;
 using ApartmentReservation.WebUI.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +20,16 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Users
         {
             var expectedValueResult = new List<UserDto> { new UserDto() { Username = "guest", Password = "guest" } };
             var mediatorMock = new Mock<IMediator>();
-            mediatorMock.Setup(m => m.Send(It.IsAny<GetAllUsersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(expectedValueResult);
-
+            var query = new GetAllUsersQuery() { Gender = Genders.Male, RoleName = RoleNames.Guest };
             var controller = new UsersController(mediatorMock.Object);
+            mediatorMock.Setup(m => m.Send(query, It.IsAny<CancellationToken>())).ReturnsAsync(expectedValueResult);
 
-            var result = await controller.Get().ConfigureAwait(false);
+            var result = await controller.Get(query).ConfigureAwait(false);
 
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
             var value = Assert.IsAssignableFrom<IEnumerable<UserDto>>(okResult.Value);
             Assert.Equal(expectedValueResult, value);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GetAllUsersQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(query, It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
