@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Users.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -44,7 +41,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Users
             var controller = this.CreateController(this.userId, RoleNames.Host);
             var updateCommand = new UpdateUserCommand();
 
-            var result = await controller.Put(StrangerId, updateCommand);
+            var result = await controller.Put(this.StrangerId, updateCommand);
 
             var unauthorized = Assert.IsAssignableFrom<UnauthorizedResult>(result);
 

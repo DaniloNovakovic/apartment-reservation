@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Guests.Commands;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using Moq;
 using Xunit;
 
