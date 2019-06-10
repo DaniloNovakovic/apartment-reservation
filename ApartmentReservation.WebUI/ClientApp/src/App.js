@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
-import { Layout } from "./components/Layout";
+import { Layout } from "./components/layout/Layout";
 import { Home } from "./components/Home";
-import Login from "./components/Account/Login";
-import Logout from "./components/Account/Logout";
-import Register from "./components/Account/Register";
+import Login from "./components/auth/Login";
+import Logout from "./components/auth/Logout";
+import Register from "./components/auth/Register";
 
 export default class App extends Component {
   displayName = App.name;
