@@ -1,7 +1,12 @@
 const initState = {};
 
 const authReducer = (state = initState, action) => {
-  return state;
+  let newState = {
+    ...state,
+    user: action.user
+  };
+  console.log("authReducer ", newState);
+  return newState;
 };
 
 export default authReducer;

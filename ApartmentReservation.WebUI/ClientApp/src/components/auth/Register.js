@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { signup } from "../../store/actions/authActions";
 
-export default class Register extends Component {
+export class Register extends Component {
   constructor(props) {
     super(props);
 
@@ -14,23 +17,25 @@ export default class Register extends Component {
   }
 
   handleChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-
     this.setState({
-      [name]: value
+      [event.target.name]: event.target.value
     });
   };
+
   handleSubmit = event => {
     event.preventDefault();
-    alert(JSON.stringify(this.state));
     console.log(this.state);
-    // TODO: Make API call to /api/Account/Register
+    this.props.signup(this.state);
   };
   render() {
+    const { authError, user } = this.props;
+    if (user && user.id) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <h1>Register</h1>
+        <div>{authError ? <p>{authError}</p> : null}</div>
         <form onSubmit={this.handleSubmit}>
           <div>
             <label htmlFor="username">Username:</label>
@@ -91,3 +96,14 @@ export default class Register extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    authError: state.auth.authError,
+    user: state.auth.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { signup }
+)(Register);
