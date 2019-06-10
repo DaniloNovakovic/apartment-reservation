@@ -28,8 +28,8 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(new GetAllGuestsQuery()).ConfigureAwait(false));
         }
 
-        // GET: api/Hosts/5
-        [HttpGet("{id}", Name = "Get")]
+        // GET: api/Guests/5
+        [HttpGet("{id}", Name = "GetGuest")]
         public async Task<IActionResult> Get(long id)
         {
             if (this.IsUserAStranger(id))

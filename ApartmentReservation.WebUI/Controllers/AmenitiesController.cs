@@ -28,7 +28,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         // GET: api/Amenities/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetAmenity")]
         public async Task<IActionResult> Get(long id)
         {
             return this.Ok(await this.mediator.Send(new GetAmenityQuery() { Id = id }).ConfigureAwait(false));

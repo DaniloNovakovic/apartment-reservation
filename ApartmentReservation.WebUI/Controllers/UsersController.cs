@@ -29,7 +29,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> Get(long id)
         {
             if (this.IsUserAStranger(id))

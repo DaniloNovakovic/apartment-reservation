@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
 {
-    [Route("api/hosts")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = Policies.AdministratorOrHostOnly)]
     public class HostsController : ControllerBase
@@ -29,7 +29,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         // GET: api/Hosts/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetHost")]
         public async Task<IActionResult> Get(long id)
         {
             if (this.IsUserAStranger(id))
