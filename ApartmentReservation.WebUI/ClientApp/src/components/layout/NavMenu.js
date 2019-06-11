@@ -30,7 +30,6 @@ export class NavMenu extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("mapStateToProps", state);
   return {
     user: state.auth.user
   };

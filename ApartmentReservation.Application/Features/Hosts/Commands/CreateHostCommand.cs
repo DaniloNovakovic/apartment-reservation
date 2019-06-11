@@ -42,7 +42,7 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
             }
             else
             {
-                throw new AlreadyCreatedException($"User '{dbHost.UserId}' already exists!");
+                throw new AlreadyCreatedException($"User '{dbHost.User.Username}' already exists!");
             }
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

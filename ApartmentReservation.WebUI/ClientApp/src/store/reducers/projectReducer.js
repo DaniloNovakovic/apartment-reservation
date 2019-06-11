@@ -3,7 +3,6 @@ const initState = {
 };
 
 const projectReducer = (state = initState, action) => {
-  console.log("projectReducer", state);
   return { ...state };
 };
 

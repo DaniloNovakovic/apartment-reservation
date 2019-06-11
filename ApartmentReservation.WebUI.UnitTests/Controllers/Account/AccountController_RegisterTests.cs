@@ -1,6 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Guests.Commands;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
@@ -9,7 +12,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
     public class AccountController_RegisterTests : AccountControllerTestsBase
     {
         [Fact]
-        public async Task Register_UserIsAuthenticated_DoesNotCallMediator()
+        public async Task Register_UserIsAuthenticated_ThrowAlreadyLoggedInException()
         {
             var controller = this.GetAuthenticatedController();
 
@@ -19,14 +22,20 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
                 Password = "guest"
             };
 
-            await controller.Register(command).ConfigureAwait(false);
+            await Assert
+                .ThrowsAsync<AlreadyLoggedInException>(async () => await controller.Register(command).ConfigureAwait(false))
+                .ConfigureAwait(false);
 
             this.mediatorMock.Verify(m => m.Send(command, CancellationToken.None), Times.Never);
         }
 
         [Fact]
-        public async Task Register_UserIsUnauthenticated_CallsMediator()
+        public async Task Register_UserIsUnauthenticated_CreatesGuestUsingMediatorAndReturnsCreatedGuest()
         {
+            var expectedGuestDto = new GuestDto() { Id = 5, Username = "guest", Password = "guest" };
+            this.mediatorMock.Setup(m => m.Send(It.IsAny<CreateGuestCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedGuestDto);
+
             var controller = this.GetUnauthenticatedController();
 
             var command = new CreateGuestCommand()
@@ -35,7 +44,11 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
                 Password = "guest"
             };
 
-            await controller.Register(command).ConfigureAwait(false);
+            var result = await controller.Register(command).ConfigureAwait(false);
+
+            var okObjectResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var user = Assert.IsAssignableFrom<UserDto>(okObjectResult.Value);
+            Assert.Equal(expectedGuestDto.Id, user.Id);
 
             this.mediatorMock.Verify(m => m.Send(command, CancellationToken.None), Times.Once);
         }

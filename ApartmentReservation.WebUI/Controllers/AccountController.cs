@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Guests.Commands;
 using ApartmentReservation.Application.Features.Users.Queries;
 using ApartmentReservation.Application.Interfaces;
@@ -42,12 +43,12 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateGuestCommand command)
         {
-            if (!this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
-                await this.mediator.Send(command).ConfigureAwait(false);
+                throw new AlreadyLoggedInException();
             }
 
-            return this.NoContent();
+            return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
     }
 }
