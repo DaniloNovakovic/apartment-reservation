@@ -18,12 +18,10 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
     public class CreateGuestCommandHandler : IRequestHandler<CreateGuestCommand, GuestDto>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public CreateGuestCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public CreateGuestCommandHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<GuestDto> Handle(CreateGuestCommand request, CancellationToken cancellationToken)
@@ -46,7 +44,7 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return mapper.Map<GuestDto>(dbGuest);
+            return new GuestDto(dbGuest, dbGuest.UserId);
         }
 
         private static void CustomMap(CreateGuestCommand src, Guest dest)
@@ -58,12 +56,18 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
         {
             var guestToAdd = new Guest()
             {
-                User = this.mapper.Map<User>(request)
+                User = new User()
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Gender = request.Gender,
+                    RoleName = RoleNames.Guest,
+                    Username = request.Username,
+                    Password = request.Password,
+                    IsDeleted = false
+                },
+                IsDeleted = false
             };
-
-            guestToAdd.User.IsDeleted = false;
-            guestToAdd.IsDeleted = false;
-            guestToAdd.User.RoleName = RoleNames.Guest;
 
             var addedGuest = await this.context.Guests.AddAsync(guestToAdd, cancellationToken).ConfigureAwait(false);
             return addedGuest.Entity;

@@ -1,6 +1,6 @@
 ﻿using ApartmentReservation.Domain.Interfaces;
 
-namespace ApartmentReservation.Application.Features
+namespace ApartmentReservation.Application
 {
     internal static class CustomMapper
     {
@@ -19,6 +19,28 @@ namespace ApartmentReservation.Application.Features
         {
             Map(src, dest, isDeleted);
             dest.User.RoleName = roleName;
+        }
+
+        public static TDestination Map<TDestination>(object source) where TDestination : new()
+        {
+            var destination = new TDestination();
+
+            Map(source, destination);
+
+            return destination;
+        }
+
+        public static void Map<TSource, TDestination>(TSource source, TDestination destination)
+        {
+            foreach (var srcProp in source.GetType().GetProperties())
+            {
+                var destProp = destination.GetType().GetProperty(srcProp.Name);
+                if (destProp == null)
+                {
+                    continue;
+                }
+                destProp.SetValue(destination, srcProp.GetValue(source));
+            }
         }
     }
 }

@@ -18,18 +18,16 @@ namespace ApartmentReservation.Application.Features.Hosts
     public class GetAllHostsQueryHandler : IRequestHandler<GetAllHostsQuery, IEnumerable<HostDto>>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetAllHostsQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetAllHostsQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<HostDto>> Handle(GetAllHostsQuery request, CancellationToken cancellationToken)
         {
             var query = await this.context.Hosts.Where(h => !h.IsDeleted).ToListAsync(cancellationToken).ConfigureAwait(false);
-            return query.Select(this.mapper.Map<Host, HostDto>);
+            return query.Select(h => new HostDto(h));
         }
     }
 }

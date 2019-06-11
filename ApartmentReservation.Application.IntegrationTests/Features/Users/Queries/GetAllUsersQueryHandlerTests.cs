@@ -20,7 +20,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Queri
 
         public GetAllUsersQueryHandlerTests()
         {
-            this.sut = new GetAllUsersQueryHandler(this.Context, this.Mapper);
+            this.sut = new GetAllUsersQueryHandler(this.Context);
         }
 
         protected override void LoadTestData()

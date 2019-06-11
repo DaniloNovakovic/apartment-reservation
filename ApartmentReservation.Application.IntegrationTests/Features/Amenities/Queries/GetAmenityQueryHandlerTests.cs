@@ -15,7 +15,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.Q
 
         public GetAmenityQueryHandlerTests()
         {
-            this.sut = new GetAmenityQueryHandler(this.Context, this.Mapper);
+            this.sut = new GetAmenityQueryHandler(this.Context);
         }
 
         protected override void LoadTestData()

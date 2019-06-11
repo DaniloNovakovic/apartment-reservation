@@ -21,7 +21,7 @@ namespace ApartmentReservation.WebUI
                 try
                 {
                     var concreteContext = (ApartmentReservationDbContext)scope.ServiceProvider.GetService<IApartmentReservationDbContext>();
-                    concreteContext.Database.Migrate();
+                    //concreteContext.Database.Migrate();
                     ApartmentReservationInitializer.Initialize(concreteContext);
                 }
                 catch (Exception ex)

@@ -16,7 +16,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Queri
 
         public GetUserByUsernameQueryHandlerTests()
         {
-            this.sut = new GetUserByUsernameQueryHandler(this.Context, this.Mapper);
+            this.sut = new GetUserByUsernameQueryHandler(this.Context);
         }
 
         protected override void LoadTestData()

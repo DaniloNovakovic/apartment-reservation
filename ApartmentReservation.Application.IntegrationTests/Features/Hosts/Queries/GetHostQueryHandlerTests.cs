@@ -16,7 +16,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Queri
 
         public GetHostQueryHandlerTests()
         {
-            this.sut = new GetHostQueryHandler(this.Context, this.Mapper);
+            this.sut = new GetHostQueryHandler(this.Context);
         }
 
         protected override void LoadTestData()

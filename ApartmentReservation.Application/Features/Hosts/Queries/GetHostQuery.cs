@@ -18,12 +18,10 @@ namespace ApartmentReservation.Application.Features.Hosts
     public class GetHostQueryHandler : IRequestHandler<GetHostQuery, HostDto>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetHostQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetHostQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<HostDto> Handle(GetHostQuery request, CancellationToken cancellationToken)
@@ -38,7 +36,7 @@ namespace ApartmentReservation.Application.Features.Hosts
                 throw new NotFoundException($"Could not find user with id={request.Id}");
             }
 
-            return this.mapper.Map<HostDto>(host);
+            return new HostDto(host);
         }
     }
 

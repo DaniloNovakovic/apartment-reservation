@@ -14,7 +14,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.C
 
         public DeleteAmenityCommandHandlerTests()
         {
-            this.sut = new DeleteAmenityCommandHandler(this.Context, this.Mapper);
+            this.sut = new DeleteAmenityCommandHandler(this.Context);
         }
 
         protected override void LoadTestData()

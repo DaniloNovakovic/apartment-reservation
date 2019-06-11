@@ -14,7 +14,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.C
 
         public UpdateAmenityCommandHandlerTests()
         {
-            this.sut = new UpdateAmenityCommandHandler(this.Context, this.Mapper);
+            this.sut = new UpdateAmenityCommandHandler(this.Context);
         }
 
         protected override void LoadTestData()

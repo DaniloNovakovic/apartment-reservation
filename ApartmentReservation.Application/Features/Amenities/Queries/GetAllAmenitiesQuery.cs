@@ -17,12 +17,10 @@ namespace ApartmentReservation.Application.Features.Amenities.Queries
     public class GetAllAmenitiesQueryHandler : IRequestHandler<GetAllAmenitiesQuery, IEnumerable<AmenityDto>>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetAllAmenitiesQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetAllAmenitiesQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<AmenityDto>> Handle(GetAllAmenitiesQuery request, CancellationToken cancellationToken)
@@ -31,7 +29,7 @@ namespace ApartmentReservation.Application.Features.Amenities.Queries
                 .Where(a => !a.IsDeleted)
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return amenities.Select(this.mapper.Map<AmenityDto>);
+            return amenities.Select(a => new AmenityDto(a));
         }
     }
 }

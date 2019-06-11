@@ -14,7 +14,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.C
 
         public CreateAmenityCommandHandlerTests()
         {
-            this.sut = new CreateAmenityCommandHandler(this.Context, this.Mapper);
+            this.sut = new CreateAmenityCommandHandler(this.Context);
         }
 
         [Fact]

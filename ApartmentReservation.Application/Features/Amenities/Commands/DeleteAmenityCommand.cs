@@ -16,12 +16,10 @@ namespace ApartmentReservation.Application.Features.Amenities.Commands
     public class DeleteAmenityCommandHandler : IRequestHandler<DeleteAmenityCommand>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public DeleteAmenityCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public DeleteAmenityCommandHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteAmenityCommand request, CancellationToken cancellationToken)

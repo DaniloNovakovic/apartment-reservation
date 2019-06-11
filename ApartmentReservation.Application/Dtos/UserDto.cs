@@ -20,6 +20,22 @@ namespace ApartmentReservation.Application.Dtos
         public string Gender { get; set; } = "";
 
         public string RoleName { get; set; } = RoleNames.Guest;
+
+        public UserDto()
+        {
+        }
+
+        public UserDto(IUser user, long? id = null)
+        {
+            Id = id;
+            CustomMapper.Map(user, this);
+        }
+
+        public UserDto(IUserRole userRole, long? id = null)
+        {
+            Id = id;
+            CustomMapper.Map(userRole.User, this);
+        }
     }
 
     public class UserDtoValidation : AbstractValidator<UserDto>

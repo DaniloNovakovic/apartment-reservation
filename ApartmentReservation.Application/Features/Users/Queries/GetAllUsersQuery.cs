@@ -21,12 +21,10 @@ namespace ApartmentReservation.Application.Features.Users.Queries
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDto>>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetAllUsersQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetAllUsersQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
@@ -37,7 +35,7 @@ namespace ApartmentReservation.Application.Features.Users.Queries
 
             var users = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return users.Select(this.mapper.Map<UserDto>);
+            return users.Select(u => new UserDto(u));
         }
 
         private static IQueryable<User> ApplyFilters(GetAllUsersQuery filters, IQueryable<User> query)

@@ -17,12 +17,10 @@ namespace ApartmentReservation.Application.Features.Guests.Queries
     public class GetGuestQueryHandler : IRequestHandler<GetGuestQuery, GuestDto>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetGuestQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetGuestQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<GuestDto> Handle(GetGuestQuery request, CancellationToken cancellationToken)
@@ -34,7 +32,7 @@ namespace ApartmentReservation.Application.Features.Guests.Queries
                 throw new NotFoundException($"Could not find user '{request.Id}'");
             }
 
-            return this.mapper.Map<GuestDto>(guest);
+            return new GuestDto(guest);
         }
     }
 }

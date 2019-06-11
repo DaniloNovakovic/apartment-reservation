@@ -4,6 +4,11 @@ namespace ApartmentReservation.Domain.Entities
 {
     public class Logical : ILogical
     {
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
+
+        public Logical()
+        {
+            IsDeleted = false;
+        }
     }
 }

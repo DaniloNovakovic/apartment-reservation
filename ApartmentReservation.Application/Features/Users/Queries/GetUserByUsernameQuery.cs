@@ -17,12 +17,10 @@ namespace ApartmentReservation.Application.Features.Users.Queries
     public class GetUserByUsernameQueryHandler : IRequestHandler<GetUserByUsernameQuery, UserDto>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public GetUserByUsernameQueryHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public GetUserByUsernameQueryHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<UserDto> Handle(GetUserByUsernameQuery request, CancellationToken cancellationToken)
@@ -36,7 +34,7 @@ namespace ApartmentReservation.Application.Features.Users.Queries
                 throw new NotFoundException($"Could not find user with username '{request.Username}'");
             }
 
-            return this.mapper.Map<UserDto>(dbUser);
+            return new UserDto(dbUser);
         }
     }
 }

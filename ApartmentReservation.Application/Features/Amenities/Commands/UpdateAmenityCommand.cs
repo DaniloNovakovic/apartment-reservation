@@ -17,12 +17,10 @@ namespace ApartmentReservation.Application.Features.Amenities.Commands
     public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public UpdateAmenityCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public UpdateAmenityCommandHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateAmenityCommand request, CancellationToken cancellationToken)

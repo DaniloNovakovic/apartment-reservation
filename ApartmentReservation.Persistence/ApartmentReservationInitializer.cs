@@ -2,6 +2,7 @@
 using System.Linq;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Persistence
 {
@@ -20,7 +21,8 @@ namespace ApartmentReservation.Persistence
 
         protected void SeedEverything(ApartmentReservationDbContext context)
         {
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
+            //context.Database.EnsureCreated();
 
             if (context.Administrators.Any())
             {

@@ -13,7 +13,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Guests.Comm
 
         public CreateGuestCommandHandlerTests()
         {
-            this.sut = new CreateGuestCommandHandler(this.Context, this.Mapper);
+            this.sut = new CreateGuestCommandHandler(this.Context);
         }
 
         [Fact]

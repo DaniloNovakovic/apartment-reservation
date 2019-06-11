@@ -13,7 +13,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Hosts.Comma
 
         public CreateHostCommandHandlerTests()
         {
-            this.sut = new CreateHostCommandHandler(this.Context, this.Mapper);
+            this.sut = new CreateHostCommandHandler(this.Context);
         }
 
         [Fact]

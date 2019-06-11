@@ -11,22 +11,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Hosts.Commands
 {
-    public class CreateHostCommand : HostDto, IRequest
+    public class CreateHostCommand : HostDto, IRequest<HostDto>
     {
     }
 
-    public class CreateHostCommandHandler : IRequestHandler<CreateHostCommand>
+    public class CreateHostCommandHandler : IRequestHandler<CreateHostCommand, HostDto>
     {
         private readonly IApartmentReservationDbContext context;
-        private readonly IMapper mapper;
 
-        public CreateHostCommandHandler(IApartmentReservationDbContext context, IMapper mapper)
+        public CreateHostCommandHandler(IApartmentReservationDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateHostCommand request, CancellationToken cancellationToken)
+        public async Task<HostDto> Handle(CreateHostCommand request, CancellationToken cancellationToken)
         {
             var dbHost = await this.context.Hosts.Include(h => h.User)
                 .SingleOrDefaultAsync(h => h.User.Username == request.Username, cancellationToken)
@@ -34,7 +32,7 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
 
             if (dbHost == null)
             {
-                await this.AddNewHostAsync(request, cancellationToken).ConfigureAwait(false);
+                dbHost = await this.AddNewHostAsync(request, cancellationToken).ConfigureAwait(false);
             }
             else if (dbHost.IsDeleted || dbHost.User.IsDeleted)
             {
@@ -47,7 +45,7 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return Unit.Value;
+            return new HostDto(dbHost);
         }
 
         private static void CustomMap(CreateHostCommand src, Host dest)
@@ -55,18 +53,25 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
             CustomMapper.Map(src, dest, RoleNames.Host, isDeleted: false);
         }
 
-        private async Task AddNewHostAsync(CreateHostCommand request, CancellationToken cancellationToken)
+        private async Task<Host> AddNewHostAsync(CreateHostCommand request, CancellationToken cancellationToken)
         {
             var hostToAdd = new Host()
             {
-                User = this.mapper.Map<User>(request)
+                User = new User()
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Gender = request.Gender,
+                    RoleName = RoleNames.Host,
+                    Username = request.Username,
+                    Password = request.Password,
+                    IsDeleted = false
+                },
+                IsDeleted = false
             };
 
-            hostToAdd.User.IsDeleted = false;
-            hostToAdd.IsDeleted = false;
-            hostToAdd.User.RoleName = RoleNames.Host;
-
-            await this.context.Hosts.AddAsync(hostToAdd, cancellationToken).ConfigureAwait(false);
+            var addedHost = await this.context.Hosts.AddAsync(hostToAdd, cancellationToken).ConfigureAwait(false);
+            return addedHost.Entity;
         }
     }
 }
