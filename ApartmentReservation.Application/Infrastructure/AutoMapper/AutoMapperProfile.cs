@@ -31,9 +31,11 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.RoleName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.User.Gender))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
-            this.CreateMap<CreateGuestCommand, User>();
+            this.CreateMap<CreateGuestCommand, User>()
+                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
         }
 
         private void CreateHostMaps()
@@ -44,9 +46,11 @@ namespace ApartmentReservation.Application.Infrastructure.AutoMapper
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.RoleName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.User.Gender))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id));
 
-            this.CreateMap<CreateHostCommand, User>();
+            this.CreateMap<CreateHostCommand, User>()
+                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
         }
 
         private void CreateUserMaps()
