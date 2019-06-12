@@ -10,11 +10,13 @@ import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./store/reducers/rootReducer";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { createLogger } from "redux-logger";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const logger = createLogger();
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
 const app = () => {
   return (

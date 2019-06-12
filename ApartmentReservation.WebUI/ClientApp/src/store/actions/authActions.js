@@ -1,7 +1,6 @@
 import * as constants from "./constants";
 
 const parseResponse = async rawResponse => {
-  console.log("response: " + rawResponse);
   let content = await rawResponse.json();
   if (!rawResponse.ok) {
     throw Error(content.error);
@@ -32,7 +31,6 @@ export const login = user => {
         body: JSON.stringify(user)
       });
       const content = await parseResponse(rawResponse);
-      console.log(content);
       return dispatch({ type: constants.LOGIN_SUCCESS, user: content });
     } catch (err) {
       return dispatch({ type: constants.LOGIN_ERROR, err });

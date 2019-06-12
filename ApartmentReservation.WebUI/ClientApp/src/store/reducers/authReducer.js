@@ -1,6 +1,17 @@
 import handlerFactory from "./authReducerActionHandlerFactory";
 
-const initState = {};
+// for testing only (set to empty later)...
+const initState = {
+  user: {
+    firstName: null,
+    gender: null,
+    id: 1,
+    lastName: null,
+    password: "admin",
+    roleName: "Administrator",
+    username: "admin"
+  }
+};
 
 const authReducer = (state = initState, action) => {
   const handle = handlerFactory.getHandler(action.type);
