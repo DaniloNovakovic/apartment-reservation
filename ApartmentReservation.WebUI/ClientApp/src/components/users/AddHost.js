@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { UserForm } from "../auth/UserForm";
+import { hostService } from "../../services";
+import { history } from "../../helpers";
 
 export default class AddHost extends Component {
   constructor(props) {
@@ -13,7 +15,9 @@ export default class AddHost extends Component {
     };
   }
   handleSubmit = user => {
-    console.log("Adding " + user);
+    hostService.create(user).then(_ => {
+      history.push("/Users");
+    });
   };
   render() {
     return (

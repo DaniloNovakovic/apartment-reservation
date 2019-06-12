@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { UserForm } from "../auth/UserForm";
+import { guestService } from "../../services";
+import { history } from "../../helpers";
 
 export default class AddGuest extends Component {
   constructor(props) {
@@ -13,8 +15,11 @@ export default class AddGuest extends Component {
     };
   }
   handleSubmit = user => {
-    console.log("Adding " + user);
+    guestService.create(user).then(_ => {
+      history.push("/Users");
+    });
   };
+
   render() {
     return (
       <div>

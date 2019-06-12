@@ -1,4 +1,7 @@
 import { queryStringify } from "../helpers/queryHelpers";
+import { createResponseHandler } from "../helpers/responseHandlerFactory";
+
+export const handleResponse = createResponseHandler(logout);
 
 export const userService = {
   login,
@@ -11,7 +14,7 @@ export const userService = {
   delete: _delete
 };
 
-function login(username, password) {
+export function login(username, password) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -28,7 +31,7 @@ function login(username, password) {
     });
 }
 
-function logout() {
+export function logout() {
   fetch("api/Account/Logout");
   localStorage.removeItem("user");
 }
@@ -85,22 +88,4 @@ function _delete(id) {
   };
 
   return fetch(`api/Users/${id}`, requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-  return response.text().then(text => {
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if ([401, 403].indexOf(response.status) !== -1) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        logout();
-        document.location.reload(true);
-      }
-
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-
-    return data;
-  });
 }
