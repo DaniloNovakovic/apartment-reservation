@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { signup } from "../../store/actions/authActions";
+import { signup } from "../../store/actions";
 
 export class Register extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { login } from "../../store/actions/authActions";
+import { login } from "../../store/actions";
 
 export class Login extends Component {
   constructor(props) {
