@@ -10,7 +10,6 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   render() {
-    console.log(this.props);
     const { user } = this.props;
     const links =
       user && user.id ? <SignedInLinks user={user} /> : <SignedOutLinks />;

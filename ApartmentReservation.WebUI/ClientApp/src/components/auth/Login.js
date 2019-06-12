@@ -19,8 +19,8 @@ export class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log("Form was submited: " + JSON.stringify(this.state));
-    this.props.login(this.state);
+    const { username, password } = this.state;
+    this.props.login(username, password);
   };
 
   render() {
