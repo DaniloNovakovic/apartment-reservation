@@ -7,6 +7,7 @@ export const logout = () => {
   return dispatch => {
     userService.logout();
     dispatch({ type: userConstants.LOGOUT_SUCCESS });
+    history.push("/");
   };
 };
 
@@ -18,7 +19,7 @@ export const login = (username, password) => {
         history.push("/");
       },
       error => {
-        dispatch({ type: userConstants.LOGIN_ERROR, err: error });
+        dispatch({ type: userConstants.LOGIN_ERROR, error });
         dispatch(alertActions.error(error.toString()));
       }
     );
@@ -33,7 +34,7 @@ export const signup = user => {
         dispatch(alertActions.success("Registration successful"));
       },
       error => {
-        dispatch({ type: userConstants.REGISTER_ERROR, err: error });
+        dispatch({ type: userConstants.REGISTER_ERROR, error });
         dispatch(alertActions.error(error.toString()));
       }
     );

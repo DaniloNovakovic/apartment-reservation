@@ -13,7 +13,7 @@ const errorHandler = (state, action) => {
   return {
     ...state,
     user: null,
-    authError: action.err.message
+    authError: action.error.message
   };
 };
 

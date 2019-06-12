@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { signup } from "../../store/actions";
 
 export class Register extends Component {
@@ -28,10 +27,7 @@ export class Register extends Component {
     this.props.signup(this.state);
   };
   render() {
-    const { authError, user } = this.props;
-    if (user && user.id) {
-      return <Redirect to="/" />;
-    }
+    const { authError } = this.props;
     return (
       <div>
         <h1>Register</h1>

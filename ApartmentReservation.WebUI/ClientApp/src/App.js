@@ -13,6 +13,7 @@ import Users from "./components/users/Users";
 import Profile from "./components/account/Profile";
 import { history } from "./helpers";
 import { alertActions } from "./store/actions";
+import { roleNames } from "./constants";
 
 class App extends Component {
   constructor(props) {
@@ -33,7 +34,12 @@ class App extends Component {
           <Route exact path="/Account/Logout" component={Logout} />
           <Route exact path="/Account/Register" component={Register} />
           <PrivateRoute exact path="/Profile" component={Profile} />
-          <PrivateRoute exact path="/Users" component={Users} />
+          <PrivateRoute
+            exact
+            path="/Users"
+            roles={[roleNames.Admin]}
+            component={Users}
+          />
         </Layout>
       </Router>
     );

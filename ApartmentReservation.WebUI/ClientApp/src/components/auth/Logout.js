@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { logout } from "../../store/actions";
 
 export class Logout extends Component {
@@ -8,10 +7,7 @@ export class Logout extends Component {
     this.props.logout();
   }
   render() {
-    const { authError, user } = this.props;
-    if (!user || !user.id) {
-      return <Redirect to="/" />;
-    }
+    const { authError } = this.props;
     return (
       <div>
         <h1>{authError || "Logging out..."}</h1>

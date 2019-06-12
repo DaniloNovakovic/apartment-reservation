@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { roleNames } from "../../constants";
 
 const roleLinks = {
-  [roleNames.ADMIN]: [
+  [roleNames.Admin]: [
     <LinkContainer key="admin-link-users" to={"/Users"}>
       <NavItem>
         <Glyphicon glyph="list" /> Users

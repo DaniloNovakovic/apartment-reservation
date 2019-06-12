@@ -1,9 +1,9 @@
-export const GUEST = "Guest";
-export const HOST = "Host";
-export const ADMIN = "Administrator";
+export const Guest = "Guest";
+export const Host = "Host";
+export const Admin = "Administrator";
 
 export const roleNames = {
-  GUEST,
-  HOST,
-  ADMIN
+  Guest: Guest,
+  Host: Host,
+  Admin: Admin
 };

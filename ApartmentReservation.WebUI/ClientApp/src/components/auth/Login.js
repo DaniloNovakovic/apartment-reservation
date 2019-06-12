@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { login } from "../../store/actions";
 
 export class Login extends Component {
@@ -24,10 +23,7 @@ export class Login extends Component {
   };
 
   render() {
-    const { authError, user } = this.props;
-    if (user && user.id) {
-      return <Redirect to="/" />;
-    }
+    const { authError } = this.props;
     return (
       <div>
         <h1>Login</h1>
