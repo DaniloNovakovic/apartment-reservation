@@ -4,10 +4,6 @@ import { signup } from "../../store/actions";
 import { UserForm } from "./UserForm";
 
 export class Register extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleSubmit = user => {
     this.props.signup(user);
   };

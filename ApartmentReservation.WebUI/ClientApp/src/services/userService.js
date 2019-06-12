@@ -7,6 +7,7 @@ export const userService = {
   getAll,
   getById,
   update,
+  updateCurrentUser,
   delete: _delete
 };
 
@@ -62,6 +63,11 @@ function register(user) {
   return fetch(`api/Account/Register`, requestOptions).then(handleResponse);
 }
 
+function updateCurrentUser(newUser) {
+  localStorage.setItem("user", JSON.stringify(newUser));
+  return update(newUser);
+}
+
 function update(user) {
   const requestOptions = {
     method: "PUT",
@@ -85,8 +91,8 @@ function handleResponse(response) {
   return response.text().then(text => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
-      if (response.status === 401) {
-        // auto logout if 401 response returned from api
+      if ([401, 403].indexOf(response.status) !== -1) {
+        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
         logout();
         document.location.reload(true);
       }

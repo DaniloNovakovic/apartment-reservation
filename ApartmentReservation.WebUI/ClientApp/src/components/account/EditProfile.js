@@ -42,7 +42,7 @@ export class EditProfile extends React.Component {
               type="password"
               minLength="4"
               name="password"
-              value={this.state.password}
+              value={this.state.password || ""}
               onChange={this.handleChange}
               required
             />
@@ -52,7 +52,7 @@ export class EditProfile extends React.Component {
             <input
               type="text"
               name="firstName"
-              value={this.state.firstName}
+              value={this.state.firstName || ""}
               onChange={this.handleChange}
             />
           </div>
@@ -61,7 +61,7 @@ export class EditProfile extends React.Component {
             <input
               type="text"
               name="lastName"
-              value={this.state.lastName}
+              value={this.state.lastName || ""}
               onChange={this.handleChange}
             />
           </div>
@@ -69,7 +69,7 @@ export class EditProfile extends React.Component {
             <label htmlFor="gender">Gender:</label>
             <select
               name="gender"
-              value={this.state.gender}
+              value={this.state.gender || ""}
               onChange={this.handleChange}
             >
               <option value="Male">Male</option>
@@ -78,8 +78,12 @@ export class EditProfile extends React.Component {
             </select>
           </div>
           <div>
-            <input type="submit" className="btn btn-primary" />
-            <button className="btn btn-info" onClick={this.props.handleCancel}>
+            <input type="submit" className="btn btn-primary" value="submit" />
+            <button
+              type="reset"
+              className="btn btn-info"
+              onClick={this.props.handleCancel}
+            >
               Cancel
             </button>
           </div>
