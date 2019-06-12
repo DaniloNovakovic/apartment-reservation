@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { roleNames } from "../../constants";
 
 export const UsersTable = ({ users, deleteUserHandler }) => (
@@ -10,6 +11,7 @@ export const UsersTable = ({ users, deleteUserHandler }) => (
         <th>lastName</th>
         <th>gender</th>
         <th>roleName</th>
+        <th />
         <th />
       </tr>
     </thead>
@@ -23,7 +25,19 @@ export const UsersTable = ({ users, deleteUserHandler }) => (
           <td>{user.roleName}</td>
           <td>
             {user.roleName !== roleNames.Admin && (
-              <button onClick={() => deleteUserHandler(user)}>Delete</button>
+              <Link to={`/edit-user/${user.id}`} className="btn btn-warning">
+                Edit
+              </Link>
+            )}
+          </td>
+          <td>
+            {user.roleName !== roleNames.Admin && (
+              <button
+                className="btn btn-danger"
+                onClick={() => deleteUserHandler(user)}
+              >
+                Delete
+              </button>
             )}
           </td>
         </tr>

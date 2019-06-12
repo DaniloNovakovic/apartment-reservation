@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../../helpers";
 
 const defaultProps = {
   user: {
@@ -31,6 +32,13 @@ export class EditProfile extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.handleSubmit(this.state);
+  };
+  handleCancel = () => {
+    if (this.props.handleCancel) {
+      this.props.handleCancel();
+    } else {
+      history.goBack();
+    }
   };
   render() {
     return (
@@ -82,7 +90,7 @@ export class EditProfile extends React.Component {
             <button
               type="reset"
               className="btn btn-info"
-              onClick={this.props.handleCancel}
+              onClick={this.handleCancel}
             >
               Cancel
             </button>
