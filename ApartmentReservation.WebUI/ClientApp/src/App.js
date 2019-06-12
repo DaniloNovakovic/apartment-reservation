@@ -14,6 +14,8 @@ import Profile from "./components/account/Profile";
 import { history } from "./helpers";
 import { alertActions } from "./store/actions";
 import { roleNames } from "./constants";
+import AddHost from "./components/users/AddHost";
+import AddGuest from "./components/users/AddGuest";
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +41,16 @@ class App extends Component {
             path="/Users"
             roles={[roleNames.Admin]}
             component={Users}
+          />
+          <PrivateRoute
+            path="/add-guest"
+            roles={[roleNames.Admin]}
+            component={AddGuest}
+          />
+          <PrivateRoute
+            path="/add-host"
+            roles={[roleNames.Admin]}
+            component={AddHost}
           />
         </Layout>
       </Router>

@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../../helpers";
 
 const defaultProps = {
   user: {
@@ -8,9 +9,8 @@ const defaultProps = {
     lastName: "",
     gender: "Male"
   },
-  handleSubmit: user => {
-    console.log(user);
-  }
+  handleSubmit: user => {},
+  handleCancel: () => {}
 };
 
 export class UserForm extends React.Component {
@@ -30,6 +30,13 @@ export class UserForm extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.handleSubmit(this.state);
+  };
+  handleCancel = () => {
+    if (this.props.handleCancel) {
+      this.props.handleCancel();
+    } else {
+      history.goBack();
+    }
   };
   render() {
     return (
@@ -88,6 +95,13 @@ export class UserForm extends React.Component {
           </div>
           <div>
             <input type="submit" className="btn btn-primary" />
+            <button
+              type="reset"
+              className="btn btn-info"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>

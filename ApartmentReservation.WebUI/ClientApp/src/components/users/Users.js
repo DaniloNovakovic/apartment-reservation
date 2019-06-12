@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { userService } from "../../services";
 
 export default class Users extends Component {
@@ -7,10 +8,13 @@ export default class Users extends Component {
     this.state = { users: [], loading: true };
   }
   componentDidMount() {
+    this.refreshData();
+  }
+  refreshData = () => {
     userService.getAll().then(data => {
       this.setState({ users: data, loading: false });
     });
-  }
+  };
 
   static renderUsersTable(users) {
     return (
@@ -50,6 +54,12 @@ export default class Users extends Component {
     return (
       <div>
         <h1>Users</h1>
+        <Link to="/add-guest" className="btn btn-primary">
+          Add Guest
+        </Link>
+        <Link to="/add-host" className="btn btn-primary">
+          Add Host
+        </Link>
         {contents}
       </div>
     );
