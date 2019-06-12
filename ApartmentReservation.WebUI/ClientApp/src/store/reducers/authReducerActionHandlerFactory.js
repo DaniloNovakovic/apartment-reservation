@@ -1,4 +1,4 @@
-import * as constants from "../actions/constants";
+import { userConstants } from "../../constants";
 import ActionHandlerFactory from "./actionHandlerFactory";
 
 const successHandler = (state, action) => {
@@ -18,11 +18,11 @@ const errorHandler = (state, action) => {
 };
 
 const factory = new ActionHandlerFactory();
-factory.register(constants.LOGIN_SUCCESS, successHandler);
-factory.register(constants.LOGOUT_SUCCESS, successHandler);
-factory.register(constants.REGISTER_SUCCESS, successHandler);
-factory.register(constants.LOGIN_ERROR, errorHandler);
-factory.register(constants.LOGOUT_ERROR, errorHandler);
-factory.register(constants.REGISTER_ERROR, errorHandler);
+factory.register(userConstants.LOGIN_SUCCESS, successHandler);
+factory.register(userConstants.LOGOUT_SUCCESS, successHandler);
+factory.register(userConstants.REGISTER_SUCCESS, successHandler);
+factory.register(userConstants.LOGIN_ERROR, errorHandler);
+factory.register(userConstants.LOGOUT_ERROR, errorHandler);
+factory.register(userConstants.REGISTER_ERROR, errorHandler);
 
 export default factory;

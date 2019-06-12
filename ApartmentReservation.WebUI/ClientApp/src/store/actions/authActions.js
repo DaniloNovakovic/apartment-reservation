@@ -1,4 +1,4 @@
-import * as constants from "./constants";
+import { userConstants } from "../../constants";
 
 const parseResponse = async rawResponse => {
   let content = await rawResponse.json();
@@ -12,9 +12,9 @@ export const logout = () => {
   return async dispatch => {
     try {
       await fetch("api/Account/Logout");
-      dispatch({ type: constants.LOGOUT_SUCCESS });
+      dispatch({ type: userConstants.LOGOUT_SUCCESS });
     } catch (err) {
-      dispatch({ type: constants.LOGOUT_ERROR, err });
+      dispatch({ type: userConstants.LOGOUT_ERROR, err });
     }
   };
 };
@@ -31,9 +31,9 @@ export const login = user => {
         body: JSON.stringify(user)
       });
       const content = await parseResponse(rawResponse);
-      return dispatch({ type: constants.LOGIN_SUCCESS, user: content });
+      return dispatch({ type: userConstants.LOGIN_SUCCESS, user: content });
     } catch (err) {
-      return dispatch({ type: constants.LOGIN_ERROR, err });
+      return dispatch({ type: userConstants.LOGIN_ERROR, err });
     }
   };
 };
@@ -50,9 +50,9 @@ export const signup = user => {
         body: JSON.stringify(user)
       });
       const content = await parseResponse(rawResponse);
-      return dispatch({ type: constants.REGISTER_SUCCESS, user: content });
+      return dispatch({ type: userConstants.REGISTER_SUCCESS, user: content });
     } catch (err) {
-      return dispatch({ type: constants.REGISTER_ERROR, err });
+      return dispatch({ type: userConstants.REGISTER_ERROR, err });
     }
   };
 };

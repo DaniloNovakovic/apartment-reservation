@@ -4,3 +4,12 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_ERROR = "LOGOUT_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+
+export const userConstants = {
+  REGISTER_SUCCESS,
+  REGISTER_ERROR,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR
+};

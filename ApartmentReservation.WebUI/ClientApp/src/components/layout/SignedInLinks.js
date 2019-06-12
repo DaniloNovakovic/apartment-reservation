@@ -1,10 +1,10 @@
 import React from "react";
 import { Glyphicon, NavItem, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import roleNames from "../../roleNames";
+import { roleNames } from "../../constants";
 
 const roleLinks = {
-  [roleNames.Administrator]: [
+  [roleNames.ADMIN]: [
     <LinkContainer key="admin-link-users" to={"/Users"}>
       <NavItem>
         <Glyphicon glyph="list" /> Users
