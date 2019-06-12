@@ -1,17 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { ViewProfile } from "./ViewProfile";
+import { EditProfile } from "./EditProfile";
 
 export class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { edit: false, user: props.user };
+  }
+
+  toggleEdit = () => {
+    this.setState({
+      edit: !this.state.edit
+    });
+  };
+
+  handleSubmit = user => {
+    // TODO: Update user
+    this.toggleEdit();
+  };
+
   render() {
-    const user = this.props.user || {};
+    const { user, edit } = this.state;
+
     return (
       <div>
-        <p>username: {user.username}</p>
-        <p>password: {user.password}</p>
-        <p>firstName: {user.firstName}</p>
-        <p>lastName: {user.lastName}</p>
-        <p>gender: {user.gender}</p>
-        <p>roleName: {user.roleName}</p>
+        <h1>Profile</h1>
+        {edit ? (
+          <EditProfile
+            user={user}
+            handleSubmit={this.handleSubmit}
+            handleCancel={this.toggleEdit}
+          />
+        ) : (
+          <ViewProfile user={user} handleEditClick={this.toggleEdit} />
+        )}
       </div>
     );
   }

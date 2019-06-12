@@ -29,7 +29,7 @@ export class Login extends Component {
         <h1>Login</h1>
         <div>{authError ? <p>{authError}</p> : null}</div>
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="form-group">
             <label htmlFor="username">Username:</label>
             <input
               type="text"
@@ -39,7 +39,7 @@ export class Login extends Component {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label htmlFor="password">Password:</label>
             <input
               type="password"
@@ -51,7 +51,7 @@ export class Login extends Component {
             />
           </div>
           <div>
-            <input type="submit" value="Submit" />
+            <input type="submit" className="btn btn-primary" value="Submit" />
           </div>
         </form>
       </div>
