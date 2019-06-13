@@ -1,37 +1,37 @@
 import React from "react";
-import { Glyphicon, NavItem, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Nav } from "react-bootstrap";
 import { roleNames } from "../../constants";
+import { IoIosHome, IoIosLogOut, IoIosList } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const roleLinks = {
   [roleNames.Admin]: [
-    <LinkContainer key="admin-link-users" to={"/Users"}>
-      <NavItem>
-        <Glyphicon glyph="list" /> Users
-      </NavItem>
-    </LinkContainer>
+    <Nav.Item key="admin-users-nav">
+      <Nav.Link as={Link} to="/Users">
+        <IoIosList />
+        Users
+      </Nav.Link>
+    </Nav.Item>
   ]
 };
 
 const SignedInLinks = ({ user }) => {
   return (
-    <Nav>
-      <LinkContainer to={"/"} exact>
-        <NavItem>
-          <Glyphicon glyph="home" /> Home
-        </NavItem>
-      </LinkContainer>
+    <Nav className="justify-content-end">
       {roleLinks[user.roleName]}
-      <LinkContainer to={"/Profile"} exact>
-        <NavItem>
-          <Glyphicon glyph="user" /> Profile
-        </NavItem>
-      </LinkContainer>
-      <LinkContainer to={"/Account/Logout"} exact>
-        <NavItem>
-          <Glyphicon glyph="log-out" /> Log-out
-        </NavItem>
-      </LinkContainer>
+      <Nav.Item>
+        <Nav.Link as={Link} to="/Profile">
+          <IoIosHome />
+          Profile
+        </Nav.Link>
+      </Nav.Item>
+
+      <Nav.Item>
+        <Nav.Link as={Link} to="/Account/Logout">
+          <IoIosLogOut />
+          Logout
+        </Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 };

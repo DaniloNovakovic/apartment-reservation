@@ -1,25 +1,23 @@
 import React from "react";
-import { Glyphicon, NavItem, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Nav } from "react-bootstrap";
+import { IoIosLogIn } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const SignedOutLinks = () => {
   return (
-    <Nav>
-      <LinkContainer to={"/"} exact>
-        <NavItem>
-          <Glyphicon glyph="home" /> Home
-        </NavItem>
-      </LinkContainer>
-      <LinkContainer to={"/Account/Register"} exact>
-        <NavItem>
-          <Glyphicon glyph="log-in" /> Register
-        </NavItem>
-      </LinkContainer>
-      <LinkContainer to={"/Account/Login"} exact>
-        <NavItem>
-          <Glyphicon glyph="log-in" /> Log-in
-        </NavItem>
-      </LinkContainer>
+    <Nav className="justify-content-end">
+      <Nav.Item>
+        <Nav.Link as={Link} to="/Account/Register">
+          <IoIosLogIn />
+          Register
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} to="/Account/Login">
+          <IoIosLogIn />
+          <span>Log-in</span>
+        </Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 };
