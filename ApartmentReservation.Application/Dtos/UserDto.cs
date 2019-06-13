@@ -7,20 +7,6 @@ namespace ApartmentReservation.Application.Dtos
 {
     public class UserDto : IUser
     {
-        public long? Id { get; set; }
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string FirstName { get; set; } = "";
-
-        public string LastName { get; set; } = "";
-
-        public string Gender { get; set; } = "";
-
-        public string RoleName { get; set; } = RoleNames.Guest;
-
         public UserDto()
         {
         }
@@ -36,12 +22,22 @@ namespace ApartmentReservation.Application.Dtos
 
         public UserDto(IUserRole userRole)
         {
-            if (userRole is null)
+            if (userRole is null || userRole.User is null)
                 return;
 
             this.Id = userRole.User.Id;
             CustomMapper.Map(userRole.User, this);
         }
+
+        public long? Id { get; set; }
+
+        public string FirstName { get; set; } = "";
+        public string Gender { get; set; } = "";
+
+        public string LastName { get; set; } = "";
+        public string Password { get; set; }
+        public string RoleName { get; set; } = RoleNames.Guest;
+        public string Username { get; set; }
     }
 
     public class UserDtoValidation : AbstractValidator<UserDto>

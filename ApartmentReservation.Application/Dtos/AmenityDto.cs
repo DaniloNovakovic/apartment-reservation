@@ -4,10 +4,6 @@ namespace ApartmentReservation.Application.Dtos
 {
     public class AmenityDto
     {
-        public long Id { get; set; }
-
-        public string Name { get; set; }
-
         public AmenityDto()
         {
         }
@@ -16,5 +12,9 @@ namespace ApartmentReservation.Application.Dtos
         {
             CustomMapper.Map(amenity, this);
         }
+
+        public long? Id { get; set; }
+
+        public string Name { get; set; }
     }
 }

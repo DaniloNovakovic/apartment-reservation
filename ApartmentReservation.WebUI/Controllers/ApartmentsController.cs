@@ -18,9 +18,10 @@ namespace ApartmentReservation.WebUI.Controllers
             this.mediator = mediator;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
-            if (!IsInAnyRole(RoleNames.Administrator, RoleNames.Host))
+            if (!this.IsInAnyRole(RoleNames.Administrator, RoleNames.Host))
             {
                 query.ActivityState = ActivityStates.Active;
             }
@@ -31,7 +32,7 @@ namespace ApartmentReservation.WebUI.Controllers
         {
             foreach (string role in roles)
             {
-                if (User.IsInRole(role))
+                if (this.User.IsInRole(role))
                 {
                     return true;
                 }

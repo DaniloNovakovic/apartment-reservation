@@ -30,7 +30,10 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Apartments.Where(a => !a.IsDeleted);
+            var query = context.Apartments
+                .Include(a => a.Location)
+                .ThenInclude(l => l.Address)
+                .Where(a => !a.IsDeleted);
 
             query = ApplyFilters(request, query);
 

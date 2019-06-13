@@ -7,6 +7,10 @@ namespace ApartmentReservation.Application.Dtos
 {
     public class ApartmentDto
     {
+        public ApartmentDto()
+        {
+        }
+
         public ApartmentDto(IApartment apartment)
         {
             if (apartment is null)
@@ -20,9 +24,19 @@ namespace ApartmentReservation.Application.Dtos
             this.CheckOutTime = apartment.CheckOutTime;
             this.Comments = apartment.Comments.Select(c => new CommentDto(c));
             this.ForRentalDates = apartment.ForRentalDates.Select(frd => new ForRentalDateDto(frd));
-            this.Host = new HostDto(apartment.Host);
+
+            if (apartment.Host != null)
+            {
+                this.Host = new HostDto(apartment.Host);
+            }
+
             this.Images = apartment.Images.Select(i => new ImageDto(i));
-            this.Location = new LocationDto(apartment.Location);
+
+            if (apartment.Location != null)
+            {
+                this.Location = new LocationDto(apartment.Location);
+            }
+
             this.NumberOfGuests = apartment.NumberOfGuests;
             this.NumberOfRooms = apartment.NumberOfRooms;
             this.PricePerNight = apartment.PricePerNight;
@@ -30,6 +44,7 @@ namespace ApartmentReservation.Application.Dtos
         }
 
         public long Id { get; set; }
+
         public string ActivityState { get; set; }
         public IEnumerable<AmenityDto> Amenities { get; set; }
         public string ApartmentType { get; set; }
