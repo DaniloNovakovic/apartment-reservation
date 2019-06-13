@@ -18,7 +18,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public long Id { get; set; }
 
-        public string ActivityState { get; set; } = ActivityStates.Active;
+        public string ActivityState { get; set; } = ActivityStates.Inactive;
 
         public ICollection<Amenity> Amenities { get; set; }
 
