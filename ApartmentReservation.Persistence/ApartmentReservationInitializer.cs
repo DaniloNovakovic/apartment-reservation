@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +10,11 @@ namespace ApartmentReservation.Persistence
 {
     public class ApartmentReservationInitializer
     {
+        private readonly Dictionary<long, User> Users = new Dictionary<long, User>();
         private IEnumerable<Administrator> Administrators = new List<Administrator>();
+        private List<Amenity> Amenities = new List<Amenity>();
         private IEnumerable<Guest> Guests = new List<Guest>();
         private IEnumerable<Host> Hosts = new List<Host>();
-        private readonly Dictionary<long, User> Users = new Dictionary<long, User>();
 
         public static void Initialize(ApartmentReservationDbContext context)
         {
@@ -33,39 +36,8 @@ namespace ApartmentReservation.Persistence
             this.SeedAdministrators(context);
             this.SeedHosts(context);
             this.SeedGuests(context);
-        }
-
-        private void SeedAdministrators(ApartmentReservationDbContext context)
-        {
-            this.Administrators = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Administrator)
-                .Select(u => new Administrator() { User = u });
-
-            context.Administrators.AddRange(this.Administrators);
-
-            context.SaveChanges();
-        }
-
-        private void SeedGuests(ApartmentReservationDbContext context)
-        {
-            this.Guests = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Guest)
-                .Select(u => new Guest() { User = u });
-
-            context.Guests.AddRange(this.Guests);
-
-            context.SaveChanges();
-        }
-
-        private void SeedHosts(ApartmentReservationDbContext context)
-        {
-            this.Hosts = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Host)
-                .Select(u => new Host() { User = u });
-
-            context.Hosts.AddRange(this.Hosts);
-
-            context.SaveChanges();
+            this.SeedAmenities(context);
+            this.SeedApartments(context);
         }
 
         private void SeedUsers(ApartmentReservationDbContext context)
@@ -94,6 +66,106 @@ namespace ApartmentReservation.Persistence
             context.Users.AddRange(this.Users.Values);
 
             context.SaveChanges();
+        }
+
+        private void SeedAdministrators(ApartmentReservationDbContext context)
+        {
+            this.Administrators = this.Users.Values
+                .Where(u => u.RoleName == RoleNames.Administrator)
+                .Select(u => new Administrator() { User = u });
+
+            context.Administrators.AddRange(this.Administrators);
+
+            context.SaveChanges();
+        }
+
+        private void SeedHosts(ApartmentReservationDbContext context)
+        {
+            this.Hosts = this.Users.Values
+                .Where(u => u.RoleName == RoleNames.Host)
+                .Select(u => new Host() { User = u });
+
+            context.Hosts.AddRange(this.Hosts);
+
+            context.SaveChanges();
+        }
+
+        private void SeedGuests(ApartmentReservationDbContext context)
+        {
+            this.Guests = this.Users.Values
+                .Where(u => u.RoleName == RoleNames.Guest)
+                .Select(u => new Guest() { User = u });
+
+            context.Guests.AddRange(this.Guests);
+
+            context.SaveChanges();
+        }
+
+        private void SeedAmenities(ApartmentReservationDbContext context)
+        {
+            this.Amenities = new List<Amenity>()
+            {
+                new Amenity(){Name ="TV"},
+                new Amenity(){Name ="Kitchen"},
+                new Amenity(){Name ="High chair"},
+                new Amenity(){Name ="Air conditioning"},
+                new Amenity(){Name ="Heating"},
+                new Amenity(){Name ="Wifi"},
+                new Amenity(){Name ="Refrigerator"},
+                new Amenity(){Name ="Microwave"}
+            };
+
+            context.AddRange(this.Amenities);
+            context.SaveChanges();
+        }
+
+        private void SeedApartments(ApartmentReservationDbContext context)
+        {
+            var address = GetAddress(context);
+            var location = GetLocation(context, address);
+            var host = context.Hosts.FirstOrDefault();
+            var amenities = context.Amenities.FirstOrDefault();
+
+            var apartment = new Apartment()
+            {
+                ActivityState = ActivityStates.Active,
+                ApartmentType = ApartmentTypes.Full,
+                Host = host,
+                Location = location
+            };
+
+            apartment = context.Apartments.Add(apartment).Entity;
+            Amenities.ForEach(a => apartment.Amenities.Add(a));
+
+            context.SaveChanges();
+        }
+
+        private static Address GetAddress(ApartmentReservationDbContext context)
+        {
+            var address = new Address()
+            {
+                CityName = "Novi Sad",
+                PostalCode = "21102",
+                StreetName = "Bulevar kralja Petra",
+                StreetNumber = "25"
+            };
+
+            address = context.Addresses.Add(address).Entity;
+            context.SaveChanges();
+            return address;
+        }
+
+        private static Location GetLocation(ApartmentReservationDbContext context, Address address)
+        {
+            var location = new Location()
+            {
+                Latitude = 45.267136,
+                Longitude = 19.833549,
+                Address = address
+            };
+            location = context.Locations.Add(location).Entity;
+            context.SaveChanges();
+            return location;
         }
     }
 }
