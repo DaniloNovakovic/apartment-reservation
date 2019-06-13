@@ -1,7 +1,7 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, NavDropdown } from "react-bootstrap";
 import { roleNames } from "../../constants";
-import { IoIosHome, IoIosLogOut, IoIosList } from "react-icons/io";
+import { IoIosLogOut, IoIosList } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const roleLinks = {
@@ -17,21 +17,18 @@ const roleLinks = {
 
 const SignedInLinks = ({ user }) => {
   return (
-    <Nav className="justify-content-end">
+    <Nav>
       {roleLinks[user.roleName]}
-      <Nav.Item>
-        <Nav.Link as={Link} to="/Profile">
-          <IoIosHome />
-          Profile
-        </Nav.Link>
-      </Nav.Item>
 
-      <Nav.Item>
-        <Nav.Link as={Link} to="/Account/Logout">
+      <NavDropdown title="Account" id="basic-nav-dropdown">
+        <NavDropdown.Item as={Link} to="/Profile">
+          Profile
+        </NavDropdown.Item>
+        <NavDropdown.Item as={Link} to="/Account/Logout">
           <IoIosLogOut />
           Logout
-        </Nav.Link>
-      </Nav.Item>
+        </NavDropdown.Item>
+      </NavDropdown>
     </Nav>
   );
 };

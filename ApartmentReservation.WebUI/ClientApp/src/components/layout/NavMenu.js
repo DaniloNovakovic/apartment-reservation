@@ -1,4 +1,5 @@
-﻿import React, { Component } from "react";
+﻿import "./NavMenu.css";
+import React, { Component } from "react";
 import { Navbar } from "react-bootstrap";
 import SignedOutLinks from "./SignedOutLinks";
 import SignedInLinks from "./SignedInLinks";
@@ -15,12 +16,14 @@ export class NavMenu extends Component {
       user && user.id ? <SignedInLinks user={user} /> : <SignedOutLinks />;
 
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" variant="light" expand="lg" fixed="top">
         <Navbar.Brand as={Link} to="/">
           <IoIosBed />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">{links}</Navbar.Collapse>
+        <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+          {links}
+        </Navbar.Collapse>
       </Navbar>
     );
   }

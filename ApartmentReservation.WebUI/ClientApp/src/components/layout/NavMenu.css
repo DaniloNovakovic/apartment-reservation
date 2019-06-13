@@ -1,0 +1,10 @@
+.nav-item {
+  padding-right: 1em;
+}
+.nav-link > svg,
+.dropdown-item > svg {
+  margin-right: 0.3em;
+}
+.navbar-nav > .dropdown {
+  padding-right: 4em;
+}

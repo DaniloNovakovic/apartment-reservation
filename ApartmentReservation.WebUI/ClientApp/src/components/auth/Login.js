@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { login } from "../../store/actions";
+import { Form, Button } from "react-bootstrap";
 
 export class Login extends Component {
   constructor(props) {
@@ -28,20 +29,20 @@ export class Login extends Component {
       <div>
         <h1>Login</h1>
         <div>{authError ? <p>{authError}</p> : null}</div>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Group>
+            <Form.Label htmlFor="username">Username:</Form.Label>
+            <Form.Control
               type="text"
               name="username"
               value={this.state.username}
               onChange={this.handleChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="password">Password:</Form.Label>
+            <Form.Control
               type="password"
               minLength="4"
               name="password"
@@ -49,11 +50,11 @@ export class Login extends Component {
               onChange={this.handleChange}
               required
             />
-          </div>
-          <div>
-            <input type="submit" className="btn btn-primary" value="Submit" />
-          </div>
-        </form>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
       </div>
     );
   }

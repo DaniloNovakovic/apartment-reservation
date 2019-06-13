@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 
 const SignedOutLinks = () => {
   return (
-    <Nav className="justify-content-end">
+    <Nav>
       <Nav.Item>
         <Nav.Link as={Link} to="/Account/Register">
           <IoIosLogIn />
-          Register
+          Sign up
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link as={Link} to="/Account/Login">
           <IoIosLogIn />
-          <span>Log-in</span>
+          <span>Log in</span>
         </Nav.Link>
       </Nav.Item>
     </Nav>
