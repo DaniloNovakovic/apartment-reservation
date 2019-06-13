@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ApartmentReservation.Domain.Enumerations;
+using ApartmentReservation.Domain.Constants;
 
 namespace ApartmentReservation.Domain.Entities
 {
@@ -16,11 +16,11 @@ namespace ApartmentReservation.Domain.Entities
 
         public long Id { get; set; }
 
-        public ActivityState ActivityState { get; set; } = ActivityState.Active;
+        public string ActivityState { get; set; } = ActivityStates.Active;
 
         public ICollection<Amenity> Amenities { get; set; }
 
-        public ApartmentType ApartmentType { get; set; }
+        public string ApartmentType { get; set; }
 
         public DateTime? CheckInTime { get; set; }
 
@@ -40,9 +40,9 @@ namespace ApartmentReservation.Domain.Entities
 
         public long? LocationId { get; set; }
 
-        public int NumberOfGuests { get; set; }
+        public int NumberOfGuests { get; set; } = 0;
 
-        public int NumberOfRooms { get; set; }
+        public int NumberOfRooms { get; set; } = 1;
 
         public double PricePerNight { get; set; }
 

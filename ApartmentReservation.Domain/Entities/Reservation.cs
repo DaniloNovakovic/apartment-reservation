@@ -1,5 +1,5 @@
 ﻿using System;
-using ApartmentReservation.Domain.Enumerations;
+using ApartmentReservation.Domain.Constants;
 
 namespace ApartmentReservation.Domain.Entities
 {
@@ -20,6 +20,6 @@ namespace ApartmentReservation.Domain.Entities
 
         public long? GuestId { get; set; }
 
-        public ReservationState ReservationState { get; set; } = ReservationState.Created;
+        public string ReservationState { get; set; } = ReservationStates.Created;
     }
 }
