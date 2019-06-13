@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Apartment : Logical
+    public class Apartment : Logical, IApartment
     {
         public Apartment()
         {

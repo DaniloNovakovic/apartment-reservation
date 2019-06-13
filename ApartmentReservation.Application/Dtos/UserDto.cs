@@ -31,9 +31,9 @@ namespace ApartmentReservation.Application.Dtos
             CustomMapper.Map(user, this);
         }
 
-        public UserDto(IUserRole userRole, long? id = null)
+        public UserDto(IUserRole userRole)
         {
-            Id = id;
+            Id = userRole.User.Id;
             CustomMapper.Map(userRole.User, this);
         }
     }

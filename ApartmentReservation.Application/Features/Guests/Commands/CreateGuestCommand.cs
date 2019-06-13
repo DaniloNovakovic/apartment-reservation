@@ -44,7 +44,7 @@ namespace ApartmentReservation.Application.Features.Guests.Commands
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return new GuestDto(dbGuest, dbGuest.UserId);
+            return new GuestDto(dbGuest);
         }
 
         private static void CustomMap(CreateGuestCommand src, Guest dest)

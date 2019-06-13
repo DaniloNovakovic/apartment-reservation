@@ -14,7 +14,7 @@ namespace ApartmentReservation.Application.Dtos
         {
         }
 
-        public HostDto(IUserRole userRole, long? id = null) : base(userRole, id)
+        public HostDto(IUserRole userRole) : base(userRole)
         {
         }
     }
