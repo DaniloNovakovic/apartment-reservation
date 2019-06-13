@@ -13,6 +13,7 @@ namespace ApartmentReservation.Domain.Entities
             this.Comments = new HashSet<Comment>();
             this.Images = new HashSet<Image>();
             this.Amenities = new HashSet<Amenity>();
+            this.Reservations = new HashSet<Reservation>();
         }
 
         public long Id { get; set; }

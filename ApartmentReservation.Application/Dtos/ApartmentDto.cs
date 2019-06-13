@@ -9,6 +9,9 @@ namespace ApartmentReservation.Application.Dtos
     {
         public ApartmentDto(IApartment apartment)
         {
+            if (apartment is null)
+                return;
+
             this.Id = apartment.Id;
             this.ActivityState = apartment.ActivityState;
             this.Amenities = apartment.Amenities.Select(a => new AmenityDto(a));

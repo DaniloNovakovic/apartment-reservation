@@ -14,6 +14,9 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 {
     public class GetAllApartmentsQuery : IRequest<IEnumerable<ApartmentDto>>
     {
+        public string ActivityState { get; set; }
+
+        public string AmenityName { get; set; }
     }
 
     public class GetAllApartmentsQueryHandler : IRequestHandler<GetAllApartmentsQuery, IEnumerable<ApartmentDto>>
@@ -38,6 +41,18 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
         private static IQueryable<Apartment> ApplyFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)
         {
+            if (!string.IsNullOrWhiteSpace(filters.ActivityState))
+            {
+                query = query.Where(apartment => string.Equals(apartment.ActivityState, filters.ActivityState, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filters.AmenityName))
+            {
+                query = query.Where(apartment =>
+                    apartment.Amenities.Any(amenity =>
+                        string.Equals(amenity.Name, filters.AmenityName, StringComparison.OrdinalIgnoreCase)));
+            }
+
             return query;
         }
     }

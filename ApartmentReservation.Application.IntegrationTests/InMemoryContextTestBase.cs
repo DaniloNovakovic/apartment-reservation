@@ -12,9 +12,9 @@ namespace ApartmentReservation.Application.IntegrationTests
         /// <summary>
         /// Gets the in-memory database context.
         /// </summary>
-        protected ApartmentReservationDbContext Context { get; }
+        public ApartmentReservationDbContext Context { get; }
 
-        protected IMapper Mapper { get; }
+        public IMapper Mapper { get; }
 
         protected InMemoryContextTestBase()
         {
