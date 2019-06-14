@@ -1,13 +1,20 @@
 import "./ApartmentCard.css";
 import React, { Component } from "react";
 import ApartmentCarousel from "./ApartmentCarousel";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Card, Row, Col, ListGroup } from "react-bootstrap";
+import ReactStars from "react-stars";
 
 const defaultProps = {
   apartment: {
     id: 1,
     activityState: "Active",
-    amenities: [],
+    amenities: [
+      { name: "TV" },
+      { name: "Kitchen" },
+      { name: "Bed" },
+      { name: "Refrigirator" },
+      { name: "Microwave" }
+    ],
     apartmentType: "Full",
     title: "Magnificent apartment",
     checkInTime: null,
@@ -43,8 +50,8 @@ const defaultProps = {
     },
     numberOfGuests: 0,
     numberOfRooms: 1,
-    pricePerNight: 0,
-    rating: null,
+    pricePerNight: 35,
+    rating: 3,
     reservations: []
   }
 };
@@ -74,6 +81,24 @@ export class ApartmentCard extends Component {
             <Card.Text className="text-truncate">
               Number of rooms: {apartment.numberOfRooms}
             </Card.Text>
+            <Card.Text className="text-truncate">
+              {apartment.amenities
+                .slice(0, 4)
+                .map(amenity => amenity.name)
+                .join(" · ")}
+            </Card.Text>
+          </Card.Body>
+          <Card.Body>
+            <Row>
+              <Col>
+                <ReactStars count={5} edit={false} value={apartment.rating} />
+              </Col>
+              <Col>
+                <Card.Text className="text-right">
+                  ${apartment.pricePerNight}/night
+                </Card.Text>
+              </Col>
+            </Row>
           </Card.Body>
         </Card>
       </div>

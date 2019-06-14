@@ -8,5 +8,9 @@
 }
 
 .apartment-card .card-header {
-  padding: 0.2em;
+  padding: 5px;
+}
+
+.apartment-card-main {
+  max-width: 310px;
 }
