@@ -1,18 +1,17 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 
-export const ApartmentCarousel = ({ images }) => {
+export const ApartmentCarousel = ({ images, className }) => {
   return (
-    <Carousel>
-      {images.map((img, index) => {
-        <Carousel.Item key={`apartment-carousel-img-${index}`}>
-          <img
-            className="apartment-carousel-img w-100"
-            src={img}
-            alt="apartment image"
-          />
-        </Carousel.Item>;
-      })}
+    <Carousel className={`apartment-carousel ${className || ""}`}>
+      {images &&
+        images.map((img, index) => {
+          return (
+            <Carousel.Item key={`apartment-carousel-item-${index}`}>
+              <img className="carousel-image" src={img.uri} alt="apartment" />
+            </Carousel.Item>
+          );
+        })}
     </Carousel>
   );
 };

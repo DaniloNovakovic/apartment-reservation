@@ -5,9 +5,9 @@ import { Container } from "react-bootstrap";
 export class DisplayApartments extends Component {
   render() {
     return (
-      <Container>
-        <ApartmentCard />;
-      </Container>
+      <div>
+        <ApartmentCard />
+      </div>
     );
   }
 }

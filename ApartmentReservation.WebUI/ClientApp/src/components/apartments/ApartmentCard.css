@@ -1,0 +1,12 @@
+.apartment-card .apartment-carousel {
+  width: 300px;
+  height: 200px;
+}
+.apartment-card .carousel-image {
+  width: 300px;
+  height: 200px;
+}
+
+.apartment-card .card-header {
+  padding: 0.2em;
+}
