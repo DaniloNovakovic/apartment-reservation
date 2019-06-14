@@ -1,4 +1,6 @@
-﻿using ApartmentReservation.Domain.Interfaces;
+﻿using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Domain.Entities;
+using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Application
 {
@@ -41,6 +43,33 @@ namespace ApartmentReservation.Application
                 }
                 destProp.SetValue(destination, srcProp.GetValue(source));
             }
+        }
+
+        public static Location Map(LocationDto source)
+        {
+            var retVal = new Location();
+            if (source != null)
+            {
+                retVal.Longitude = source.Longitude;
+                retVal.Latitude = source.Latitude;
+                retVal.Address = Map(source.Address);
+            }
+            return retVal;
+        }
+
+        public static Address Map(AddressDto source)
+        {
+            var retVal = new Address();
+            if (retVal != null)
+            {
+                retVal.CityName = source.CityName;
+                retVal.CountryName = source.CountryName;
+                retVal.StreetName = source.StreetName;
+                retVal.StreetNumber = source.StreetNumber;
+                retVal.Id = source?.Id ?? default;
+                retVal.PostalCode = source.PostalCode;
+            }
+            return retVal;
         }
     }
 }

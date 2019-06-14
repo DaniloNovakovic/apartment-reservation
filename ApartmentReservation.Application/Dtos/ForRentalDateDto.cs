@@ -1,4 +1,5 @@
-﻿using ApartmentReservation.Domain.Entities;
+﻿using System;
+using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Application.Dtos
 {
@@ -6,6 +7,9 @@ namespace ApartmentReservation.Application.Dtos
     {
         public ForRentalDateDto(ForRentalDate frd)
         {
+            this.Date = frd.Date;
         }
+
+        public DateTime Date { get; set; }
     }
 }
