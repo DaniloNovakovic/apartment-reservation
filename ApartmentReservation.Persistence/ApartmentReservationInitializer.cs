@@ -147,7 +147,8 @@ namespace ApartmentReservation.Persistence
                 CityName = "Novi Sad",
                 PostalCode = "21102",
                 StreetName = "Bulevar kralja Petra",
-                StreetNumber = "25"
+                StreetNumber = "25",
+                CountryName = "Serbia"
             };
 
             address = context.Addresses.Add(address).Entity;

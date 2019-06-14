@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ApartmentCarousel from "./ApartmentCarousel";
 
 const defaultProps = {
   apartment: {
@@ -11,7 +12,14 @@ const defaultProps = {
     comments: [],
     forRentalDates: [],
     host: null,
-    images: [],
+    images: [
+      {
+        uri = "https://www.onni.com/wp-content/uploads/2016/11/Rental-Apartment-Page-new-min.jpg"
+      },
+      {
+        uri = "https://arystudios.files.wordpress.com/2015/08/3dcontemperoryapartmentrenderingarchitecturalduskviewrealisticarystudios.jpg"
+      }
+    ],
     location: {
       id: 0,
       address: {
@@ -31,14 +39,17 @@ const defaultProps = {
   }
 };
 
-export default class Apartment extends Component {
+export class ApartmentCard extends Component {
   constructor(props = defaultProps) {
     super(props);
 
     this.state = { apartment: props.apartment };
   }
   render() {
-    // TODO: Display apartment in a meaningful way
-    return <div>This is my apartment</div>;
+    return <div className="apartment-card">
+      <ApartmentCarousel images={this.state.apartment.images}/>
+    </div>
   }
 }
+
+export default ApartmentCard;

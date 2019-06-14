@@ -12,6 +12,8 @@
 
         public string StreetNumber { get; set; }
 
+        public string CountryName { get; set; }
+
         public override string ToString()
         {
             return $"{this.StreetName} {this.StreetNumber}, {this.CityName} {this.PostalCode}";

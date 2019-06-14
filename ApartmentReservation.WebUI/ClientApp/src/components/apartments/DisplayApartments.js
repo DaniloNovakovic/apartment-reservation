@@ -1,7 +1,15 @@
 import React, { Component } from "react";
+import ApartmentCard from "./ApartmentCard";
+import { Container } from "react-bootstrap";
 
-export default class DisplayApartments extends Component {
+export class DisplayApartments extends Component {
   render() {
-    return <div />;
+    return (
+      <Container>
+        <ApartmentCard />;
+      </Container>
+    );
   }
 }
+
+export default DisplayApartments;

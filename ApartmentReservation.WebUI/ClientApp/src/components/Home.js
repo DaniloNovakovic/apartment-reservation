@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Apartment from "./apartments/Apartment";
+import DisplayApartments from "./apartments/DisplayApartments";
 
 export class Home extends Component {
   displayName = Home.name;
@@ -8,7 +8,7 @@ export class Home extends Component {
     return (
       <div>
         <h1>Apartment reservation</h1>
-        <Apartment />
+        <DisplayApartments />
       </div>
     );
   }
