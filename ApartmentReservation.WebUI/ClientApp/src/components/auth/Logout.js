@@ -1,16 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions";
+import { Spinner, Alert } from "react-bootstrap";
 
 export class Logout extends Component {
-  componentWillMount() {
-    this.props.logout();
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  componentDidMount() {
+    this.setState({ loggingOut: true });
+    this.props.logout().then(_ => this.setState({ loggingOut: false }));
   }
   render() {
-    const { authError } = this.props;
+    const { alert } = this.props;
     return (
       <div>
-        <h1>{authError || "Logging out..."}</h1>
+        <h1>
+          {!this.state.loggingOut ? (
+            <Alert variant={alert.type}>{alert.message}</Alert>
+          ) : (
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Logging out...</span>
+            </Spinner>
+          )}
+        </h1>
       </div>
     );
   }
@@ -18,7 +32,7 @@ export class Logout extends Component {
 
 const mapStateToProps = state => {
   return {
-    authError: state.auth.authError,
+    alert: state.alert,
     user: state.auth.user
   };
 };

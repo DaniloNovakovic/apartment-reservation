@@ -19,7 +19,8 @@ export class UserForm extends React.Component {
     super(props);
 
     this.state = {
-      ...props.user
+      ...props.user,
+      gender: props.gender || "Male"
     };
   }
 
@@ -51,7 +52,7 @@ export class UserForm extends React.Component {
               <Form.Control
                 type="text"
                 name="username"
-                value={this.state.username}
+                value={this.state.username || ""}
                 onChange={this.handleChange}
                 placeholder="Enter username..."
                 required
@@ -67,7 +68,7 @@ export class UserForm extends React.Component {
                 type="password"
                 minLength="4"
                 name="password"
-                value={this.state.password}
+                value={this.state.password || ""}
                 onChange={this.handleChange}
                 placeholder="Enter password..."
                 required
@@ -82,7 +83,7 @@ export class UserForm extends React.Component {
               <Form.Control
                 type="text"
                 name="firstName"
-                value={this.state.firstName}
+                value={this.state.firstName || ""}
                 onChange={this.handleChange}
                 placeholder="Enter first name..."
               />
@@ -96,7 +97,7 @@ export class UserForm extends React.Component {
               <Form.Control
                 type="text"
                 name="lastName"
-                value={this.state.lastName}
+                value={this.state.lastName || ""}
                 onChange={this.handleChange}
                 placeholder="Enter last name..."
               />
@@ -110,7 +111,7 @@ export class UserForm extends React.Component {
               <Form.Control
                 as="select"
                 name="gender"
-                value={this.state.gender}
+                value={this.state.gender || "Male"}
                 onChange={this.handleChange}
               >
                 <option value="Male">Male</option>

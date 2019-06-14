@@ -2,17 +2,20 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signup } from "../../store/actions";
 import { UserForm } from "./UserForm";
+import { Alert } from "react-bootstrap";
 
 export class Register extends Component {
   handleSubmit = user => {
     this.props.signup(user);
   };
   render() {
-    const { authError } = this.props;
+    const { alert } = this.props;
     return (
       <div>
         <h1>Register</h1>
-        <div>{authError ? <p>{authError}</p> : null}</div>
+        <div>
+          {alert ? <Alert variant={alert.type}>{alert.message}</Alert> : null}
+        </div>
         <UserForm handleSubmit={this.handleSubmit} />
       </div>
     );
@@ -20,7 +23,7 @@ export class Register extends Component {
 }
 const mapStateToProps = state => {
   return {
-    authError: state.auth.authError,
+    alert: state.alert,
     user: state.auth.user
   };
 };

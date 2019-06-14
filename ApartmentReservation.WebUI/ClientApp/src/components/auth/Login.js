@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { login } from "../../store/actions";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 export class Login extends Component {
   constructor(props) {
@@ -24,11 +24,13 @@ export class Login extends Component {
   };
 
   render() {
-    const { authError } = this.props;
+    const { alert } = this.props;
     return (
       <div>
         <h1>Login</h1>
-        <div>{authError ? <p>{authError}</p> : null}</div>
+        <div>
+          {alert ? <Alert variant={alert.type}>{alert.message}</Alert> : null}
+        </div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Label htmlFor="username">Username:</Form.Label>
@@ -62,7 +64,7 @@ export class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    authError: state.auth.authError,
+    alert: state.alert,
     user: state.auth.user
   };
 };

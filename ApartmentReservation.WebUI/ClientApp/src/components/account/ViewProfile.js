@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 const defaultProps = {
   user: {},
@@ -25,9 +26,9 @@ export const ViewProfile = (props = defaultProps) => (
     <p>
       <b>roleName:</b> {props.user.roleName}
     </p>
-    <button className="btn btn-primary" onClick={props.handleEditClick}>
+    <Button variant="primary" onClick={props.handleEditClick}>
       Edit
-    </button>
+    </Button>
   </div>
 );
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { userService } from "../../services";
 import { UsersTable } from "./UsersTable";
+import { Spinner } from "react-bootstrap";
 
 export default class Users extends Component {
   constructor(props) {
@@ -24,9 +25,9 @@ export default class Users extends Component {
 
   render() {
     let contents = this.state.loading ? (
-      <p>
-        <em>Loading...</em>
-      </p>
+      <Spinner animation="grow" variant="secondary" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
     ) : (
       <UsersTable
         users={this.state.users}
@@ -35,16 +36,21 @@ export default class Users extends Component {
     );
 
     return (
-      <div>
-        <h1>Users</h1>
-        <Link to="/add-guest" className="btn btn-primary">
-          Add Guest
-        </Link>
-        <Link to="/add-host" className="btn btn-primary">
-          Add Host
-        </Link>
-        {contents}
-      </div>
+      <section>
+        <header>
+          <h1>Users</h1>
+        </header>
+        <main>
+          <Link to="/add-guest" className="btn btn-primary">
+            Add Guest
+          </Link>
+          <Link to="/add-host" className="btn btn-primary">
+            Add Host
+          </Link>
+          <br />
+          {contents}
+        </main>
+      </section>
     );
   }
 }

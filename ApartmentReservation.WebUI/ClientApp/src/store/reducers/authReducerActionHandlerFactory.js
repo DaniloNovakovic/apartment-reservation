@@ -5,7 +5,7 @@ const successHandler = (state, action) => {
   return {
     ...state,
     user: action.user,
-    authError: null
+    loggedIn: true
   };
 };
 
@@ -13,7 +13,7 @@ const errorHandler = (state, action) => {
   return {
     ...state,
     user: null,
-    authError: action.error.message
+    loggedIn: false
   };
 };
 

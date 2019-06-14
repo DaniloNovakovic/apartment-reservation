@@ -21,7 +21,8 @@ export class EditProfile extends React.Component {
     super(props);
 
     this.state = {
-      ...props.user
+      ...props.user,
+      gender: props.gender || "Male"
     };
   }
 
@@ -54,7 +55,7 @@ export class EditProfile extends React.Component {
                 type="password"
                 minLength="4"
                 name="password"
-                value={this.state.password}
+                value={this.state.password || ""}
                 onChange={this.handleChange}
                 placeholder="Enter password..."
                 required
@@ -69,7 +70,7 @@ export class EditProfile extends React.Component {
               <Form.Control
                 type="text"
                 name="firstName"
-                value={this.state.firstName}
+                value={this.state.firstName || ""}
                 onChange={this.handleChange}
                 placeholder="Enter first name..."
               />
@@ -83,7 +84,7 @@ export class EditProfile extends React.Component {
               <Form.Control
                 type="text"
                 name="lastName"
-                value={this.state.lastName}
+                value={this.state.lastName || ""}
                 onChange={this.handleChange}
                 placeholder="Enter last name..."
               />

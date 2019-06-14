@@ -5,15 +5,16 @@ import { history } from "../../helpers";
 
 export const logout = () => {
   return dispatch => {
-    userService.logout();
-    dispatch({ type: userConstants.LOGOUT_SUCCESS });
-    history.push("/");
+    return userService.logout().then(_ => {
+      dispatch({ type: userConstants.LOGOUT_SUCCESS });
+      history.push("/");
+    });
   };
 };
 
 export const login = (username, password) => {
   return dispatch => {
-    userService.login(username, password).then(
+    return userService.login(username, password).then(
       user => {
         dispatch({ type: userConstants.LOGIN_SUCCESS, user });
         history.push("/");
@@ -28,7 +29,7 @@ export const login = (username, password) => {
 
 export const signup = user => {
   return dispatch => {
-    userService.register(user).then(
+    return userService.register(user).then(
       user => {
         dispatch({ type: userConstants.REGISTER_SUCCESS, user });
         dispatch(alertActions.success("Registration successful"));

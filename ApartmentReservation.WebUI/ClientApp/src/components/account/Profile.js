@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { ViewProfile } from "./ViewProfile";
 import { EditProfile } from "./EditProfile";
 import { userService } from "../../services";
+import { Spinner } from "react-bootstrap";
 
 export class Profile extends Component {
   constructor(props) {
@@ -40,9 +41,9 @@ export class Profile extends Component {
       <div>
         <h1>Profile</h1>
         {loading ? (
-          <p>
-            <em>Loading...</em>
-          </p>
+          <Spinner animation="grow" variant="primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         ) : (
           profileContent
         )}
