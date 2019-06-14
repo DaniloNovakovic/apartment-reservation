@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { userService } from "../../services";
 import { UsersTable } from "./UsersTable";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Button, ButtonGroup } from "react-bootstrap";
 
 export default class Users extends Component {
   constructor(props) {
@@ -41,12 +41,14 @@ export default class Users extends Component {
           <h1>Users</h1>
         </header>
         <main>
-          <Link to="/add-guest" className="btn btn-primary">
-            Add Guest
-          </Link>
-          <Link to="/add-host" className="btn btn-primary">
-            Add Host
-          </Link>
+          <ButtonGroup aria-label="Add user">
+            <Button as={Link} to="/add-guest" variant="primary">
+              Add Guest
+            </Button>
+            <Button as={Link} to="/add-host" variant="primary">
+              Add Host
+            </Button>
+          </ButtonGroup>
           <br />
           {contents}
         </main>

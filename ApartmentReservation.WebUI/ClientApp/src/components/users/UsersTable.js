@@ -1,9 +1,11 @@
+import "./UsersTable.css";
 import React from "react";
 import { Link } from "react-router-dom";
 import { roleNames } from "../../constants";
+import { Table, ButtonToolbar, Button } from "react-bootstrap";
 
 export const UsersTable = ({ users, deleteUserHandler }) => (
-  <table className="table table-striped table-hover">
+  <Table striped hover bordered className="users-table">
     <thead>
       <tr>
         <th>username</th>
@@ -11,7 +13,6 @@ export const UsersTable = ({ users, deleteUserHandler }) => (
         <th>lastName</th>
         <th>gender</th>
         <th>roleName</th>
-        <th />
         <th />
       </tr>
     </thead>
@@ -25,25 +26,27 @@ export const UsersTable = ({ users, deleteUserHandler }) => (
           <td>{user.roleName}</td>
           <td>
             {user.roleName !== roleNames.Admin && (
-              <Link to={`/edit-user/${user.id}`} className="btn btn-warning">
-                Edit
-              </Link>
-            )}
-          </td>
-          <td>
-            {user.roleName !== roleNames.Admin && (
-              <button
-                className="btn btn-danger"
-                onClick={() => deleteUserHandler(user)}
-              >
-                Delete
-              </button>
+              <ButtonToolbar>
+                <Button
+                  as={Link}
+                  to={`/edit-user/${user.id}`}
+                  variant="warning"
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => deleteUserHandler(user)}
+                >
+                  Delete
+                </Button>
+              </ButtonToolbar>
             )}
           </td>
         </tr>
       ))}
     </tbody>
-  </table>
+  </Table>
 );
 
 export default UsersTable;
