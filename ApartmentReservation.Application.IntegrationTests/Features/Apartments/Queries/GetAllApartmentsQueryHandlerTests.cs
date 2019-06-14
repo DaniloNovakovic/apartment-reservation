@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Queries;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 using Xunit;
@@ -12,11 +13,24 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
     public class GetAllApartmentsQueryDataSetup : InMemoryContextTestBase
     {
         public List<Apartment> DbApartments { get; private set; }
+        public Host DbHost { get; private set; }
 
         protected override void LoadTestData()
         {
-            var activeApartment = new Apartment() { ActivityState = ActivityStates.Active };
-            var inactiveApartment = new Apartment() { ActivityState = ActivityStates.Inactive };
+            this.DbHost = this.Context.Add(new Host()
+            {
+                User = new User()
+                {
+                    Username = "host",
+                    Password = "host",
+                    RoleName = RoleNames.Host
+                }
+            }).Entity;
+
+            this.Context.SaveChanges();
+
+            var activeApartment = new Apartment() { ActivityState = ActivityStates.Active, Host = DbHost };
+            var inactiveApartment = new Apartment() { ActivityState = ActivityStates.Inactive, Host = DbHost };
 
             activeApartment.Amenities.Add(new Amenity() { Name = "TV" });
             activeApartment.Amenities.Add(new Amenity() { Name = "Heating" });
@@ -38,11 +52,13 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
     {
         private readonly GetAllApartmentsQueryHandler sut;
         private readonly IEnumerable<Apartment> dbApartments;
+        private readonly Host dbHost;
 
         public GetAllApartmentsQueryHandlerTests(GetAllApartmentsQueryDataSetup data)
         {
             this.sut = new GetAllApartmentsQueryHandler(data.Context);
             this.dbApartments = data.DbApartments.Where(a => !a.IsDeleted);
+            this.dbHost = data.DbHost;
         }
 
         [Theory]
@@ -81,6 +97,20 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                     return string.Equals(amenity.Name, amenityName, System.StringComparison.OrdinalIgnoreCase);
                 });
             });
+        }
+
+        [Fact]
+        public async Task FilterByHostId_ReturnApartmentsWithRequestedHostId()
+        {
+            var request = new GetAllApartmentsQuery()
+            {
+                HostId = dbHost.UserId
+            };
+
+            var apartments = await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+
+            Assert.NotEmpty(apartments);
+            Assert.All(apartments, apartment => Assert.Equal(apartment.Host.Id, request.HostId));
         }
 
         [Fact]

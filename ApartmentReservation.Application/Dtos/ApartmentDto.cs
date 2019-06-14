@@ -27,7 +27,7 @@ namespace ApartmentReservation.Application.Dtos
 
             if (apartment.Host != null)
             {
-                this.Host = new HostDto(apartment.Host);
+                this.Host = new UserPublicDto(apartment.Host);
             }
 
             this.Images = apartment.Images.Select(i => new ImageDto(i));
@@ -53,7 +53,7 @@ namespace ApartmentReservation.Application.Dtos
         public DateTime? CheckOutTime { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
         public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
-        public HostDto Host { get; set; }
+        public UserPublicDto Host { get; set; }
         public IEnumerable<ImageDto> Images { get; set; }
         public LocationDto Location { get; set; }
         public int NumberOfGuests { get; set; }

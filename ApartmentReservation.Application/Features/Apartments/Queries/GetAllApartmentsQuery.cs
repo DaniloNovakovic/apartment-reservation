@@ -17,6 +17,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
         public string ActivityState { get; set; }
 
         public string AmenityName { get; set; }
+
+        public long? HostId { get; set; }
     }
 
     public class GetAllApartmentsQueryHandler : IRequestHandler<GetAllApartmentsQuery, IEnumerable<ApartmentDto>>
@@ -37,6 +39,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 .Include(a => a.Images)
                 .Include(a => a.Location)
                 .ThenInclude(l => l.Address)
+                .Include(a => a.Host)
+                .ThenInclude(h => h.User)
                 .Where(a => !a.IsDeleted);
 
             query = ApplyFilters(request, query);
@@ -58,6 +62,11 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 query = query.Where(apartment =>
                     apartment.Amenities.Any(amenity =>
                         string.Equals(amenity.Name, filters.AmenityName, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (filters.HostId != null)
+            {
+                query = query.Where(apartment => apartment.HostId == filters.HostId);
             }
 
             return query;
