@@ -31,6 +31,10 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Apartments
+                .Include(a => a.Amenities)
+                .Include(a => a.ForRentalDates)
+                .Include(a => a.Reservations)
+                .Include(a => a.Images)
                 .Include(a => a.Location)
                 .ThenInclude(l => l.Address)
                 .Where(a => !a.IsDeleted);

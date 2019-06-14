@@ -1,7 +1,7 @@
 import "./ApartmentCard.css";
 import React, { Component } from "react";
 import ApartmentCarousel from "./ApartmentCarousel";
-import { Card, Row, Col, ListGroup } from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import ReactStars from "react-stars";
 
 const defaultProps = {
@@ -61,6 +61,14 @@ export class ApartmentCard extends Component {
     super(props);
 
     this.state = { apartment: props.apartment || defaultProps.apartment };
+    if (!this.state.apartment.images) {
+      this.state.apartment.images = [
+        {
+          uri:
+            "http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg"
+        }
+      ];
+    }
   }
   render() {
     const { apartment } = this.state;
