@@ -53,5 +53,35 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Apartments
 
             this.mediatorMock.Verify(m => m.Send(query, It.IsAny<CancellationToken>()), Times.Once);
         }
+
+        [Fact]
+        public async Task WhenUserIsHostAndStranger_CallsMediatorWithActiveQuery()
+        {
+            var controller = this.CreateController(userId: 2, role: RoleNames.Host);
+            var query = new GetAllApartmentsQuery() { ActivityState = ActivityStates.Inactive, HostId = 3 };
+            var result = await controller.Get(query).ConfigureAwait(false);
+
+            this.mediatorMock.Verify(m => m.Send(It.Is<GetAllApartmentsQuery>(q => q.ActivityState == ActivityStates.Active), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task WhenUserIsNotStranger_CallsMediatorWithRequestedQuery()
+        {
+            var controller = this.CreateController(userId: 3, role: RoleNames.Host);
+            var query = new GetAllApartmentsQuery() { ActivityState = ActivityStates.Inactive, HostId = 3 };
+            var result = await controller.Get(query).ConfigureAwait(false);
+
+            this.mediatorMock.Verify(m => m.Send(query, It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task WhenUserIsAdminAndStranger_CallsMediatorWithRequestedQuery()
+        {
+            var controller = this.CreateController(userId: 3, role: RoleNames.Administrator);
+            var query = new GetAllApartmentsQuery() { ActivityState = ActivityStates.Inactive, HostId = 5 };
+            var result = await controller.Get(query).ConfigureAwait(false);
+
+            this.mediatorMock.Verify(m => m.Send(query, It.IsAny<CancellationToken>()), Times.Once);
+        }
     }
 }

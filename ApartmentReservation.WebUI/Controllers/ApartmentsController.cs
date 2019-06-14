@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
@@ -21,23 +23,33 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
-            if (!this.IsInAnyRole(RoleNames.Administrator, RoleNames.Host))
+            if (!this.CanSeeInactiveApartments(query))
             {
                 query.ActivityState = ActivityStates.Active;
             }
             return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
-        public bool IsInAnyRole(params string[] roles)
+        private bool CanSeeInactiveApartments(GetAllApartmentsQuery query)
         {
-            foreach (string role in roles)
+            if (this.User.IsInRole(RoleNames.Administrator))
             {
-                if (this.User.IsInRole(role))
-                {
-                    return true;
-                }
+                return true;
             }
+
+            if (this.User.IsInRole(RoleNames.Host))
+            {
+                return query.HostId is null || IsAskingForStrangerInfo(query.HostId.Value);
+            }
+
             return false;
+        }
+
+        private bool IsAskingForStrangerInfo(long requestedUserId)
+        {
+            var currClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            return requestedUserId.ToString().Equals(currClaim?.Value ?? "");
         }
     }
 }
