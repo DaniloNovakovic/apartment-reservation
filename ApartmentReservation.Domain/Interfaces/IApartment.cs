@@ -21,5 +21,6 @@ namespace ApartmentReservation.Domain.Interfaces
         int NumberOfRooms { get; set; }
         double PricePerNight { get; set; }
         ICollection<Reservation> Reservations { get; set; }
+        string Title { get; set; }
     }
 }

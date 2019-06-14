@@ -17,25 +17,15 @@ namespace ApartmentReservation.Domain.Entities
         }
 
         public long Id { get; set; }
-
         public string ActivityState { get; set; } = ActivityStates.Inactive;
-
         public ICollection<Amenity> Amenities { get; set; }
-
         public string ApartmentType { get; set; }
-
         public DateTime? CheckInTime { get; set; }
-
         public DateTime? CheckOutTime { get; set; }
-
         public ICollection<Comment> Comments { get; set; }
-
         public ICollection<ForRentalDate> ForRentalDates { get; set; }
-
         public Host Host { get; set; }
-
         public long? HostId { get; set; }
-
         public ICollection<Image> Images { get; set; }
 
         public Location Location { get; set; }
@@ -49,5 +39,6 @@ namespace ApartmentReservation.Domain.Entities
         public double PricePerNight { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+        public string Title { get; set; }
     }
 }

@@ -41,6 +41,7 @@ namespace ApartmentReservation.Application.Dtos
             this.NumberOfRooms = apartment.NumberOfRooms;
             this.PricePerNight = apartment.PricePerNight;
             this.Reservations = apartment.Reservations.Select(r => new ReservationDto(r));
+            this.Title = apartment.Title;
         }
 
         public long Id { get; set; }
@@ -59,5 +60,7 @@ namespace ApartmentReservation.Application.Dtos
         public int NumberOfRooms { get; set; }
         public double PricePerNight { get; set; }
         public IEnumerable<ReservationDto> Reservations { get; set; }
+        public string Title { get; set; }
+        public double Rating { get; set; }
     }
 }

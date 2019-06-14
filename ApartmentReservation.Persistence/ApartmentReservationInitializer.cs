@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
@@ -131,13 +130,28 @@ namespace ApartmentReservation.Persistence
                 ActivityState = ActivityStates.Active,
                 ApartmentType = ApartmentTypes.Full,
                 Host = host,
-                Location = location
+                Location = location,
+                Title = "Magnificent apartment",
+                PricePerNight = 23
             };
 
             apartment = context.Apartments.Add(apartment).Entity;
-            Amenities.ForEach(a => apartment.Amenities.Add(a));
-
+            this.Amenities.ForEach(a => apartment.Amenities.Add(a));
             context.SaveChanges();
+
+            var images = GetImages();
+            images.ForEach(i => apartment.Images.Add(i));
+            context.SaveChanges();
+        }
+
+        private static List<Image> GetImages()
+        {
+            return new List<Image>()
+            {
+                new Image(){ImageUri = "https://www.onni.com/wp-content/uploads/2016/11/Rental-Apartment-Page-new-min.jpg"},
+                new Image(){ImageUri = "https://arystudios.files.wordpress.com/2015/08/3dcontemperoryapartmentrenderingarchitecturalduskviewrealisticarystudios.jpg"},
+                new Image(){ImageUri = "https://www.travelonline.com/melbourne/city-cbd/accommodation/adina-apartment-hotel-melbourne-flinders-street/penthouse-76880.jpg"},
+            };
         }
 
         private static Address GetAddress(ApartmentReservationDbContext context)
