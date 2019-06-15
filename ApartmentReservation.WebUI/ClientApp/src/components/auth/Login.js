@@ -29,7 +29,9 @@ export class Login extends Component {
       <div>
         <h1>Login</h1>
         <div>
-          {alert ? <Alert variant={alert.type}>{alert.message}</Alert> : null}
+          {alert && alert.message ? (
+            <Alert variant={alert.type}>{alert.message}</Alert>
+          ) : null}
         </div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
@@ -37,8 +39,9 @@ export class Login extends Component {
             <Form.Control
               type="text"
               name="username"
-              value={this.state.username}
+              value={this.state.username || ""}
               onChange={this.handleChange}
+              placeholder="Enter username..."
               required
             />
           </Form.Group>
@@ -48,8 +51,9 @@ export class Login extends Component {
               type="password"
               minLength="4"
               name="password"
-              value={this.state.password}
+              value={this.state.password || ""}
               onChange={this.handleChange}
+              placeholder="Enter password..."
               required
             />
           </Form.Group>

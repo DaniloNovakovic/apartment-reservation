@@ -41,3 +41,17 @@ export const signup = user => {
     );
   };
 };
+
+export const updateCurrentUser = user => {
+  return dispatch => {
+    return userService.updateCurrentUser(user).then(
+      _ => {
+        dispatch({ type: userConstants.UPDATE_CURRENT_USER, user });
+        dispatch(alertActions.success("Successfully updated user info"));
+      },
+      error => {
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+};

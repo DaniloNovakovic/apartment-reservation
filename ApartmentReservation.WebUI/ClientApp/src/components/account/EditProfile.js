@@ -22,7 +22,7 @@ export class EditProfile extends React.Component {
 
     this.state = {
       ...props.user,
-      gender: props.gender || "Male"
+      gender: props.user.gender || "Male"
     };
   }
 

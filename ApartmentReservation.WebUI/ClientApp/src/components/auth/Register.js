@@ -14,7 +14,9 @@ export class Register extends Component {
       <div>
         <h1>Register</h1>
         <div>
-          {alert ? <Alert variant={alert.type}>{alert.message}</Alert> : null}
+          {alert && alert.message ? (
+            <Alert variant={alert.type}>{alert.message}</Alert>
+          ) : null}
         </div>
         <UserForm handleSubmit={this.handleSubmit} />
       </div>

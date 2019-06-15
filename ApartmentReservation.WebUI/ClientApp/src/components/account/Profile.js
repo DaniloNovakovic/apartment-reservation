@@ -2,31 +2,38 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { ViewProfile } from "./ViewProfile";
 import { EditProfile } from "./EditProfile";
-import { userService } from "../../services";
-import { Spinner } from "react-bootstrap";
+import { updateCurrentUser, alertActions } from "../../store/actions";
+import { Spinner, Alert } from "react-bootstrap";
 
 export class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = { edit: false, user: props.user, loading: false };
+    this.state = {
+      edit: false,
+      loading: false
+    };
   }
 
   toggleEdit = () => {
+    this.props.clearAlert();
     this.setState({
       edit: !this.state.edit
     });
   };
 
   handleSubmit = user => {
-    this.toggleEdit();
     this.setState({ loading: true });
-    userService.updateCurrentUser(user).then(_ => {
-      this.setState({ user, loading: false });
+    this.props.updateCurrentUser(user).then(_ => {
+      this.setState({
+        loading: false,
+        edit: alert.type === "success"
+      });
     });
   };
 
   render() {
-    const { user, edit, loading } = this.state;
+    const { alert, user } = this.props;
+    const { edit, loading } = this.state;
     let profileContent = edit ? (
       <EditProfile
         user={user}
@@ -38,24 +45,33 @@ export class Profile extends Component {
     );
 
     return (
-      <div>
+      <section>
         <h1>Profile</h1>
         {loading ? (
           <Spinner animation="grow" variant="primary" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         ) : (
-          profileContent
+          <main>
+            {alert && alert.message ? (
+              <Alert variant={alert.type}>{alert.message}</Alert>
+            ) : null}
+            {profileContent}
+          </main>
         )}
-      </div>
+      </section>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    alert: state.alert
   };
 };
 
-export default connect(mapStateToProps)(Profile);
+export default connect(
+  mapStateToProps,
+  { updateCurrentUser, clearAlert: alertActions.clear }
+)(Profile);
