@@ -25,6 +25,8 @@ export default class CreateApartmentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      checkInTime: "14:00:00",
+      checkOutTime: "10:00:00",
       countries: [{ text: "Serbia", value: "RS" }]
     };
   }
@@ -59,8 +61,16 @@ export default class CreateApartmentForm extends Component {
         <Form.Row>
           <NumberOfRoomsInput as={Col} handleChange={this.handleChange} />
           <PricePerNightInput as={Col} handleChange={this.handleChange} />
-          <CheckInTimeInput as={Col} handleChange={this.handleChange} />
-          <CheckOutTimeInput as={Col} handleChange={this.handleChange} />
+          <CheckInTimeInput
+            as={Col}
+            value={this.state.checkInTime}
+            handleChange={this.handleChange}
+          />
+          <CheckOutTimeInput
+            as={Col}
+            value={this.state.checkOutTime}
+            handleChange={this.handleChange}
+          />
         </Form.Row>
 
         <Form.Row>
