@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -28,6 +30,13 @@ namespace ApartmentReservation.WebUI.Controllers
                 query.ActivityState = ActivityStates.Active;
             }
             return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = RoleNames.Host)]
+        public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
+        {
+            return Ok(await mediator.Send(command).ConfigureAwait(false));
         }
 
         private bool CanSeeInactiveApartments(GetAllApartmentsQuery query)

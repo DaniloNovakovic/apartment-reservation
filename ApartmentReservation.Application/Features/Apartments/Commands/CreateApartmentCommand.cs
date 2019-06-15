@@ -18,7 +18,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         {
             Amenities = new List<AmenityDto>();
             ForRentalDates = new List<ForRentalDateDto>();
-            Images = new List<ImageDto>();
         }
 
         public IEnumerable<AmenityDto> Amenities { get; set; }
@@ -27,7 +26,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         public DateTime? CheckOutTime { get; set; }
         public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
         public long HostId { get; set; }
-        public IEnumerable<ImageDto> Images { get; set; }
         public LocationDto Location { get; set; }
         public int NumberOfRooms { get; set; }
         public double PricePerNight { get; set; }
@@ -64,19 +62,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             apartment = entityEntry.Entity;
             await AppendAmenitiesAsync(request.Amenities, apartment, cancellationToken).ConfigureAwait(false);
             await AppendForRentalDatesAsync(request.ForRentalDates, apartment, cancellationToken).ConfigureAwait(false);
-            await AppendImages(request.Images, apartment, cancellationToken).ConfigureAwait(false);
 
             return new EntityCreatedResult() { Id = apartment.Id };
-        }
-
-        private async Task AppendImages(IEnumerable<ImageDto> from, Apartment to, CancellationToken cancellationToken)
-        {
-            foreach (var image in from)
-            {
-                to.Images.Add(new Image() { ImageUri = image.Uri });
-            }
-
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         private async Task AppendForRentalDatesAsync(IEnumerable<ForRentalDateDto> from, Apartment to, CancellationToken cancellationToken)
