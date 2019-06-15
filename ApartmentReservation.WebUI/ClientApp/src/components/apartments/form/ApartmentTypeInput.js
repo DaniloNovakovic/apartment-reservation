@@ -9,7 +9,7 @@ const options = [
 export function ApartmentTypeInput({
   label = "Apartment Type",
   name = "apartmentType",
-  required = false,
+  required = true,
   types = options,
   ...other
 }) {

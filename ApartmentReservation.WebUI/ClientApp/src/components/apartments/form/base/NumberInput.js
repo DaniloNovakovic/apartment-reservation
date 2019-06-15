@@ -10,6 +10,7 @@ export const NumberInput = ({
   name,
   placeholder,
   required,
+  step,
   ...other
 }) => (
   <Form.Group {...other}>
@@ -23,6 +24,7 @@ export const NumberInput = ({
       required={required}
       min={min}
       max={max}
+      step={step}
     />
   </Form.Group>
 );

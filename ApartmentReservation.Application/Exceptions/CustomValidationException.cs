@@ -48,8 +48,18 @@ namespace ApartmentReservation.Application.Exceptions
         {
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)this.StatusCode;
-            context.Result = new JsonResult(
-                ((CustomValidationException)context.Exception).Failures);
+
+            var errors = new List<string>();
+
+            foreach (var propNameFailures in ((CustomValidationException)context.Exception).Failures.Values)
+            {
+                errors.AddRange(propNameFailures);
+            }
+
+            context.Result = new JsonResult(new
+            {
+                error = errors.ToArray()
+            });
         }
     }
 }

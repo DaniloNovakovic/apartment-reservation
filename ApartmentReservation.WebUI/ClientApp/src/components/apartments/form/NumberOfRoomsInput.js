@@ -6,7 +6,7 @@ export const NumberOfRoomsInput = ({
   name = "numberOfRooms",
   min = 1,
   placeholder = "ex. 2",
-  required = false,
+  required = true,
   ...other
 }) => (
   <NumberInput

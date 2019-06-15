@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Infrastructure;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -50,7 +51,7 @@ namespace ApartmentReservation.WebUI
             // Setup custom exception filter & fluent validation
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetHostQueryValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateApartmentCommandValidation>());
 
             // Setup Authentication and Authorization
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

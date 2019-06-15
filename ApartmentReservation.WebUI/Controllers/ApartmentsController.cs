@@ -33,7 +33,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = RoleNames.Host)]
+        [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
         {
             return Ok(await mediator.Send(command).ConfigureAwait(false));

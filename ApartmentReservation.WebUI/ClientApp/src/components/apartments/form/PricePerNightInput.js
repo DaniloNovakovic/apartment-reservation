@@ -6,7 +6,7 @@ export const PricePerNightInput = ({
   name = "pricePerNight",
   min = 0,
   placeholder = "ex. 20",
-  required = false,
+  required = true,
   ...other
 }) => (
   <NumberInput

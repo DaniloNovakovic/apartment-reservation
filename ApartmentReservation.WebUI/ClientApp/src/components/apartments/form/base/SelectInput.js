@@ -16,7 +16,6 @@ export function SelectInput({
       <Form.Control
         as="select"
         name={name}
-        value={value}
         onChange={handleChange}
         required={required}
       >

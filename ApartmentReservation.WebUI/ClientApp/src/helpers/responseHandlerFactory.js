@@ -9,7 +9,7 @@ export function createResponseHandler(logoutCallback) {
           document.location.reload(true);
         }
 
-        const error = (data && data.error) || response.statusText;
+        const error = (data && data.error) || response.statusText || data;
         return Promise.reject(error);
       }
 

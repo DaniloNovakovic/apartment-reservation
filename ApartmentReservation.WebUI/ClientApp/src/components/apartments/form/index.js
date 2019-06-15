@@ -3,6 +3,7 @@ export * from "./ApartmentTypeInput";
 export * from "./CheckInTimeInput";
 export * from "./CheckOutTimeInput";
 export * from "./CityNameInput";
+export * from "./CountryInput";
 export * from "./LatitudeInput";
 export * from "./LongitudeInput";
 export * from "./NumberOfRoomsInput";

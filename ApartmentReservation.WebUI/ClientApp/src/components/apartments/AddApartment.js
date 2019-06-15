@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import CreateApartmentForm from "./CreateApartmentForm";
+import { createApartment } from "../../store/actions";
 
 export class AddApartment extends Component {
   handleSubmit = apartment => {
     let hostId = this.props.user.id;
-    // todo: make api call to add host
+    this.props.createApartment(hostId, apartment);
   };
 
   render() {
@@ -32,4 +33,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(AddApartment);
+export default connect(
+  mapStateToProps,
+  { createApartment }
+)(AddApartment);

@@ -25,12 +25,12 @@ export default class CreateApartmentForm extends Component {
     super(props);
     this.state = {
       checkInTime: "14:00:00",
-      checkOutTime: "10:00:00"
+      checkOutTime: "10:00:00",
+      apartmentType: "Full"
     };
   }
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
     this.props.handleSubmit(this.state);
   };
   handleChange = event => {
@@ -47,7 +47,11 @@ export default class CreateApartmentForm extends Component {
             sm="8"
             handleChange={this.handleChange}
           />
-          <ApartmentTypeInput as={Col} handleChange={this.handleChange} />
+          <ApartmentTypeInput
+            as={Col}
+            value={this.state.apartmentType}
+            handleChange={this.handleChange}
+          />
         </Form.Row>
 
         <Form.Row>

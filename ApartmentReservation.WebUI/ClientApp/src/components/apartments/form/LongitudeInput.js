@@ -5,6 +5,7 @@ export const LongitudeInput = ({
   label = "Longitude",
   name = "longitude",
   placeholder = "ex. 40.754026",
+  step = 0.1,
   required = false,
   ...other
 }) => (
@@ -12,6 +13,7 @@ export const LongitudeInput = ({
     label={label}
     name={name}
     placeholder={placeholder}
+    step={step}
     required={required}
     {...other}
   />
