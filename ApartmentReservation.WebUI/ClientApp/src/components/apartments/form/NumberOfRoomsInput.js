@@ -1,14 +1,20 @@
 import React from "react";
-import { Form, Col } from "react-bootstrap";
-export const NumberOfRoomsInput = props => (
-  <Form.Group as={Col}>
-    <Form.Label>Number of rooms</Form.Label>
-    <Form.Control
-      type="number"
-      name="numberOfRooms"
-      min="1"
-      placeholder="ex. 2"
-      onChange={props.handleChange}
-    />
-  </Form.Group>
+import { NumberInput } from "./base";
+
+export const NumberOfRoomsInput = ({
+  label = "Number of rooms",
+  name = "numberOfRooms",
+  min = 1,
+  placeholder = "ex. 2",
+  required = false,
+  ...other
+}) => (
+  <NumberInput
+    label={label}
+    name={name}
+    min={min}
+    placeholder={placeholder}
+    required={required}
+    {...other}
+  />
 );

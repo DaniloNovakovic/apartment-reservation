@@ -57,15 +57,15 @@ export default class CreateApartmentForm extends Component {
         </Form.Row>
 
         <Form.Row>
-          <NumberOfRoomsInput handleChange={this.handleChange} />
-          <PricePerNightInput handleChange={this.handleChange} />
+          <NumberOfRoomsInput as={Col} handleChange={this.handleChange} />
+          <PricePerNightInput as={Col} handleChange={this.handleChange} />
           <CheckInTimeInput as={Col} handleChange={this.handleChange} />
           <CheckOutTimeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
           <StreetNameInput as={Col} sm="7" handleChange={this.handleChange} />
-          <StreetNumberInput handleChange={this.handleChange} />
+          <StreetNumberInput as={Col} sm="5" handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
@@ -88,11 +88,11 @@ export default class CreateApartmentForm extends Component {
             </Form.Control>
           </Form.Group>
 
-          <PostalCodeInput handleChange={this.handleChange} />
+          <PostalCodeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
-          <LongitudeInput handleChange={this.handleChange} />
+          <LongitudeInput as={Col} handleChange={this.handleChange} />
           <LatitudeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
