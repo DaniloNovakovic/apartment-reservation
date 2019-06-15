@@ -20,8 +20,8 @@ namespace ApartmentReservation.Domain.Entities
         public string ActivityState { get; set; } = ActivityStates.Inactive;
         public ICollection<Amenity> Amenities { get; set; }
         public string ApartmentType { get; set; }
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? CheckOutTime { get; set; }
+        public string CheckInTime { get; set; }
+        public string CheckOutTime { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<ForRentalDate> ForRentalDates { get; set; }
         public Host Host { get; set; }

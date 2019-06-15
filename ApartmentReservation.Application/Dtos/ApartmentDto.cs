@@ -49,8 +49,8 @@ namespace ApartmentReservation.Application.Dtos
         public string ActivityState { get; set; }
         public IEnumerable<AmenityDto> Amenities { get; set; }
         public string ApartmentType { get; set; }
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? CheckOutTime { get; set; }
+        public string CheckInTime { get; set; }
+        public string CheckOutTime { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
         public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
         public UserPublicDto Host { get; set; }

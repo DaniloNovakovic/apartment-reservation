@@ -22,8 +22,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
         public IEnumerable<AmenityDto> Amenities { get; set; }
         public string ApartmentType { get; set; }
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? CheckOutTime { get; set; }
+        public string CheckInTime { get; set; }
+        public string CheckOutTime { get; set; }
         public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
         public long HostId { get; set; }
         public LocationDto Location { get; set; }

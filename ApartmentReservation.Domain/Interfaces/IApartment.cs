@@ -10,8 +10,8 @@ namespace ApartmentReservation.Domain.Interfaces
         string ActivityState { get; set; }
         ICollection<Amenity> Amenities { get; set; }
         string ApartmentType { get; set; }
-        DateTime? CheckInTime { get; set; }
-        DateTime? CheckOutTime { get; set; }
+        string CheckInTime { get; set; }
+        string CheckOutTime { get; set; }
         ICollection<Comment> Comments { get; set; }
         ICollection<ForRentalDate> ForRentalDates { get; set; }
         Host Host { get; set; }
