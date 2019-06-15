@@ -17,6 +17,7 @@ import { roleNames } from "./constants";
 import AddHost from "./components/users/AddHost";
 import AddGuest from "./components/users/AddGuest";
 import EditUser from "./components/users/EditUser";
+import AddApartment from "./components/apartments/AddApartment";
 
 class App extends Component {
   constructor(props) {
@@ -57,6 +58,11 @@ class App extends Component {
             path="/edit-user/:id"
             roles={[roleNames.Admin]}
             component={EditUser}
+          />
+          <PrivateRoute
+            path="/add-apartment"
+            roles={[roleNames.Host]}
+            component={AddApartment}
           />
         </Layout>
       </Router>

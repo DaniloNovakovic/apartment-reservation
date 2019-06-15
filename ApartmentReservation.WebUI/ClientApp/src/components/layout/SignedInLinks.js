@@ -12,6 +12,13 @@ const roleLinks = {
         Users
       </Nav.Link>
     </Nav.Item>
+  ],
+  [roleNames.Host]: [
+    <Nav.Item key="host-add-apartment-nav">
+      <Nav.Link as={Link} to="/add-apartment">
+        Add Apartment
+      </Nav.Link>
+    </Nav.Item>
   ]
 };
 
