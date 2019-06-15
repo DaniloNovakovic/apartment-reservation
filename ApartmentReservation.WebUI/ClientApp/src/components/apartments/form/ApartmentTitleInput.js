@@ -1,9 +1,7 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { TextInput } from "./base";
 
 export const ApartmentTitleInput = ({
-  handleChange,
-  value,
   maxLength = 50,
   label = "Title",
   name = "title",
@@ -11,15 +9,12 @@ export const ApartmentTitleInput = ({
   required = true,
   ...other
 }) => (
-  <Form.Group {...other}>
-    <Form.Label>{label}</Form.Label>
-    <Form.Control
-      name={name}
-      onChange={handleChange}
-      value={value}
-      maxLength={maxLength}
-      placeholder={placeholder}
-      required={required}
-    />
-  </Form.Group>
+  <TextInput
+    maxLength={maxLength}
+    label={label}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    {...other}
+  />
 );
