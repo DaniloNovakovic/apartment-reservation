@@ -1,5 +1,16 @@
 import React, { Component } from "react";
 import { Form, Button, Col } from "react-bootstrap";
+import { StreetNameInput, ApartmentTypeInput } from "./form";
+import { ApartmentTitleInput } from "./form/ApartmentTitleInput";
+import { NumberOfRoomsInput } from "./form/NumberOfRoomsInput";
+import { PricePerNightInput } from "./form/PricePerNightInput";
+import { CheckInTimeInput } from "./form/CheckInTimeInput";
+import { CheckOutTimeInput } from "./form/CheckOutTimeInput";
+import { StreetNumberInput } from "./form/StreetNumberInput";
+import { CityNameInput } from "./form/CityNameInput";
+import { PostalCodeInput } from "./form/PostalCodeInput";
+import { LongitudeInput } from "./form/LongitudeInput";
+import { LatitudeInput } from "./form/LatitudeInput";
 //api geocode.xyz ?
 
 /*
@@ -8,117 +19,81 @@ IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
 long HostId { get; set; }
 */
 
+const countriesApi = "./countries.json";
+
 export default class CreateApartmentForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      countries: [{ text: "Serbia", value: "RS" }]
+    };
+  }
+  componentDidMount() {
+    fetch(countriesApi)
+      .then(req => req.json())
+      .then(data => this.setState({ countries: data }));
   }
   handleSubmit = event => {
     event.preventDefault();
+    console.log(this.state);
     this.props.handleSubmit(this.state);
   };
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
   render() {
+    const { countries } = this.state;
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <Form.Row>
-          <Form.Group as={Col} sm="8">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              name="title"
-              maxLength={50}
-              placeholder="Enter title for apartment"
-              required
-            />
-          </Form.Group>
-          <Form.Group as={Col}>
-            <Form.Label>Apartment Type</Form.Label>
-            <Form.Control as="select" name="apartmentType" required>
-              <option value="Full">Full</option>
-              <option value="SingleRoom">Single Room</option>
-            </Form.Control>
-          </Form.Group>
+          <ApartmentTitleInput
+            as={Col}
+            sm="8"
+            handleChange={this.handleChange}
+          />
+          <ApartmentTypeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
-          <Form.Group as={Col}>
-            <Form.Label>Number of rooms</Form.Label>
-            <Form.Control
-              type="number"
-              name="numberOfRooms"
-              min="1"
-              placeholder="ex. 2"
-              required
-            />
-          </Form.Group>
-
-          <Form.Group as={Col}>
-            <Form.Label>Price($) per night</Form.Label>
-            <Form.Control
-              type="number"
-              name="pricePerNight"
-              min="0"
-              placeholder="ex. 20"
-              required
-            />
-          </Form.Group>
-
-          <Form.Group as={Col}>
-            <Form.Label>Check in time</Form.Label>
-            <Form.Control type="time" name="pricePerNight" required />
-          </Form.Group>
-
-          <Form.Group as={Col}>
-            <Form.Label>Check out time</Form.Label>
-            <Form.Control type="time" name="pricePerNight" required />
-          </Form.Group>
+          <NumberOfRoomsInput handleChange={this.handleChange} />
+          <PricePerNightInput handleChange={this.handleChange} />
+          <CheckInTimeInput as={Col} handleChange={this.handleChange} />
+          <CheckOutTimeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
-          <Form.Group as={Col} xm="7">
-            <Form.Label>Street Name</Form.Label>
-            <Form.Control name="streetName" placeholder="ex. Main street" />
-          </Form.Group>
-          <Form.Group as={Col} sm="5">
-            <Form.Label>Street Number</Form.Label>
-            <Form.Control name="streetNumber" placeholder="ex. 92" />
-          </Form.Group>
+          <StreetNameInput as={Col} sm="7" handleChange={this.handleChange} />
+          <StreetNumberInput handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
-          <Form.Group as={Col}>
-            <Form.Label>City</Form.Label>
-            <Form.Control name="cityName" placeholder="ex. Novi Sad" />
-          </Form.Group>
+          <CityNameInput as={Col} handleChange={this.handleChange} />
 
           <Form.Group as={Col}>
             <Form.Label>State</Form.Label>
-            <Form.Control as="select" name="countryName">
-              <option>Choose...</option>
+            <Form.Control
+              as="select"
+              name="countryName"
+              onChange={this.handleChange}
+            >
+              {countries.map(country => {
+                return (
+                  <option key={`${country.value}`} value={country.text}>
+                    {country.text}
+                  </option>
+                );
+              })}
             </Form.Control>
           </Form.Group>
 
-          <Form.Group as={Col}>
-            <Form.Label>Zip</Form.Label>
-            <Form.Control name="postalCode" placeholder="ex. 21102" required />
-          </Form.Group>
+          <PostalCodeInput handleChange={this.handleChange} />
         </Form.Row>
 
         <Form.Row>
-          <Form.Group as={Col}>
-            <Form.Label>Longitude</Form.Label>
-            <Form.Control
-              type="number"
-              name="longitude"
-              placeholder="ex. 40.754026"
-            />
-          </Form.Group>
-          <Form.Group as={Col}>
-            <Form.Label>Latitude</Form.Label>
-            <Form.Control
-              type="number"
-              name="latitude"
-              placeholder="ex. -73.956096"
-            />
-          </Form.Group>
+          <LongitudeInput handleChange={this.handleChange} />
+          <LatitudeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
         <Button variant="primary" type="submit">
