@@ -14,3 +14,7 @@
 .apartment-card-main {
   max-width: 310px;
 }
+
+.apartment-card {
+  margin: 1em;
+}

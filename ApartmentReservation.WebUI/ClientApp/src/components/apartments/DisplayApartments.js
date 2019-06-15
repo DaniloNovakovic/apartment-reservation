@@ -1,3 +1,4 @@
+import "./DisplayApartments.css";
 import React, { Component } from "react";
 import ApartmentCard from "./ApartmentCard";
 import { Container, Spinner } from "react-bootstrap";
@@ -30,7 +31,7 @@ export class DisplayApartments extends Component {
       })
     );
 
-    return <Container>{content}</Container>;
+    return <section className="apartment-display">{content}</section>;
   }
 }
 

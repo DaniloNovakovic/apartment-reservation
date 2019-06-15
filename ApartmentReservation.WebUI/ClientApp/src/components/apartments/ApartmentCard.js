@@ -82,7 +82,7 @@ export class ApartmentCard extends Component {
             <ApartmentCarousel images={apartment.images} />
           </Card.Header>
           <Card.Body>
-            <Card.Title className="text-truncate">{apartment.title}</Card.Title>
+            <Card.Title>{apartment.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted text-truncate">
               {apartment.apartmentType}
             </Card.Subtitle>
