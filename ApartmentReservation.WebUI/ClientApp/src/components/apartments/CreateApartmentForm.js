@@ -11,6 +11,7 @@ import { CityNameInput } from "./form/CityNameInput";
 import { PostalCodeInput } from "./form/PostalCodeInput";
 import { LongitudeInput } from "./form/LongitudeInput";
 import { LatitudeInput } from "./form/LatitudeInput";
+import { CountryInput } from "./form/CountryInput";
 //api geocode.xyz ?
 
 /*
@@ -19,21 +20,13 @@ IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
 long HostId { get; set; }
 */
 
-const countriesApi = "./countries.json";
-
 export default class CreateApartmentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       checkInTime: "14:00:00",
-      checkOutTime: "10:00:00",
-      countries: [{ text: "Serbia", value: "RS" }]
+      checkOutTime: "10:00:00"
     };
-  }
-  componentDidMount() {
-    fetch(countriesApi)
-      .then(req => req.json())
-      .then(data => this.setState({ countries: data }));
   }
   handleSubmit = event => {
     event.preventDefault();
@@ -46,7 +39,6 @@ export default class CreateApartmentForm extends Component {
     });
   };
   render() {
-    const { countries } = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Row>
@@ -80,24 +72,7 @@ export default class CreateApartmentForm extends Component {
 
         <Form.Row>
           <CityNameInput as={Col} handleChange={this.handleChange} />
-
-          <Form.Group as={Col}>
-            <Form.Label>State</Form.Label>
-            <Form.Control
-              as="select"
-              name="countryName"
-              onChange={this.handleChange}
-            >
-              {countries.map(country => {
-                return (
-                  <option key={`${country.value}`} value={country.text}>
-                    {country.text}
-                  </option>
-                );
-              })}
-            </Form.Control>
-          </Form.Group>
-
+          <CountryInput as={Col} handleChange={this.handleChange} />
           <PostalCodeInput as={Col} handleChange={this.handleChange} />
         </Form.Row>
 
