@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ApartmentCarousel from "./ApartmentCarousel";
 import { Card, Row, Col } from "react-bootstrap";
 import ReactStars from "react-stars";
+import { Link } from "react-router-dom";
 
 const defaultProps = {
   apartment: {
@@ -72,12 +73,17 @@ export class ApartmentCard extends Component {
   }
   render() {
     const { apartment } = this.state;
+    const borderColor =
+      apartment.activityState === "Active" ? "secondary" : "danger";
 
     return !apartment ? (
       <div />
     ) : (
       <div className="apartment-card">
-        <Card className="apartment-card-main d-inline-block">
+        <Card
+          border={borderColor}
+          className="apartment-card-main d-inline-block"
+        >
           <Card.Header as="div">
             <ApartmentCarousel images={apartment.images} />
           </Card.Header>
@@ -108,6 +114,11 @@ export class ApartmentCard extends Component {
               </Col>
             </Row>
           </Card.Body>
+          <Card.Footer>
+            <Card.Link as={Link} to={`/view-apartment/${apartment.id}`}>
+              View more
+            </Card.Link>
+          </Card.Footer>
         </Card>
       </div>
     );
