@@ -18,19 +18,19 @@ namespace ApartmentReservation.Application.Dtos
 
             this.Id = apartment.Id;
             this.ActivityState = apartment.ActivityState;
-            this.Amenities = apartment.Amenities.Select(a => new AmenityDto(a));
+            this.Amenities = apartment.Amenities.Where(a => !a.IsDeleted).Select(a => new AmenityDto(a));
             this.ApartmentType = apartment.ApartmentType;
             this.CheckInTime = apartment.CheckInTime;
             this.CheckOutTime = apartment.CheckOutTime;
-            this.Comments = apartment.Comments.Select(c => new CommentDto(c));
-            this.ForRentalDates = apartment.ForRentalDates.Select(frd => new ForRentalDateDto(frd));
+            this.Comments = apartment.Comments.Where(a => !a.IsDeleted).Select(c => new CommentDto(c));
+            this.ForRentalDates = apartment.ForRentalDates.Where(a => !a.IsDeleted).Select(frd => new ForRentalDateDto(frd));
 
             if (apartment.Host != null)
             {
                 this.Host = new UserPublicDto(apartment.Host);
             }
 
-            this.Images = apartment.Images.Select(i => new ImageDto(i));
+            this.Images = apartment.Images.Where(a => !a.IsDeleted).Select(i => new ImageDto(i));
 
             if (apartment.Location != null)
             {
@@ -40,7 +40,7 @@ namespace ApartmentReservation.Application.Dtos
             this.NumberOfGuests = apartment.NumberOfGuests;
             this.NumberOfRooms = apartment.NumberOfRooms;
             this.PricePerNight = apartment.PricePerNight;
-            this.Reservations = apartment.Reservations.Select(r => new ReservationDto(r));
+            this.Reservations = apartment.Reservations.Where(a => !a.IsDeleted).Select(r => new ReservationDto(r));
             this.Title = apartment.Title;
         }
 

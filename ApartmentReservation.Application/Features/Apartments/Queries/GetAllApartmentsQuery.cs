@@ -32,7 +32,18 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Apartments
+            var query = GetApartmentsWithIncludedRelations();
+
+            query = ApplyFilters(request, query);
+
+            var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return apartments.Select(a => new ApartmentDto(a));
+        }
+
+        private IQueryable<Apartment> GetApartmentsWithIncludedRelations()
+        {
+            return context.Apartments
                 .Include("ApartmentAmenities.Amenity")
                 .Include(a => a.ForRentalDates)
                 .Include(a => a.Reservations)
@@ -42,12 +53,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 .Include(a => a.Host)
                 .ThenInclude(h => h.User)
                 .Where(a => !a.IsDeleted);
-
-            query = ApplyFilters(request, query);
-
-            var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
-
-            return apartments.Select(a => new ApartmentDto(a));
         }
 
         private static IQueryable<Apartment> ApplyFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)

@@ -32,6 +32,14 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
+        // GET: api/Apartments/5
+        [HttpGet("{id}", Name = "GetApartment")]
+        public async Task<IActionResult> Get(long id)
+        {
+            return this.Ok(await this.mediator.Send(new GetApartmentQuery() { Id = id })
+                .ConfigureAwait(false));
+        }
+
         [HttpPost]
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
