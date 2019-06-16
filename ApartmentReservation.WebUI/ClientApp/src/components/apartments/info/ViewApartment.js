@@ -5,6 +5,7 @@ import { ViewApartmentSummary } from "./ViewApartmentSummary";
 import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
 import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
+import ViewApartmentImages from "./ViewApartmentImages";
 
 export class ViewApartment extends Component {
   constructor(props) {
@@ -24,13 +25,11 @@ export class ViewApartment extends Component {
   render() {
     const { apartment, loading } = this.state;
     const {
-      location = {},
       images = [],
       amenities = [],
       comments = [],
       forRentalDates = []
     } = apartment;
-    const { address = {} } = location;
 
     return loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
@@ -40,6 +39,8 @@ export class ViewApartment extends Component {
       <section className="view-apartment-page">
         <ViewApartmentSummary apartment={apartment} />
         <main>
+          <hr />
+          <ViewApartmentImages images={images} />
           <hr />
           <ViewApartmentAmenities amenities={amenities} />
           <hr />

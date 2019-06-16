@@ -61,15 +61,18 @@ export class ApartmentCard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { apartment: props.apartment || defaultProps.apartment };
-    if (!this.state.apartment.images) {
-      this.state.apartment.images = [
+    let apartment = props.apartment || defaultProps.apartment;
+
+    if (!apartment.images || apartment.images.length === 0) {
+      apartment.images = [
         {
           uri:
             "http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg"
         }
       ];
     }
+
+    this.state = { apartment };
   }
   render() {
     const { apartment } = this.state;
