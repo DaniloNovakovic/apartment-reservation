@@ -123,7 +123,7 @@ namespace ApartmentReservation.Persistence
             var address = GetAddress(context);
             var location = GetLocation(context, address);
             var host = context.Hosts.FirstOrDefault();
-            var amenities = context.Amenities.FirstOrDefault();
+            var amenities = context.Amenities.ToList();
 
             var apartment = new Apartment()
             {
@@ -136,7 +136,11 @@ namespace ApartmentReservation.Persistence
             };
 
             apartment = context.Apartments.Add(apartment).Entity;
-            this.Amenities.ForEach(a => apartment.Amenities.Add(a));
+            foreach (var amenity in amenities)
+            {
+                context.Add(new ApartmentAmenity() { Amenity = amenity, Apartment = apartment });
+            }
+
             context.SaveChanges();
 
             var images = GetImages();

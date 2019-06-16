@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Interfaces;
 
@@ -12,13 +13,16 @@ namespace ApartmentReservation.Domain.Entities
             this.ForRentalDates = new HashSet<ForRentalDate>();
             this.Comments = new HashSet<Comment>();
             this.Images = new HashSet<Image>();
-            this.Amenities = new HashSet<Amenity>();
+            this.ApartmentAmenities = new HashSet<ApartmentAmenity>();
             this.Reservations = new HashSet<Reservation>();
         }
 
         public long Id { get; set; }
         public string ActivityState { get; set; } = ActivityStates.Inactive;
-        public ICollection<Amenity> Amenities { get; set; }
+
+        public ICollection<ApartmentAmenity> ApartmentAmenities { get; set; }
+        public IEnumerable<Amenity> Amenities => ApartmentAmenities.Select(a => a.Amenity);
+
         public string ApartmentType { get; set; }
         public string CheckInTime { get; set; }
         public string CheckOutTime { get; set; }

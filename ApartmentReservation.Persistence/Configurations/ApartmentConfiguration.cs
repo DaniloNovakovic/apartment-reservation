@@ -8,7 +8,11 @@ namespace ApartmentReservation.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Apartment> builder)
         {
-            builder.HasMany(a => a.Amenities);
+            builder.Ignore(a => a.Amenities);
+
+            builder.HasMany(a => a.ApartmentAmenities)
+                .WithOne(a => a.Apartment)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(a => a.Comments)
                 .WithOne(c => c.Apartment)

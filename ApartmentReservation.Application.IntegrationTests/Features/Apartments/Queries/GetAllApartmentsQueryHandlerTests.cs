@@ -29,19 +29,23 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
             this.Context.SaveChanges();
 
-            var activeApartment = new Apartment() { ActivityState = ActivityStates.Active, Host = DbHost };
-            var inactiveApartment = new Apartment() { ActivityState = ActivityStates.Inactive, Host = DbHost };
-
-            activeApartment.Amenities.Add(new Amenity() { Name = "TV" });
-            activeApartment.Amenities.Add(new Amenity() { Name = "Heating" });
-
-            var apartments = new List<Apartment>()
+            var apartments = new[]
             {
-               activeApartment,
-               inactiveApartment
+                new Apartment() { ActivityState = ActivityStates.Active, Host = DbHost },
+                new Apartment() { ActivityState = ActivityStates.Inactive, Host = DbHost }
             };
 
-            this.Context.AddRange(apartments);
+            var amenities = new[]
+            {
+                new Amenity(){Name="TV"},
+                new Amenity(){Name="Heating"}
+            };
+
+            Context.AddRange(
+                new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[0] },
+                new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[1] }
+            );
+
             this.Context.SaveChanges();
 
             this.DbApartments = this.Context.Apartments.ToList();

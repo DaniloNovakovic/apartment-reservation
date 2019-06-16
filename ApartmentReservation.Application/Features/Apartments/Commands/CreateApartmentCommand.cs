@@ -82,7 +82,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             foreach (var amenity in dbAmenities)
             {
-                to.Amenities.Add(amenity);
+                to.ApartmentAmenities.Add(new ApartmentAmenity() { Amenity = amenity, Apartment = to });
             }
 
             await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

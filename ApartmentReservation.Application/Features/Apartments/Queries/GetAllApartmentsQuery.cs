@@ -33,7 +33,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Apartments
-                .Include(a => a.Amenities)
+                .Include("ApartmentAmenities.Amenity")
                 .Include(a => a.ForRentalDates)
                 .Include(a => a.Reservations)
                 .Include(a => a.Images)

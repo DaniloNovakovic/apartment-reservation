@@ -8,7 +8,7 @@ namespace ApartmentReservation.Domain.Interfaces
     {
         long Id { get; set; }
         string ActivityState { get; set; }
-        ICollection<Amenity> Amenities { get; set; }
+        IEnumerable<Amenity> Amenities { get; }
         string ApartmentType { get; set; }
         string CheckInTime { get; set; }
         string CheckOutTime { get; set; }

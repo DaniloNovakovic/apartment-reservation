@@ -9,6 +9,12 @@ namespace ApartmentReservation.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Amenity> builder)
         {
             builder.Property(a => a.Name).IsRequired();
+
+            builder.Ignore(a => a.Apartments);
+
+            builder.HasMany(a => a.ApartmentAmenities)
+                .WithOne(a => a.Amenity)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
