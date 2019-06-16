@@ -4,7 +4,8 @@ import { handleResponse } from "./userService";
 export const apartmentService = {
   getAll,
   getById,
-  post
+  post,
+  put
 };
 
 function getAll(filters = {}) {
@@ -24,8 +25,22 @@ function getById(id) {
   return fetch(`api/Apartments/${id}`, requestOptions).then(handleResponse);
 }
 
+function put(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  return fetch(`api/Apartments/${data.id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
 function post(data) {
-  console.log(data);
   const requestOptions = {
     method: "POST",
     headers: {

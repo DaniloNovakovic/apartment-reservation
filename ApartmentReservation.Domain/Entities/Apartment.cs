@@ -23,9 +23,9 @@ namespace ApartmentReservation.Domain.Entities
         public ICollection<ApartmentAmenity> ApartmentAmenities { get; set; }
         public IEnumerable<Amenity> Amenities => ApartmentAmenities.Select(a => a.Amenity);
 
-        public string ApartmentType { get; set; }
-        public string CheckInTime { get; set; }
-        public string CheckOutTime { get; set; }
+        public string ApartmentType { get; set; } = ApartmentTypes.Full;
+        public string CheckInTime { get; set; } = "14:00:00";
+        public string CheckOutTime { get; set; } = "10:00:00";
         public ICollection<Comment> Comments { get; set; }
         public ICollection<ForRentalDate> ForRentalDates { get; set; }
         public Host Host { get; set; }
@@ -43,6 +43,6 @@ namespace ApartmentReservation.Domain.Entities
         public double PricePerNight { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
     }
 }

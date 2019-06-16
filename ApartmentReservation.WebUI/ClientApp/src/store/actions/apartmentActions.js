@@ -20,10 +20,24 @@ export const createApartment = (hostId, apartment) => {
   };
 };
 
-export const updateCurrentApartment = apartment => {
-  return {
-    type: apartmentConstants.UPDATE_CURRENT_APARTMENT,
-    currentApartment: apartment
+export const updateCurrentApartment = apartmentData => {
+  return dispatch => {
+    return apartmentService.put(apartmentData).then(
+      _ => {
+        dispatch({
+          type: apartmentConstants.UPDATE_CURRENT_APARTMENT,
+          currentApartment: apartmentData
+        });
+        dispatch(
+          alertActions.success(
+            `Successfully updated apartment '${apartmentData.id}'`
+          )
+        );
+      },
+      error => {
+        dispatch(alertActions.error(JSON.stringify(error)));
+      }
+    );
   };
 };
 

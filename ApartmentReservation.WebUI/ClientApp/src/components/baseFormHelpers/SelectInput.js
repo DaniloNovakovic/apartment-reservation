@@ -17,6 +17,7 @@ export function SelectInput({
         as="select"
         name={name}
         onChange={handleChange}
+        value={value}
         required={required}
       >
         {options.map((item, index) => {

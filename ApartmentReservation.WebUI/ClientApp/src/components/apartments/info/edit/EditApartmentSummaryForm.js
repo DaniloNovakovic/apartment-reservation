@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import {
   ApartmentTitleInput,
   ApartmentTypeInput,
@@ -16,8 +16,10 @@ export default class EditApartmentSummaryForm extends Component {
     this.props.handleChange(event);
   };
   render() {
+    const { alert } = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
+        {alert && <Alert variant={alert.type}>{alert.message}</Alert>}
         <ApartmentTitleInput
           value={this.props.title || ""}
           handleChange={this.handleChange}
@@ -31,7 +33,7 @@ export default class EditApartmentSummaryForm extends Component {
           handleChange={this.handleChange}
         />
         <NumberOfRoomsInput
-          value={this.props.numberOfRooms}
+          value={this.props.numberOfRooms || 0}
           handleChange={this.handleChange}
         />
       </Form>

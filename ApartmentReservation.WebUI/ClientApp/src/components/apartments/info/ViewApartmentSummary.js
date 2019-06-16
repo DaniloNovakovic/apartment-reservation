@@ -33,10 +33,12 @@ export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
       </div>
       {allowEdit && (
         <EditApartmentModal
-          title={title}
-          cityName={address.cityName}
-          numberOfRooms={numberOfRooms}
-          apartmentType={apartmentType}
+          formData={{
+            title,
+            cityName: address.cityName,
+            numberOfRooms,
+            apartmentType
+          }}
           form={EditApartmentSummaryForm}
         />
       )}

@@ -8,7 +8,7 @@ export class EditModalBase extends Component {
     super(props, context);
     this.state = {
       show: false,
-      ...this.props
+      formData: this.props.formData
     };
   }
 
@@ -32,7 +32,10 @@ export class EditModalBase extends Component {
 
   handleChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      formData: {
+        ...this.state.formData,
+        [event.target.name]: event.target.value
+      }
     });
   };
 
@@ -54,7 +57,7 @@ export class EditModalBase extends Component {
               <Component
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
-                {...this.state}
+                {...this.state.formData}
               />
             }
           </Modal.Body>

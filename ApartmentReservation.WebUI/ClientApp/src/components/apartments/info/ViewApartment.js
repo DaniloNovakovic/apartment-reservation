@@ -7,7 +7,7 @@ import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
 import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
 import ViewApartmentImages from "./ViewApartmentImages";
-import { updateCurrentApartment } from "../../../store/actions";
+import { setCurrentApartment } from "../../../store/actions";
 
 export class ViewApartment extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export class ViewApartment extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     apartmentService.getById(this.state.apartmentId).then(apartment => {
-      this.props.updateCurrentApartment(apartment);
+      this.props.setCurrentApartment(apartment);
       this.setState({ loading: false });
     });
   }
@@ -70,5 +70,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { updateCurrentApartment }
+  { setCurrentApartment }
 )(ViewApartment);

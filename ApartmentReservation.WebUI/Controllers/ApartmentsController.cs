@@ -47,10 +47,11 @@ namespace ApartmentReservation.WebUI.Controllers
             return Ok(await mediator.Send(command).ConfigureAwait(false));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Policy = Policies.AdministratorOrHostOnly)]
-        public async Task<IActionResult> Put([FromBody]UpdateApartmentCommand command)
+        public async Task<IActionResult> Put(long id, [FromBody]UpdateApartmentCommand command)
         {
+            command.Id = id;
             await mediator.Send(command).ConfigureAwait(false);
             return Ok();
         }
