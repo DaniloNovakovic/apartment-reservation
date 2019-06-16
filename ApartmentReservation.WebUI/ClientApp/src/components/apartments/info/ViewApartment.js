@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
 import { apartmentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
-import { ViewApartmentsAmenities } from "./ViewApartmentsAmenities";
+import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
+import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
+import { ViewApartmentComments } from "./ViewApartmentComments";
 
 export class ViewApartment extends Component {
   constructor(props) {
@@ -25,7 +27,8 @@ export class ViewApartment extends Component {
       location = {},
       images = [],
       amenities = [],
-      comments = []
+      comments = [],
+      forRentalDates = []
     } = apartment;
     const { address = {} } = location;
 
@@ -38,8 +41,11 @@ export class ViewApartment extends Component {
         <ViewApartmentSummary apartment={apartment} />
         <main>
           <hr />
-          <ViewApartmentsAmenities amenities={amenities} />
+          <ViewApartmentAmenities amenities={amenities} />
           <hr />
+          <ViewApartmentAvailability forRentalDates={forRentalDates} />
+          <hr />
+          <ViewApartmentComments comments={comments} />
         </main>
       </section>
     );

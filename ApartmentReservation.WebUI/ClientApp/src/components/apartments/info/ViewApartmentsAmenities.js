@@ -1,6 +1,6 @@
 import React from "react";
 
-export const ViewApartmentsAmenities = ({ amenities = [] }) => (
+export const ViewApartmentAmenities = ({ amenities = [] }) => (
   <article className="view-amenities">
     <h5>Amenities</h5>
     {amenities.length === 0 ? (
