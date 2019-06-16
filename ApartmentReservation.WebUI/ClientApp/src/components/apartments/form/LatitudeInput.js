@@ -1,5 +1,5 @@
 import React from "react";
-import { NumberInput } from "./base";
+import { NumberInput } from "../../baseFormHelpers";
 
 export const LatitudeInput = ({
   label = "Latitude",

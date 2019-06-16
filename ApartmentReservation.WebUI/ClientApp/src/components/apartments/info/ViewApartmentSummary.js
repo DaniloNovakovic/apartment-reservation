@@ -1,35 +1,17 @@
+import "./ViewApartment.css";
 import React from "react";
 import { Link } from "react-router-dom";
+import EditApartmentModal from "./edit/EditApartmentSummaryModal";
+import EditApartmentSummaryForm from "./edit/EditApartmentSummaryForm";
 
-/*
-activityState: "Active"
-amenities: []
-apartmentType: "Full"
-checkInTime: null
-checkOutTime: null
-comments: []
-forRentalDates: []
-host: {id: 2, username: "host", firstName: "Janica", lastName: "Janic", gender: "Female"}
-id: 1
-images: []
-location: {id: 0, address: {…}, latitude: 45.267136, longitude: 19.833549}
-numberOfGuests: 0
-numberOfRooms: 1
-pricePerNight: 0
-rating: 0
-reservations: []
-title: null
-
-*/
-
-const ViewApartmentsHeader = props => (
+export const ViewApartmentsHeader = props => (
   <header className="view-apartment-page-header">
     <h1>{props.title || "Apartment"}</h1>
     <p>{props.cityName}</p>
   </header>
 );
 
-export const ViewApartmentSummary = ({ apartment }) => {
+export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
   const { location, title, apartmentType, numberOfRooms } = apartment || {};
   const address = (location && location.address) || {};
   const host = apartment.host || {};
@@ -38,7 +20,7 @@ export const ViewApartmentSummary = ({ apartment }) => {
     <article className="view-apartment-page-summary">
       <ViewApartmentsHeader title={title} cityName={address.cityName} />
       <hr />
-      <div>
+      <div className="summary-content">
         <p>
           <b>Type:</b> {apartmentType}
         </p>
@@ -49,6 +31,15 @@ export const ViewApartmentSummary = ({ apartment }) => {
           See more apartments from this host
         </Link>
       </div>
+      {allowEdit && (
+        <EditApartmentModal
+          title={title}
+          cityName={address.cityName}
+          numberOfRooms={numberOfRooms}
+          apartmentType={apartmentType}
+          form={EditApartmentSummaryForm}
+        />
+      )}
     </article>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectInput } from "./base";
+import { SelectInput } from "../../baseFormHelpers";
 
 export class CountryInput extends React.Component {
   constructor(props) {

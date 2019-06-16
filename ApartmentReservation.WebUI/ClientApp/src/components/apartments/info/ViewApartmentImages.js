@@ -1,7 +1,7 @@
 import React from "react";
 import ApartmentCarousel from "../ApartmentCarousel";
 
-export function ViewApartmentImages({ images = [] }) {
+export function ViewApartmentImages({ images = [], allowEdit = false }) {
   return (
     <article>
       <h5>Images</h5>

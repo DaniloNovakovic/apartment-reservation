@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectInput } from "./base";
+import { SelectInput } from "../../baseFormHelpers";
 
 const options = [
   { value: "Full", text: "Full" },

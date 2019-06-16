@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
+import { connect } from "react-redux";
 import { apartmentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
 import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
@@ -31,26 +32,40 @@ export class ViewApartment extends Component {
       forRentalDates = []
     } = apartment;
 
+    const { user = {} } = this.props;
+
+    const allowEdit =
+      apartment && apartment.host && user && user.id === apartment.host.id;
+
     return loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
     ) : (
       <section className="view-apartment-page">
-        <ViewApartmentSummary apartment={apartment} />
+        <ViewApartmentSummary apartment={apartment} allowEdit={allowEdit} />
         <main>
           <hr />
-          <ViewApartmentImages images={images} />
+          <ViewApartmentImages images={images} allowEdit={allowEdit} />
           <hr />
-          <ViewApartmentAmenities amenities={amenities} />
+          <ViewApartmentAmenities amenities={amenities} allowEdit={allowEdit} />
           <hr />
-          <ViewApartmentAvailability forRentalDates={forRentalDates} />
+          <ViewApartmentAvailability
+            forRentalDates={forRentalDates}
+            allowEdit={allowEdit}
+          />
           <hr />
-          <ViewApartmentComments comments={comments} />
+          <ViewApartmentComments comments={comments} allowEdit={allowEdit} />
         </main>
       </section>
     );
   }
 }
 
-export default ViewApartment;
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  };
+};
+
+export default connect(mapStateToProps)(ViewApartment);

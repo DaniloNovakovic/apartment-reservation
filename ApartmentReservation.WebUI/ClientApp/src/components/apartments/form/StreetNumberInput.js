@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput } from "./base";
+import { TextInput } from "../../baseFormHelpers";
 
 export const StreetNumberInput = ({
   label = "Street Number",

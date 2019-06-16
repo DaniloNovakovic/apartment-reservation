@@ -16,7 +16,10 @@ function isContainedIn(day, forRentalDates) {
   return false;
 }
 
-export function ViewApartmentAvailability({ forRentalDates = [] }) {
+export function ViewApartmentAvailability({
+  forRentalDates = [],
+  allowEdit = false
+}) {
   forRentalDates = forRentalDates.map(item => new Date(item));
   return (
     <article className="view-availability">

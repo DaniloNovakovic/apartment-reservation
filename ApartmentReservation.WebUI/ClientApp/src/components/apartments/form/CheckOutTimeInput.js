@@ -1,5 +1,5 @@
 import React from "react";
-import { TimeInput } from "./base/TimeInput";
+import { TimeInput } from "../../baseFormHelpers/TimeInput";
 
 export const CheckOutTimeInput = ({
   label = "Check out time",
