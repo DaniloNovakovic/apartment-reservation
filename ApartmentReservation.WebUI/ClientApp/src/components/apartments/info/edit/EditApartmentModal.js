@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-export class EditApartmentModal extends Component {
+// Generic class that holds `form` Component inside Modal body.
+// You should inherit this class and override `handleSubmit` (and optionally modalTitle)
+export class EditModalBase extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -11,7 +13,7 @@ export class EditApartmentModal extends Component {
   }
 
   get modalTitle() {
-    return "Edit Apartment";
+    return "Edit";
   }
 
   handleClose = () => {
@@ -23,8 +25,8 @@ export class EditApartmentModal extends Component {
   };
 
   handleSubmit = () => {
-    console.log(this.state);
-    // todo: dispatch update apartment action...
+    // you should override this method
+    console.log(this.modalTitle, this.state);
     this.handleClose();
   };
 
@@ -70,4 +72,4 @@ export class EditApartmentModal extends Component {
   }
 }
 
-export default EditApartmentModal;
+export default EditModalBase;

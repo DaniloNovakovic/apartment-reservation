@@ -24,11 +24,19 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         public string ApartmentType { get; set; }
         public string CheckInTime { get; set; }
         public string CheckOutTime { get; set; }
+        public string CityName { get; set; }
+        public string CountryName { get; set; }
         public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
         public long HostId { get; set; }
-        public LocationDto Location { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public int NumberOfRooms { get; set; }
+        public string PostalCode { get; set; }
+
         public double PricePerNight { get; set; }
+        public string StreetName { get; set; }
+
+        public string StreetNumber { get; set; }
         public string Title { get; set; }
     }
 
@@ -50,10 +58,22 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                 CheckInTime = request.CheckInTime,
                 CheckOutTime = request.CheckOutTime,
                 HostId = request.HostId,
-                Location = CustomMapper.Map(request.Location),
                 NumberOfRooms = request.NumberOfRooms,
                 PricePerNight = request.PricePerNight,
-                Title = request.Title
+                Title = request.Title,
+                Location = new Location()
+                {
+                    Latitude = request.Latitude,
+                    Longitude = request.Longitude,
+                    Address = new Address()
+                    {
+                        CityName = request.CityName,
+                        CountryName = request.CountryName,
+                        PostalCode = request.PostalCode,
+                        StreetName = request.StreetName,
+                        StreetNumber = request.StreetNumber
+                    }
+                }
             };
 
             var entityEntry = await context.Apartments.AddAsync(apartment, cancellationToken).ConfigureAwait(false);
@@ -66,16 +86,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             return new EntityCreatedResult() { Id = apartment.Id };
         }
 
-        private async Task AppendForRentalDatesAsync(IEnumerable<ForRentalDateDto> from, Apartment to, CancellationToken cancellationToken)
-        {
-            foreach (var frd in from)
-            {
-                to.ForRentalDates.Add(new ForRentalDate() { Date = frd.Date });
-            }
-
-            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        }
-
         private async Task AppendAmenitiesAsync(IEnumerable<AmenityDto> from, Apartment to, CancellationToken cancellationToken = default)
         {
             var dbAmenities = context.Amenities.Where(amenity => from.Any(a => a.Name == amenity.Name)).ToList();
@@ -86,6 +96,16 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             }
 
             await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task AppendForRentalDatesAsync(IEnumerable<ForRentalDateDto> from, Apartment to, CancellationToken cancellationToken)
+        {
+            foreach (var frd in from)
+            {
+                to.ForRentalDates.Add(new ForRentalDate() { Date = frd.Date });
+            }
+
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 
