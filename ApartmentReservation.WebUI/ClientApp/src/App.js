@@ -18,6 +18,7 @@ import AddHost from "./components/users/AddHost";
 import AddGuest from "./components/users/AddGuest";
 import EditUser from "./components/users/EditUser";
 import AddApartment from "./components/apartments/AddApartment";
+import ViewApartment from "./components/apartments/info/ViewApartment";
 
 class App extends Component {
   constructor(props) {
@@ -64,6 +65,7 @@ class App extends Component {
             roles={[roleNames.Host]}
             component={AddApartment}
           />
+          <Route path="/view-apartment/:id" component={ViewApartment} />
         </Layout>
       </Router>
     );

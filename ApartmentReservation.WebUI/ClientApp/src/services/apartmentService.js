@@ -3,6 +3,7 @@ import { handleResponse } from "./userService";
 
 export const apartmentService = {
   getAll,
+  getById,
   post
 };
 
@@ -13,6 +14,14 @@ function getAll(filters = {}) {
   let query = queryStringify(filters);
 
   return fetch(`api/Apartments${query}`, requestOptions).then(handleResponse);
+}
+
+function getById(id) {
+  const requestOptions = {
+    method: "GET"
+  };
+
+  return fetch(`api/Apartments/${id}`, requestOptions).then(handleResponse);
 }
 
 function post(data) {

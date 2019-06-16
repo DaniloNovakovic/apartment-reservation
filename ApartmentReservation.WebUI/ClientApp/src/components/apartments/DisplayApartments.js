@@ -1,7 +1,7 @@
 import "./DisplayApartments.css";
 import React, { Component } from "react";
 import ApartmentCard from "./ApartmentCard";
-import { Container, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { apartmentService } from "../../services";
 
 export class DisplayApartments extends Component {
