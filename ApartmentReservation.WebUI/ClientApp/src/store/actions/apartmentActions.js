@@ -19,3 +19,17 @@ export const createApartment = (hostId, apartment) => {
     );
   };
 };
+
+export const updateCurrentApartment = apartment => {
+  return {
+    type: apartmentConstants.UPDATE_CURRENT_APARTMENT,
+    currentApartment: apartment
+  };
+};
+
+export const setCurrentApartment = newApartment => {
+  return {
+    type: apartmentConstants.SET_CURRENT_APARTMENT,
+    currentApartment: newApartment
+  };
+};

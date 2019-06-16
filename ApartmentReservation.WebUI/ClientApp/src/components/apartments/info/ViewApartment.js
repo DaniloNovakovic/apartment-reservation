@@ -7,32 +7,31 @@ import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
 import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
 import ViewApartmentImages from "./ViewApartmentImages";
+import { updateCurrentApartment } from "../../../store/actions";
 
 export class ViewApartment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apartmentId: props.match.params.id,
-      apartment: {}
+      apartmentId: props.match.params.id
     };
   }
   componentDidMount() {
     this.setState({ loading: true });
     apartmentService.getById(this.state.apartmentId).then(apartment => {
-      console.log(apartment);
-      this.setState({ loading: false, apartment });
+      this.props.updateCurrentApartment(apartment);
+      this.setState({ loading: false });
     });
   }
   render() {
-    const { apartment, loading } = this.state;
+    const { loading } = this.state;
+    const { apartment = {}, user = {} } = this.props;
     const {
       images = [],
       amenities = [],
       comments = [],
       forRentalDates = []
     } = apartment;
-
-    const { user = {} } = this.props;
 
     const allowEdit =
       apartment && apartment.host && user && user.id === apartment.host.id;
@@ -64,8 +63,12 @@ export class ViewApartment extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    apartment: state.apartment.currentApartment
   };
 };
 
-export default connect(mapStateToProps)(ViewApartment);
+export default connect(
+  mapStateToProps,
+  { updateCurrentApartment }
+)(ViewApartment);
