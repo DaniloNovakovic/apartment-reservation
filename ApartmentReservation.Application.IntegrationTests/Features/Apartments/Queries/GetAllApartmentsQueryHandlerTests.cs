@@ -43,7 +43,8 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
             Context.AddRange(
                 new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[0] },
-                new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[1] }
+                new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[1] },
+                new ApartmentAmenity() { Apartment = apartments[1], Amenity = amenities[0] }
             );
 
             this.Context.SaveChanges();
