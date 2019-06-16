@@ -66,8 +66,7 @@ export class ApartmentCard extends Component {
     if (!apartment.images || apartment.images.length === 0) {
       apartment.images = [
         {
-          uri:
-            "http://maestroselectronics.com/wp-content/uploads/2017/12/No_Image_Available.jpg"
+          uri: "/images/No_Image_Available.jpg"
         }
       ];
     }
