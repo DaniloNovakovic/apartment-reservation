@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ApartmentReservation.Domain.Entities
+﻿namespace ApartmentReservation.Domain.Entities
 {
-    public class ApartmentAmenity
+    public class ApartmentAmenity : Logical
     {
         public long ApartmentId { get; set; }
         public Apartment Apartment { get; set; }

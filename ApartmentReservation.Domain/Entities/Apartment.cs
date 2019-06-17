@@ -21,7 +21,7 @@ namespace ApartmentReservation.Domain.Entities
         public string ActivityState { get; set; } = ActivityStates.Inactive;
 
         public ICollection<ApartmentAmenity> ApartmentAmenities { get; set; }
-        public IEnumerable<Amenity> Amenities => ApartmentAmenities.Select(a => a.Amenity);
+        public IEnumerable<Amenity> Amenities => ApartmentAmenities.Where(x => !x.IsDeleted).Select(a => a.Amenity);
 
         public string ApartmentType { get; set; } = ApartmentTypes.Full;
         public string CheckInTime { get; set; } = "14:00:00";

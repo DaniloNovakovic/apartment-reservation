@@ -1,6 +1,6 @@
 import EditModalBase from "./EditApartmentModal";
 import { connect } from "react-redux";
-import { updateCurrentApartment } from "../../../../store/actions";
+import { updateCurrentApartmentAmenities } from "../../../../store/actions";
 
 export class EditApartmentAmenitiesModal extends EditModalBase {
   get modalTitle() {
@@ -9,8 +9,10 @@ export class EditApartmentAmenitiesModal extends EditModalBase {
   handleSubmit = () => {
     const { amenities } = this.state.formData;
     const apartmentId = this.props.apartment.id;
-    console.log(amenities, apartmentId);
-    // TODO: API request to update amenities for given apartment
+    console.log(this.modalTitle, amenities, apartmentId);
+    this.props
+      .updateCurrentApartmentAmenities({ id: apartmentId, amenities })
+      .then(_ => this.handleClose());
   };
 }
 
@@ -22,5 +24,5 @@ const mapStateToProps = state => {
 };
 export default connect(
   mapStateToProps,
-  { updateCurrentApartment }
+  { updateCurrentApartmentAmenities }
 )(EditApartmentAmenitiesModal);

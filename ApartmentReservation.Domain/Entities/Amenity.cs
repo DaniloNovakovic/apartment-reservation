@@ -15,6 +15,6 @@ namespace ApartmentReservation.Domain.Entities
         public string Name { get; set; }
 
         public ICollection<ApartmentAmenity> ApartmentAmenities { get; set; }
-        public IEnumerable<Apartment> Apartments => ApartmentAmenities.Select(a => a.Apartment);
+        public IEnumerable<Apartment> Apartments => ApartmentAmenities.Where(x => !x.IsDeleted).Select(a => a.Apartment);
     }
 }

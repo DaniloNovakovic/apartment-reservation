@@ -5,7 +5,8 @@ export const apartmentService = {
   getAll,
   getById,
   post,
-  put
+  put,
+  updateAmenities
 };
 
 function getAll(filters = {}) {
@@ -51,4 +52,19 @@ function post(data) {
   };
 
   return fetch(`api/Apartments`, requestOptions).then(handleResponse);
+}
+
+function updateAmenities(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  return fetch(`api/Apartments/${data.id}/Amenities`, requestOptions).then(
+    handleResponse
+  );
 }

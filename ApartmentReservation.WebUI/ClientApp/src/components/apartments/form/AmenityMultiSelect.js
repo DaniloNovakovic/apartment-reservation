@@ -15,7 +15,7 @@ const mapToOptions = amenities =>
 const loadOptions = (inputValue, callback) => {
   amenitiesService.getAll({ search: inputValue }).then(
     amenities => {
-      callback(mapToOptions(amenities));
+      callback(mapToOptions(amenities || []));
     },
     _ => {
       callback([]);
