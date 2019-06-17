@@ -56,6 +56,15 @@ namespace ApartmentReservation.WebUI.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}/Amenities")]
+        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
+        public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
+        {
+            command.ApartmentId = id;
+            await mediator.Send(command).ConfigureAwait(false);
+            return Ok();
+        }
+
         private bool CanSeeInactiveApartments(GetAllApartmentsQuery query)
         {
             if (this.User.IsInRole(RoleNames.Administrator))

@@ -17,7 +17,7 @@ export class EditModalBase extends Component {
   }
 
   handleClose = () => {
-    this.setState({ show: false });
+    this.setState({ show: false, formData: this.props.formData });
   };
 
   handleShow = () => {

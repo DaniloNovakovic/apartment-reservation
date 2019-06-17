@@ -1,5 +1,6 @@
 import React from "react";
-import AmenityMultiSelect from "../form/AmenityMultiSelect";
+import EditApartmentAmenitiesModal from "./edit/EditApartmentAmenitiesModal";
+import EditApartmentAmenitiesForm from "./edit/EditApartmentAmenitiesForm";
 
 export const ViewApartmentAmenities = ({
   amenities = [],
@@ -18,6 +19,11 @@ export const ViewApartmentAmenities = ({
         </ul>
       )}
     </div>
-    <AmenityMultiSelect />
+    {allowEdit && (
+      <EditApartmentAmenitiesModal
+        formData={{ amenities }}
+        form={EditApartmentAmenitiesForm}
+      />
+    )}
   </article>
 );
