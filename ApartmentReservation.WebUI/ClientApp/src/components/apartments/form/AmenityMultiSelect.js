@@ -3,13 +3,11 @@ import AsyncSelect from "react-select/async";
 import { amenitiesService } from "../../../services";
 
 const loadOptions = (inputValue, callback) => {
-  amenitiesService.getAll({ name: inputValue }).then(
+  amenitiesService.getAll({ search: inputValue }).then(
     amenities => {
-      const options = amenities
-        .map(amenity => {
-          return { value: amenity.id, label: amenity.name };
-        })
-        .filter(o => o.label.toLowerCase().includes(inputValue.toLowerCase()));
+      const options = amenities.map(amenity => {
+        return { value: amenity.id, label: amenity.name };
+      });
 
       callback(options);
     },

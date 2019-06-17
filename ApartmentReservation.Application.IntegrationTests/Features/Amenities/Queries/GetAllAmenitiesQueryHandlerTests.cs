@@ -34,7 +34,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.Q
         }
 
         [Fact]
-        public async Task ReturnsAmenities()
+        public async Task NoFilter_ReturnAllAmenities()
         {
             var expectedResult = this.dbAmenities.Select(g => g.Name);
 
@@ -42,6 +42,15 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Amenities.Q
 
             Assert.IsAssignableFrom<IEnumerable<AmenityDto>>(result);
             Assert.Equal(expectedResult, result.Select(r => r.Name));
+        }
+
+        [Fact]
+        public async Task FilterBySearch_ReturnAllAmenitiesThatContainName()
+        {
+            var result = await this.sut.Handle(new GetAllAmenitiesQuery() { Search = "so" }, CancellationToken.None).ConfigureAwait(false);
+
+            var amenity = Assert.Single<AmenityDto>(result);
+            Assert.Equal("Sofa", amenity.Name);
         }
     }
 }

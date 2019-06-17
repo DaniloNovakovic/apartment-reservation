@@ -22,9 +22,9 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Amenities
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]GetAllAmenitiesQuery query)
         {
-            return this.Ok(await this.mediator.Send(new GetAllAmenitiesQuery()).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
         // GET: api/Amenities/5
