@@ -6,7 +6,8 @@ export const apartmentService = {
   getById,
   post,
   put,
-  updateAmenities
+  updateAmenities,
+  updateForRentalDates
 };
 
 function getAll(filters = {}) {
@@ -65,6 +66,21 @@ function updateAmenities(data) {
   };
 
   return fetch(`api/Apartments/${data.id}/Amenities`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function updateForRentalDates(data) {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  return fetch(`api/Apartments/${data.id}/ForRentalDates`, requestOptions).then(
     handleResponse
   );
 }

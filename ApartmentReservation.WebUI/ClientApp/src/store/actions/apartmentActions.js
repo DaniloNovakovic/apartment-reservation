@@ -41,6 +41,27 @@ export const updateCurrentApartmentAmenities = apartmentAmenityData => {
   };
 };
 
+export const updateCurrentApartmentRentalDates = rentalDatesData => {
+  return dispatch => {
+    return apartmentService.updateForRentalDates(rentalDatesData).then(
+      _ => {
+        dispatch({
+          type: apartmentConstants.UPDATE_CURRENT_APARTMENT,
+          currentApartment: rentalDatesData
+        });
+        dispatch(
+          alertActions.success(
+            `Successfully updated apartment '${rentalDatesData.id}'`
+          )
+        );
+      },
+      error => {
+        dispatch(alertActions.error(JSON.stringify(error)));
+      }
+    );
+  };
+};
+
 export const updateCurrentApartment = apartmentData => {
   return dispatch => {
     return apartmentService.put(apartmentData).then(

@@ -1,19 +1,13 @@
 import React from "react";
-import DayPicker from "react-day-picker";
-import "react-day-picker/lib/style.css";
+import DayPicker, { DateUtils } from "react-day-picker";
+import EditApartmentAvailabilityModal from "./edit/EditApartmentAvailabilityModal";
+import EditApartmentAvailabilityForm from "./edit/EditApartmentAvailabilityForm";
 
-function formatDateToString(date) {
-  return `${date.getDay()}/${date.getMonth()}/${date.getYear()}`;
-}
 function isContainedIn(day, forRentalDates) {
-  let dayStr = formatDateToString(day);
-  for (let rentalDate of forRentalDates) {
-    let rentalDateStr = formatDateToString(rentalDate);
-    if (dayStr === rentalDateStr) {
-      return true;
-    }
-  }
-  return false;
+  const index = forRentalDates.findIndex(rentalDate =>
+    DateUtils.isSameDay(rentalDate, day)
+  );
+  return index >= 0;
 }
 
 export function ViewApartmentAvailability({
@@ -23,11 +17,21 @@ export function ViewApartmentAvailability({
   forRentalDates = forRentalDates.map(item => new Date(item));
   return (
     <article className="view-availability">
-      <h5>Availability</h5>
-      <DayPicker
-        disabledDays={day => !isContainedIn(day, forRentalDates)}
-        selectedDays={forRentalDates}
-      />
+      <div>
+        <h5>Availability</h5>
+        <DayPicker
+          numberOfMonths={2}
+          pagedNavigation
+          disabledDays={day => !isContainedIn(day, forRentalDates)}
+          selectedDays={forRentalDates}
+        />
+      </div>
+      {allowEdit && (
+        <EditApartmentAvailabilityModal
+          formData={{ forRentalDates }}
+          form={EditApartmentAvailabilityForm}
+        />
+      )}
     </article>
   );
 }
