@@ -1,19 +1,23 @@
 import React from "react";
+import AmenityMultiSelect from "../form/AmenityMultiSelect";
 
 export const ViewApartmentAmenities = ({
   amenities = [],
   allowEdit = false
 }) => (
   <article className="view-amenities">
-    <h5>Amenities</h5>
-    {amenities.length === 0 ? (
-      <p>No amenities are currently available</p>
-    ) : (
-      <ul className="view-amenities-list">
-        {amenities.map((item, index) => {
-          return <li key={item.name}>{item.name}</li>;
-        })}
-      </ul>
-    )}
+    <div>
+      <h5>Amenities</h5>
+      {amenities.length === 0 ? (
+        <p>No amenities are currently available</p>
+      ) : (
+        <ul className="view-amenities-list">
+          {amenities.map(item => {
+            return <li key={item.name}>{item.name}</li>;
+          })}
+        </ul>
+      )}
+    </div>
+    <AmenityMultiSelect />
   </article>
 );
