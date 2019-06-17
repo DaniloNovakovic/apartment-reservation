@@ -8,6 +8,7 @@ import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
 import ViewApartmentImages from "./ViewApartmentImages";
 import { setCurrentApartment } from "../../../store/actions";
+import { roleNames } from "../../../constants";
 
 export class ViewApartment extends Component {
   constructor(props) {
@@ -34,7 +35,9 @@ export class ViewApartment extends Component {
     } = apartment;
 
     const allowEdit =
-      apartment && apartment.host && user && user.id === apartment.host.id;
+      user &&
+      (user.roleName == roleNames.Admin ||
+        (apartment && apartment.host && user.id === apartment.host.id));
 
     return loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
