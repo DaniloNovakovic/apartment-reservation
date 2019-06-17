@@ -18,25 +18,24 @@ const loadOptions = (inputValue, callback) => {
 };
 
 export default class AmenityMultiSelect extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { selected: [] };
-  }
-  handleChange = newValue => {
-    this.setState({ selected: newValue });
+  handleChange = selectedItems => {
+    if (this.props.handleChange) {
+      this.props.handleChange(
+        selectedItems.map(item => {
+          return { id: item.value, name: item.label };
+        })
+      );
+    }
   };
   render() {
     return (
-      <div>
-        <AsyncSelect
-          isMulti
-          cacheOptions
-          defaultOptions
-          loadOptions={loadOptions}
-          onChange={this.handleChange}
-        />
-        <pre>{JSON.stringify(this.state.selected, null, 2)}</pre>
-      </div>
+      <AsyncSelect
+        isMulti
+        cacheOptions
+        defaultOptions
+        loadOptions={loadOptions}
+        onChange={this.handleChange}
+      />
     );
   }
 }
