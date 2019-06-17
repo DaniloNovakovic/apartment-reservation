@@ -11,5 +11,12 @@ namespace ApartmentReservation.Domain.Entities
         public Apartment Apartment { get; set; }
 
         public long? ApartmentId { get; set; }
+
+        public bool Equals(DateTime dateTime)
+        {
+            return dateTime.Year == Date.Year
+                && dateTime.Month == Date.Month
+                && dateTime.Day == Date.Day;
+        }
     }
 }

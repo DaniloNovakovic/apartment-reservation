@@ -11,5 +11,12 @@ namespace ApartmentReservation.Application.Dtos
         }
 
         public DateTime Date { get; set; }
+
+        public bool Equals(DateTime dateTime)
+        {
+            return dateTime.Year == Date.Year
+                && dateTime.Month == Date.Month
+                && dateTime.Day == Date.Day;
+        }
     }
 }
