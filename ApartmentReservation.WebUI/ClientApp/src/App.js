@@ -19,6 +19,9 @@ import AddGuest from "./components/users/AddGuest";
 import EditUser from "./components/users/EditUser";
 import AddApartment from "./components/apartments/AddApartment";
 import ViewApartment from "./components/apartments/info/ViewApartment";
+import Amenities from "./components/amenities/Amenities";
+import EditAmenity from "./components/amenities/EditAmenity";
+import AddAmenity from "./components/amenities/AddAmenity";
 
 class App extends Component {
   constructor(props) {
@@ -66,6 +69,21 @@ class App extends Component {
             component={AddApartment}
           />
           <Route path="/view-apartment/:id" component={ViewApartment} />
+          <PrivateRoute
+            path="/amenities"
+            roles={[roleNames.Admin]}
+            component={Amenities}
+          />
+          <PrivateRoute
+            path="/add-amenity"
+            roles={[roleNames.Admin]}
+            component={AddAmenity}
+          />
+          <PrivateRoute
+            path="/edit-amenity/:id"
+            roles={[roleNames.Admin]}
+            component={EditAmenity}
+          />
         </Layout>
       </Router>
     );

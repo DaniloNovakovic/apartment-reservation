@@ -6,6 +6,12 @@ import { Link } from "react-router-dom";
 
 const roleLinks = {
   [roleNames.Admin]: [
+    <Nav.Item key="admin-amenities-nav">
+      <Nav.Link as={Link} to="/Amenities">
+        <IoIosList />
+        Amenities
+      </Nav.Link>
+    </Nav.Item>,
     <Nav.Item key="admin-users-nav">
       <Nav.Link as={Link} to="/Users">
         <IoIosList />
