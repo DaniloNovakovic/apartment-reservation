@@ -17,6 +17,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         }
 
         public IEnumerable<IFormFile> Images { get; set; }
+        public long ApartmentId { get; set; }
     }
 
     public class AddImagesToApartmentCommandHandler : IRequestHandler<AddImagesToApartmentCommand>
@@ -36,18 +37,31 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             foreach (var formFile in request.Images)
             {
-                string filePath = Path.Combine(imagesFolderPath, formFile.FileName);
+                string imgFileName = $"apartment_{request.ApartmentId}_{formFile.FileName}";
+                string filePath = Path.Combine(imagesFolderPath, imgFileName);
                 if (formFile.Length > 0)
                 {
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await formFile.CopyToAsync(stream).ConfigureAwait(false);
+                        await formFile.CopyToAsync(stream, cancellationToken).ConfigureAwait(false);
                     }
+
+                    this.AddImage(imgFileName, request.ApartmentId);
                 }
             }
 
-            await Task.Delay(20).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
             return Unit.Value;
+        }
+
+        private void AddImage(string imgFileName, long apartmentId)
+        {
+            this.context.Images.Add(new Domain.Entities.Image()
+            {
+                ApartmentId = apartmentId,
+                ImageUri = "./images/" + imgFileName
+            });
         }
     }
 }

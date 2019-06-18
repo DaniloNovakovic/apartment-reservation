@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 
 export function ViewApartmentImages({ images = [], allowEdit = false }) {
   return (
-    <article>
+    <article className="view-apartment-images">
       <h5>Images</h5>
       {images.length === 0 ? (
         <p>No images are currently available</p>

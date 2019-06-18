@@ -78,6 +78,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.AdministratorOrHostOnly)]
         public async Task<IActionResult> AddImages(long id, [FromForm]AddImagesToApartmentCommand command)
         {
+            command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
         }
