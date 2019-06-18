@@ -36,7 +36,7 @@ export class ViewApartment extends Component {
 
     const allowEdit =
       user &&
-      (user.roleName == roleNames.Admin ||
+      (user.roleName === roleNames.Admin ||
         (apartment && apartment.host && user.id === apartment.host.id));
 
     return loading ? (

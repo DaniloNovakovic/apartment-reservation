@@ -7,8 +7,19 @@ export const apartmentService = {
   post,
   put,
   updateAmenities,
-  updateForRentalDates
+  updateForRentalDates,
+  addImages
 };
+
+function addImages(apartmentId, formData) {
+  const requestOptions = {
+    method: "POST",
+    body: formData
+  };
+  return fetch(`api/Apartments/${apartmentId}/Images`, requestOptions).then(
+    handleResponse
+  );
+}
 
 function getAll(filters = {}) {
   const requestOptions = {

@@ -44,7 +44,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
         {
-            return Ok(await mediator.Send(command).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
 
         [HttpPut("{id}")]
@@ -52,8 +52,8 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> Put(long id, [FromBody]UpdateApartmentCommand command)
         {
             command.Id = id;
-            await mediator.Send(command).ConfigureAwait(false);
-            return Ok();
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
         }
 
         [HttpPut("{id}/Amenities")]
@@ -61,8 +61,8 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
         {
             command.ApartmentId = id;
-            await mediator.Send(command).ConfigureAwait(false);
-            return Ok();
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
         }
 
         [HttpPut("{id}/ForRentalDates")]
@@ -70,8 +70,16 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> UpdateForRentalDates(long id, [FromBody]UpdateForRentalDatesCommand command)
         {
             command.ApartmentId = id;
-            await mediator.Send(command).ConfigureAwait(false);
-            return Ok();
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
+        }
+
+        [HttpPost("{id}/Images")]
+        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
+        public async Task<IActionResult> AddImages(long id, [FromForm]AddImagesToApartmentCommand command)
+        {
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
         }
 
         private bool CanSeeInactiveApartments(GetAllApartmentsQuery query)
@@ -83,7 +91,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
             if (this.User.IsInRole(RoleNames.Host))
             {
-                return query.HostId is null || IsAskingForStrangerInfo(query.HostId.Value);
+                return query.HostId is null || this.IsAskingForStrangerInfo(query.HostId.Value);
             }
 
             return false;

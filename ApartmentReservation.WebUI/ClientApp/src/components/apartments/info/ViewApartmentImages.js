@@ -1,5 +1,7 @@
 import React from "react";
 import ApartmentCarousel from "../ApartmentCarousel";
+import AddImagesInput from "../form/AddImagesInput";
+import { Button } from "react-bootstrap";
 
 export function ViewApartmentImages({ images = [], allowEdit = false }) {
   return (
@@ -10,8 +12,10 @@ export function ViewApartmentImages({ images = [], allowEdit = false }) {
       ) : (
         <div>
           <ApartmentCarousel images={images} />
+          <Button variant="info">View all</Button>
         </div>
       )}
+      {allowEdit && <AddImagesInput />}
     </article>
   );
 }
