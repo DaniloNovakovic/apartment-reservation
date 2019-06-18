@@ -5,7 +5,7 @@ export const PostalCodeInput = ({
   label = "Zip",
   placeholder = "ex. 21102",
   name = "postalCode",
-  required = false,
+  required = true,
   ...other
 }) => (
   <TextInput

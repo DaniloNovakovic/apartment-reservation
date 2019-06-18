@@ -5,7 +5,7 @@ export const StreetNumberInput = ({
   label = "Street Number",
   placeholder = "ex. 92",
   name = "streetNumber",
-  required = false,
+  required = true,
   ...other
 }) => (
   <TextInput

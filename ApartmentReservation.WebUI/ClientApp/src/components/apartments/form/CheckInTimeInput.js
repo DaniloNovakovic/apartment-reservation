@@ -4,6 +4,6 @@ import { TimeInput } from "../../baseFormHelpers/TimeInput";
 export const CheckInTimeInput = ({
   label = "Check in time",
   name = "checkInTime",
-  required = false,
+  required = true,
   ...other
 }) => <TimeInput label={label} name={name} required={required} {...other} />;

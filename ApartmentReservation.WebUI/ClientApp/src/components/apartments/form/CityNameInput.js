@@ -5,7 +5,7 @@ export const CityNameInput = ({
   label = "City",
   name = "cityName",
   placeholder = "ex. Novi Sad",
-  required = false,
+  required = true,
   ...other
 }) => (
   <TextInput

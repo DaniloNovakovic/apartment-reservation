@@ -5,8 +5,8 @@ export const LongitudeInput = ({
   label = "Longitude",
   name = "longitude",
   placeholder = "ex. 40.754026",
-  step = 0.1,
-  required = false,
+  step = 0.000001,
+  required = true,
   ...other
 }) => (
   <NumberInput
