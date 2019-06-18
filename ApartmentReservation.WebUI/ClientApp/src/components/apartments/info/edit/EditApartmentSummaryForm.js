@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Alert, Col } from "react-bootstrap";
 import {
+  ActivityStateInput,
   ApartmentTitleInput,
   ApartmentTypeInput,
   NumberOfRoomsInput,
@@ -26,10 +27,18 @@ export default class EditApartmentSummaryForm extends Component {
           value={this.props.title || ""}
           handleChange={this.handleChange}
         />
-        <ApartmentTypeInput
-          value={this.props.apartmentType}
-          handleChange={this.handleChange}
-        />
+        <Form.Row>
+          <ApartmentTypeInput
+            as={Col}
+            value={this.props.apartmentType}
+            handleChange={this.handleChange}
+          />
+          <ActivityStateInput
+            as={Col}
+            value={this.props.activityState}
+            handleChange={this.handleChange}
+          />
+        </Form.Row>
         <Form.Row>
           <NumberOfRoomsInput
             as={Col}
