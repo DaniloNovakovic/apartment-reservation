@@ -7,6 +7,7 @@ export const TimeInput = ({
   label,
   name,
   required,
+  feedback,
   ...other
 }) => (
   <Form.Group {...other}>
@@ -18,5 +19,6 @@ export const TimeInput = ({
       value={value}
       required={required}
     />
+    <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
   </Form.Group>
 );

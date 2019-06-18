@@ -6,6 +6,7 @@ export const ApartmentTitleInput = ({
   label = "Title",
   name = "title",
   placeholder = "Enter title for apartment",
+  feedback = "Title is required!",
   required = true,
   ...other
 }) => (
@@ -15,6 +16,7 @@ export const ApartmentTitleInput = ({
     name={name}
     placeholder={placeholder}
     required={required}
+    feedback={feedback}
     {...other}
   />
 );

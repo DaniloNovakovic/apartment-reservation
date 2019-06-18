@@ -9,6 +9,7 @@ export const TextInput = ({
   name,
   placeholder,
   required,
+  feedback,
   ...other
 }) => (
   <Form.Group {...other}>
@@ -21,5 +22,6 @@ export const TextInput = ({
       placeholder={placeholder}
       required={required}
     />
+    <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
   </Form.Group>
 );

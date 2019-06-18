@@ -8,7 +8,7 @@ export class EditModalBase extends Component {
     super(props, context);
     this.state = {
       show: false,
-      formData: this.props.formData
+      formData: { ...this.props.formData, validation: {} }
     };
   }
 
@@ -48,13 +48,39 @@ export class EditModalBase extends Component {
   };
 
   handleChange = event => {
+    let isValid = true;
+    let validationMessage = "";
+
+    if (event.target.checkValidity) {
+      isValid = event.target.checkValidity();
+      validationMessage = event.target.validationMessage;
+    }
+
     this.setState({
       formData: {
         ...this.state.formData,
-        [event.target.name]: event.target.value
+        [event.target.name]: event.target.value,
+        validation: {
+          ...this.state.formData.validation,
+          [event.target.name]: {
+            isValid,
+            validationMessage
+          }
+        }
       }
     });
   };
+
+  validate() {
+    const { validation } = this.state.formData;
+    for (let propName in validation) {
+      if (!validation[propName].isValid) {
+        console.log(`'${propName}' is invalid!`);
+        return false;
+      }
+    }
+    return true;
+  }
 
   render() {
     const { form: Component } = this.props;
@@ -77,7 +103,12 @@ export class EditModalBase extends Component {
             }
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={this.handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                this.validate() && this.handleSubmit();
+              }}
+            >
               {this.submitBtnText}
             </Button>
             <Button variant="secondary" onClick={this.handleClose}>

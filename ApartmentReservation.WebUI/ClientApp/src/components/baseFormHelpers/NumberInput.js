@@ -11,6 +11,7 @@ export const NumberInput = ({
   placeholder,
   required,
   step,
+  feedback,
   ...other
 }) => (
   <Form.Group {...other}>
@@ -26,5 +27,6 @@ export const NumberInput = ({
       max={max}
       step={step}
     />
+    <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
   </Form.Group>
 );

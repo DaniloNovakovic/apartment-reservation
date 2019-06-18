@@ -7,6 +7,7 @@ export function SelectInput({
   label,
   name,
   required,
+  feedback,
   options = [],
   ...other
 }) {
@@ -31,6 +32,7 @@ export function SelectInput({
           );
         })}
       </Form.Control>
+      <Form.Control.Feedback>{feedback}</Form.Control.Feedback>
     </Form.Group>
   );
 }
