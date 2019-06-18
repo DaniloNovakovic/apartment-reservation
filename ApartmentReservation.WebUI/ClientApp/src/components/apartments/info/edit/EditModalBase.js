@@ -15,6 +15,19 @@ export class EditModalBase extends Component {
   get btnText() {
     return "Edit";
   }
+  get showModalBtn() {
+    return (
+      <Button variant="warning" onClick={this.handleShow}>
+        {this.btnText}
+      </Button>
+    );
+  }
+  get submitBtnText() {
+    return "Save Changes";
+  }
+  get cancelBtnText() {
+    return "Close";
+  }
 
   get modalTitle() {
     return "Edit";
@@ -48,11 +61,9 @@ export class EditModalBase extends Component {
 
     return (
       <>
-        <Button variant="warning" onClick={this.handleShow}>
-          {this.btnText}
-        </Button>
+        {this.showModalBtn}
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal size="lg" show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{this.modalTitle}</Modal.Title>
           </Modal.Header>
@@ -67,10 +78,10 @@ export class EditModalBase extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={this.handleSubmit}>
-              Save Changes
+              {this.submitBtnText}
             </Button>
             <Button variant="secondary" onClick={this.handleClose}>
-              Close
+              {this.cancelBtnText}
             </Button>
           </Modal.Footer>
         </Modal>

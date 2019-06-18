@@ -27,6 +27,8 @@ export default class EditApartmentAvailabilityForm extends Component {
     return (
       <Form>
         <DayPicker
+          numberOfMonths={2}
+          pagedNavigation
           selectedDays={forRentalDates}
           onDayClick={this.handleDayClick}
         />

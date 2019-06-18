@@ -1,4 +1,4 @@
-import EditModalBase from "./EditApartmentModal";
+import EditModalBase from "./EditModalBase";
 import { connect } from "react-redux";
 import { apartmentService } from "../../../../services";
 

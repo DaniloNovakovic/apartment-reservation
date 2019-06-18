@@ -11,8 +11,10 @@ namespace ApartmentReservation.Application.Dtos
         public ImageDto(Image image)
         {
             Uri = image.ImageUri;
+            Id = image.Id;
         }
 
+        public long Id { get; set; }
         public string Uri { get; set; }
     }
 }

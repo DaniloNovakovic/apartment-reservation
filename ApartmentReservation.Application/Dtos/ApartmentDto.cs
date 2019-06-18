@@ -22,7 +22,7 @@ namespace ApartmentReservation.Application.Dtos
             this.ApartmentType = apartment.ApartmentType;
             this.CheckInTime = apartment.CheckInTime;
             this.CheckOutTime = apartment.CheckOutTime;
-            this.Comments = apartment.Comments.Where(a => !a.IsDeleted).Select(c => new CommentDto(c));
+            this.Comments = apartment.Comments.Where(c => !c.IsDeleted).Select(c => new CommentDto(c));
             this.ForRentalDates = apartment.ForRentalDates.Where(a => !a.IsDeleted).Select(frd => frd.Date);
 
             if (apartment.Host != null)
@@ -30,7 +30,7 @@ namespace ApartmentReservation.Application.Dtos
                 this.Host = new UserPublicDto(apartment.Host);
             }
 
-            this.Images = apartment.Images.Where(a => !a.IsDeleted).Select(i => new ImageDto(i));
+            this.Images = apartment.Images.Where(i => !i.IsDeleted).Select(i => new ImageDto(i));
 
             if (apartment.Location != null)
             {
@@ -40,7 +40,7 @@ namespace ApartmentReservation.Application.Dtos
             this.NumberOfGuests = apartment.NumberOfGuests;
             this.NumberOfRooms = apartment.NumberOfRooms;
             this.PricePerNight = apartment.PricePerNight;
-            this.Reservations = apartment.Reservations.Where(a => !a.IsDeleted).Select(r => new ReservationDto(r));
+            this.Reservations = apartment.Reservations.Where(r => !r.IsDeleted).Select(r => new ReservationDto(r));
             this.Title = apartment.Title;
         }
 

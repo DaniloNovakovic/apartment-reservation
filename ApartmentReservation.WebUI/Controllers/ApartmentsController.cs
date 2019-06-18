@@ -13,6 +13,7 @@ namespace ApartmentReservation.WebUI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = Policies.AdministratorOrHostOnly)]
     public class ApartmentsController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -23,6 +24,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
             if (!this.CanSeeInactiveApartments(query))
@@ -34,6 +36,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Apartments/5
         [HttpGet("{id}", Name = "GetApartment")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(long id)
         {
             return this.Ok(await this.mediator.Send(new GetApartmentQuery() { Id = id })
@@ -48,7 +51,6 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
         public async Task<IActionResult> Put(long id, [FromBody]UpdateApartmentCommand command)
         {
             command.Id = id;
@@ -57,7 +59,6 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}/Amenities")]
-        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
         public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
         {
             command.ApartmentId = id;
@@ -66,7 +67,6 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}/ForRentalDates")]
-        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
         public async Task<IActionResult> UpdateForRentalDates(long id, [FromBody]UpdateForRentalDatesCommand command)
         {
             command.ApartmentId = id;
@@ -75,8 +75,15 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost("{id}/Images")]
-        [Authorize(Policy = Policies.AdministratorOrHostOnly)]
         public async Task<IActionResult> AddImages(long id, [FromForm]AddImagesToApartmentCommand command)
+        {
+            command.ApartmentId = id;
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
+        }
+
+        [HttpPost("{id}/delete-images")]
+        public async Task<IActionResult> DeleteImages(long id, [FromBody]DeleteImagesFromApartmentCommand command)
         {
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);

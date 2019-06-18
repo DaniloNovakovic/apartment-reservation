@@ -8,7 +8,8 @@ export const apartmentService = {
   put,
   updateAmenities,
   updateForRentalDates,
-  addImages
+  addImages,
+  deleteImages
 };
 
 function addImages(apartmentId, formData) {
@@ -19,6 +20,21 @@ function addImages(apartmentId, formData) {
   return fetch(`api/Apartments/${apartmentId}/Images`, requestOptions).then(
     handleResponse
   );
+}
+
+function deleteImages(apartmentId, images) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ images })
+  };
+  return fetch(
+    `api/Apartments/${apartmentId}/delete-images`,
+    requestOptions
+  ).then(handleResponse);
 }
 
 function getAll(filters = {}) {

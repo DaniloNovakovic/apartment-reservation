@@ -1,8 +1,10 @@
 import React from "react";
+import { ButtonGroup } from "react-bootstrap";
 import ApartmentCarousel from "../ApartmentCarousel";
 import AddImagesInput from "../form/AddImagesInput";
 import AddImagesModal from "../info/edit/AddImagesModal";
-import { Button, ButtonGroup } from "react-bootstrap";
+import SelectImages from "../form/SelectImages";
+import DeleteImagesModal from "./edit/DeleteImagesModal";
 
 export function ViewApartmentImages({ images = [], allowEdit = false }) {
   return (
@@ -15,7 +17,9 @@ export function ViewApartmentImages({ images = [], allowEdit = false }) {
           <ApartmentCarousel images={images} />
           <ButtonGroup aria-label="Images Buttons">
             {allowEdit && <AddImagesModal form={AddImagesInput} />}
-            <Button variant="info">View all</Button>
+            {allowEdit && (
+              <DeleteImagesModal formData={{ images }} form={SelectImages} />
+            )}
           </ButtonGroup>
         </div>
       )}
