@@ -7,6 +7,7 @@ import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
 import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
 import ViewApartmentImages from "./ViewApartmentImages";
+import ViewApartmentLocation from "./ViewApartmentLocation";
 import { setCurrentApartment } from "../../../store/actions";
 import { roleNames } from "../../../constants";
 
@@ -28,6 +29,7 @@ export class ViewApartment extends Component {
     const { loading } = this.state;
     const { apartment = {}, user = {} } = this.props;
     const {
+      location = { address: {} },
       images = [],
       amenities = [],
       comments = [],
@@ -58,6 +60,9 @@ export class ViewApartment extends Component {
           />
           <hr />
           <ViewApartmentComments comments={comments} allowEdit={allowEdit} />
+          <hr />
+          <ViewApartmentLocation location={location} allowEdit={allowEdit} />
+          <hr />
         </main>
       </section>
     );
