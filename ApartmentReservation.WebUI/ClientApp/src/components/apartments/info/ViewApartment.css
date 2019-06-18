@@ -1,7 +1,6 @@
-.modal-edit-btn-container {
-  padding-top: 1em;
+.summary-content {
+  padding-bottom: 1em;
 }
-
 .view-apartment-images .apartment-carousel {
   width: 300px;
   height: 200px;
@@ -9,4 +8,8 @@
 .view-apartment-images .carousel-image {
   width: 300px;
   height: 200px;
+}
+
+.view-apartment-images .btn-group {
+  padding-top: 1em;
 }

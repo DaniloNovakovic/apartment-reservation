@@ -12,6 +12,10 @@ export class EditModalBase extends Component {
     };
   }
 
+  get btnText() {
+    return "Edit";
+  }
+
   get modalTitle() {
     return "Edit";
   }
@@ -43,9 +47,9 @@ export class EditModalBase extends Component {
     const { form: Component } = this.props;
 
     return (
-      <div className="modal-edit-btn-container">
+      <>
         <Button variant="warning" onClick={this.handleShow}>
-          Edit
+          {this.btnText}
         </Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
@@ -70,7 +74,7 @@ export class EditModalBase extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </>
     );
   }
 }
