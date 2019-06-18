@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Application.Features.Apartments.Commands
 {
@@ -64,7 +64,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             MapValues(request, dbApartment);
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;
         }
@@ -88,6 +88,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             dbApartment.NumberOfGuests = request.NumberOfGuests ?? dbApartment.NumberOfGuests;
             dbApartment.NumberOfRooms = request.NumberOfRooms ?? dbApartment.NumberOfRooms;
+            dbApartment.PricePerNight = request.PricePerNight ?? dbApartment.PricePerNight;
 
             var location = dbApartment.Location;
             MapLocation(request, location);

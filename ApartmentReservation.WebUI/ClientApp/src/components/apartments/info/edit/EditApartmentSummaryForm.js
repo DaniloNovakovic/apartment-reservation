@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Form, Alert } from "react-bootstrap";
+import { Form, Alert, Col } from "react-bootstrap";
 import {
   ApartmentTitleInput,
   ApartmentTypeInput,
-  CityNameInput,
-  NumberOfRoomsInput
+  NumberOfRoomsInput,
+  PricePerNightInput,
+  CheckInTimeInput,
+  CheckOutTimeInput
 } from "../../form";
 
 export default class EditApartmentSummaryForm extends Component {
@@ -24,18 +26,34 @@ export default class EditApartmentSummaryForm extends Component {
           value={this.props.title || ""}
           handleChange={this.handleChange}
         />
-        <CityNameInput
-          value={this.props.cityName || ""}
-          handleChange={this.handleChange}
-        />
         <ApartmentTypeInput
           value={this.props.apartmentType}
           handleChange={this.handleChange}
         />
-        <NumberOfRoomsInput
-          value={this.props.numberOfRooms || 0}
-          handleChange={this.handleChange}
-        />
+        <Form.Row>
+          <NumberOfRoomsInput
+            as={Col}
+            value={this.props.numberOfRooms || 0}
+            handleChange={this.handleChange}
+          />
+          <PricePerNightInput
+            as={Col}
+            value={this.props.pricePerNight || 0}
+            handleChange={this.handleChange}
+          />
+        </Form.Row>
+        <Form.Row>
+          <CheckInTimeInput
+            as={Col}
+            value={this.props.checkInTime}
+            handleChange={this.handleChange}
+          />
+          <CheckOutTimeInput
+            as={Col}
+            value={this.props.checkOutTime}
+            handleChange={this.handleChange}
+          />
+        </Form.Row>
       </Form>
     );
   }
