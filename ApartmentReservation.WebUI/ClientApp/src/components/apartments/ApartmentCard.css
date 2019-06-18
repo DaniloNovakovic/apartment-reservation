@@ -10,6 +10,13 @@
 .apartment-card .card-header {
   padding: 5px;
 }
+.apartment-card .card-text {
+  margin-bottom: 0.2em;
+}
+.apartment-card .card-body,
+.apartment-card .card-footer {
+  padding: 0.5em 1em;
+}
 
 .apartment-card-main {
   max-width: 310px;
