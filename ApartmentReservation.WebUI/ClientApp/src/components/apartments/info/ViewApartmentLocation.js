@@ -6,7 +6,8 @@ export default function ViewApartmentLocation({
   location = { address: {} },
   allowEdit = false
 }) {
-  const { longitude, latitude, address = {} } = location;
+  let { longitude, latitude, address } = location;
+  address = address || {};
   return (
     <article className="view-apartment-location">
       <h5>Location</h5>
