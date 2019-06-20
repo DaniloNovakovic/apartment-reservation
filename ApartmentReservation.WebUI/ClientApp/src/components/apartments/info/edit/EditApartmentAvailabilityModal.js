@@ -14,7 +14,10 @@ export class EditApartmentAvailabilityModal extends EditModalBase {
     const apartmentId = this.props.apartment.id;
     this.props
       .updateCurrentApartmentRentalDates({ id: apartmentId, forRentalDates })
-      .then(_ => this.handleClose());
+      .then(_ => {
+        this.handleClose();
+        window.location.reload();
+      });
   };
 }
 

@@ -9,7 +9,8 @@ export default class EditApartmentAvailabilityForm extends Component {
     });
   };
   handleDayClick = (day, { selected }) => {
-    const { forRentalDates: selectedDays } = this.props;
+    const { forRentalDates } = this.props;
+    const selectedDays = [...forRentalDates];
     if (selected) {
       const selectedIndex = selectedDays.findIndex(selectedDay =>
         DateUtils.isSameDay(selectedDay, day)
@@ -29,6 +30,8 @@ export default class EditApartmentAvailabilityForm extends Component {
         <DayPicker
           numberOfMonths={2}
           pagedNavigation
+          fromMonth={new Date()}
+          disabledDays={{ before: new Date() }}
           selectedDays={forRentalDates}
           onDayClick={this.handleDayClick}
         />

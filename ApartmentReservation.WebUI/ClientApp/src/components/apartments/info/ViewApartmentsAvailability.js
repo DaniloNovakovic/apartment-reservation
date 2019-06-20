@@ -24,7 +24,11 @@ export function ViewApartmentAvailability({
         <DayPicker
           numberOfMonths={2}
           pagedNavigation
-          disabledDays={day => !isContainedIn(day, availableDates)}
+          fromMonth={new Date()}
+          disabledDays={[
+            day => !isContainedIn(day, availableDates),
+            { before: new Date() }
+          ]}
         />
       </div>
       {allowEdit && (
