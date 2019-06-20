@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Application.Features.Reservations.Queries
 {
@@ -43,18 +45,22 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             var forRentalDates = apartment.ForRentalDates.Where(frd => !frd.IsDeleted).ToList();
             var reservations = apartment.Reservations.Where(r => !r.IsDeleted).ToList();
 
-            var availableDates = new List<DateTime>();
+            return forRentalDates
+                .Where(forRentalDate => IsDateAvailable(forRentalDate.Date, reservations))
+                .Select(forRentalDate => forRentalDate.Date).ToList();
+        }
 
-            foreach (var forRentalDate in forRentalDates)
+        private static bool IsDateAvailable(DateTime date, IEnumerable<Reservation> reservations)
+        {
+            foreach (var reservation in reservations)
             {
-                foreach (var reservation in reservations)
+                if (DateTimeHelpers.IsContainedInDayRange(date, reservation.ReservationStartDate, reservation.NumberOfNightsRented))
                 {
-                    var startDate = reservation.ReservationStartDate;
-                    var endDate = startDate.AddDays(reservation.NumberOfNightsRented);
+                    return false;
                 }
             }
 
-            return availableDates;
+            return true;
         }
     }
 }

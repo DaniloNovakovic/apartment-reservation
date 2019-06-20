@@ -7,6 +7,7 @@ using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
@@ -90,23 +91,12 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
 
             this.apartment = this.Context.Add(new Apartment()).Entity;
 
-            this.forRentalDates = this.GetDateRange(DateTime.Now, DaysToAdd)
+            this.forRentalDates = DateTimeHelpers.GetDateDayRange(DateTime.Now, DaysToAdd)
                 .Select(day => new ForRentalDate() { Date = day, Apartment = apartment });
 
             this.Context.AddRange(this.forRentalDates);
 
             this.Context.SaveChanges();
-        }
-
-        ///<summary>Returns [from, from+1day,..., from+numberOfDays] - closed interval(n+1)</summary>
-        private IEnumerable<DateTime> GetDateRange(DateTime from, int numberOfDays)
-        {
-            var days = new List<DateTime>();
-            for (int i = 0; i <= numberOfDays; ++i)
-            {
-                days.Add(from.AddDays(i));
-            }
-            return days;
         }
     }
 }
