@@ -19,3 +19,10 @@
 .view-apartment-images .btn-group {
   padding-top: 1em;
 }
+
+.booking-part .booking-card {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5rem;
+  padding: 5px;
+}

@@ -9,9 +9,15 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
         public const string HostOnly = "HostOnly";
         public const string AdministratorOrHostOnly = "AdministratorOrHostOnly";
         public const string AdministratorOrGuestOnly = "AdministratorOrGuestOnly";
+        public const string GuestOnly = "GuestOnly";
 
         public static void AddPolicies(AuthorizationOptions options)
         {
+            options.AddPolicy(GuestOnly, policy =>
+            {
+                policy.RequireClaim(ClaimTypes.Role, RoleNames.Guest);
+            });
+
             options.AddPolicy(HostOnly, policy =>
             {
                 policy.RequireClaim(ClaimTypes.Role, RoleNames.Host);

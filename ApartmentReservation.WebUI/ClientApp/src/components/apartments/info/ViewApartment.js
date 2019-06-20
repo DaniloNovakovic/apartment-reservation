@@ -1,5 +1,6 @@
+import "./ViewApartment.css";
 import React, { Component } from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Row, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { apartmentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
@@ -10,6 +11,7 @@ import ViewApartmentImages from "./ViewApartmentImages";
 import ViewApartmentLocation from "./ViewApartmentLocation";
 import { setCurrentApartment } from "../../../store/actions";
 import { roleNames } from "../../../constants";
+import BookingCard from "./BookingCard";
 
 export class ViewApartment extends Component {
   constructor(props) {
@@ -37,6 +39,8 @@ export class ViewApartment extends Component {
       availableDates = []
     } = apartment;
 
+    const isGuest = user && user.roleName === roleNames.Guest;
+
     const allowEdit =
       user &&
       (user.roleName === roleNames.Admin ||
@@ -47,26 +51,37 @@ export class ViewApartment extends Component {
         <span className="sr-only">Loading...</span>
       </Spinner>
     ) : (
-      <section className="view-apartment-page">
-        <ViewApartmentSummary apartment={apartment} allowEdit={allowEdit} />
-        <main>
-          <hr />
-          <ViewApartmentImages images={images} allowEdit={allowEdit} />
-          <hr />
-          <ViewApartmentAmenities amenities={amenities} allowEdit={allowEdit} />
-          <hr />
-          <ViewApartmentAvailability
-            forRentalDates={forRentalDates}
-            availableDates={availableDates}
-            allowEdit={allowEdit}
-          />
-          <hr />
-          <ViewApartmentComments comments={comments} allowEdit={allowEdit} />
-          <hr />
-          <ViewApartmentLocation location={location} allowEdit={allowEdit} />
-          <hr />
-        </main>
-      </section>
+      <>
+        <Row as="section" className="view-apartment-page">
+          <Col as="main" sm={isGuest ? "7" : "12"}>
+            <ViewApartmentSummary apartment={apartment} allowEdit={allowEdit} />
+            <hr />
+            <ViewApartmentImages images={images} allowEdit={allowEdit} />
+            <hr />
+            <ViewApartmentAmenities
+              amenities={amenities}
+              allowEdit={allowEdit}
+            />
+            <hr />
+            <ViewApartmentAvailability
+              forRentalDates={forRentalDates}
+              availableDates={availableDates}
+              allowEdit={allowEdit}
+            />
+            <hr />
+            <ViewApartmentComments comments={comments} allowEdit={allowEdit} />
+            <hr />
+            <ViewApartmentLocation location={location} allowEdit={allowEdit} />
+            <hr />
+          </Col>
+          {isGuest && (
+            <Col as="aside" sm="5" className="booking-part">
+              <BookingCard apartment={apartment} />
+            </Col>
+          )}
+        </Row>
+        <footer />
+      </>
     );
   }
 }
