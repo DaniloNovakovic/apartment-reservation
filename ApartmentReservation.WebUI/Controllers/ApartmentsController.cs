@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Apartments.Queries;
+using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
@@ -39,8 +40,9 @@ namespace ApartmentReservation.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(long id)
         {
-            return this.Ok(await this.mediator.Send(new GetApartmentQuery() { Id = id })
-                .ConfigureAwait(false));
+            var apartment = await this.mediator.Send(new GetApartmentQuery() { Id = id }).ConfigureAwait(false);
+            apartment.AvailableDates = await this.mediator.Send(new GetAvailableDatesQuery() { ApartmentId = id }).ConfigureAwait(false);
+            return this.Ok(apartment);
         }
 
         [HttpPost]

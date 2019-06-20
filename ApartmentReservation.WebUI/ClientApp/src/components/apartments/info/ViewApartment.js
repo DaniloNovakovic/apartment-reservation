@@ -33,7 +33,8 @@ export class ViewApartment extends Component {
       images = [],
       amenities = [],
       comments = [],
-      forRentalDates = []
+      forRentalDates = [],
+      availableDates = []
     } = apartment;
 
     const allowEdit =
@@ -56,6 +57,7 @@ export class ViewApartment extends Component {
           <hr />
           <ViewApartmentAvailability
             forRentalDates={forRentalDates}
+            availableDates={availableDates}
             allowEdit={allowEdit}
           />
           <hr />

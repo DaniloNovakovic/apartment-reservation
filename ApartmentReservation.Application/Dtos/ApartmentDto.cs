@@ -53,6 +53,7 @@ namespace ApartmentReservation.Application.Dtos
         public string CheckOutTime { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
         public IEnumerable<DateTime> ForRentalDates { get; set; }
+        public IEnumerable<DateTime> AvailableDates { get; set; }
         public UserPublicDto Host { get; set; }
         public IEnumerable<ImageDto> Images { get; set; }
         public LocationDto Location { get; set; }

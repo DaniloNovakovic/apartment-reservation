@@ -4,7 +4,10 @@ import { updateCurrentApartmentRentalDates } from "../../../../store/actions";
 
 export class EditApartmentAvailabilityModal extends EditModalBase {
   get modalTitle() {
-    return "Edit Apartment Availability";
+    return "Edit Apartment Availability (For Rental Dates)";
+  }
+  get btnText() {
+    return "Edit For Rental Dates";
   }
   handleSubmit = () => {
     const { forRentalDates } = this.state.formData;
