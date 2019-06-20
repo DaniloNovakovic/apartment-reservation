@@ -8,14 +8,21 @@ export const ViewApartmentsHeader = props => (
   <header className="view-apartment-page-header">
     <h1>{props.title || "Apartment"}</h1>
     <p>
-      {props.cityName}, {props.activityState}
+      {props.cityName},{" "}
+      <span className={props.activityState}>{props.activityState}</span>
     </p>
   </header>
 );
 
 export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
-  const { location, title, apartmentType, numberOfRooms, activityState } =
-    apartment || {};
+  const {
+    location,
+    title,
+    apartmentType,
+    numberOfRooms,
+    numberOfGuests,
+    activityState
+  } = apartment || {};
   const address = (location && location.address) || {};
   const host = apartment.host || {};
 
@@ -33,6 +40,9 @@ export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
         </p>
         <p>
           <b>Number of rooms:</b> {numberOfRooms}
+        </p>
+        <p>
+          <b>Number of guests:</b> {numberOfGuests}
         </p>
         <p>
           <b>Price:</b> ${apartment.pricePerNight} per night

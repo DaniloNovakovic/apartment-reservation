@@ -5,6 +5,7 @@ import {
   ApartmentTitleInput,
   ApartmentTypeInput,
   NumberOfRoomsInput,
+  NumberOfGuestsInput,
   PricePerNightInput,
   CheckInTimeInput,
   CheckOutTimeInput
@@ -56,6 +57,15 @@ export default class EditApartmentSummaryForm extends Component {
             feedback={
               validation.numberOfRooms &&
               validation.numberOfRooms.validationMessage
+            }
+          />
+          <NumberOfGuestsInput
+            as={Col}
+            value={this.props.numberOfGuests || 0}
+            handleChange={this.handleChange}
+            feedback={
+              validation.numberOfGuests &&
+              validation.numberOfGuests.validationMessage
             }
           />
           <PricePerNightInput

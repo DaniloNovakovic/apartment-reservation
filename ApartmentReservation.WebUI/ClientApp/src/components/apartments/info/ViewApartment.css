@@ -1,3 +1,9 @@
+.view-apartment-page-header .Inactive {
+  color: red;
+}
+.view-apartment-page-header .Active {
+  color: green;
+}
 .summary-content {
   padding-bottom: 1em;
 }

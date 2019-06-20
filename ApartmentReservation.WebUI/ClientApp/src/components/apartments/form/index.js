@@ -8,6 +8,7 @@ export * from "./CountryInput";
 export * from "./LatitudeInput";
 export * from "./LongitudeInput";
 export * from "./NumberOfRoomsInput";
+export * from "./NumberOfGuestsInput";
 export * from "./PostalCodeInput";
 export * from "./PricePerNightInput";
 export * from "./StreetNameInput";
