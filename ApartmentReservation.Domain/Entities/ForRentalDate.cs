@@ -1,4 +1,5 @@
 ﻿using System;
+using ApartmentReservation.Common;
 
 namespace ApartmentReservation.Domain.Entities
 {
@@ -14,9 +15,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public bool Equals(DateTime dateTime)
         {
-            return dateTime.Year == Date.Year
-                && dateTime.Month == Date.Month
-                && dateTime.Day == Date.Day;
+            return DateTimeHelpers.AreSameDay(this.Date, dateTime);
         }
     }
 }
