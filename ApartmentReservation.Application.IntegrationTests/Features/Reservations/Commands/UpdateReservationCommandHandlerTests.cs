@@ -20,12 +20,13 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
         }
 
         [Fact]
-        public async Task UpdatesReservation()
+        public async Task CanUpdateReturnsTrue_UpdatesReservation()
         {
             var request = new UpdateReservationCommand()
             {
                 Id = this.reservation.Id,
-                ReservationState = ReservationStates.Accepted
+                ReservationState = ReservationStates.Accepted,
+                CanUpdate = (_) => true
             };
 
             await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
@@ -33,6 +34,25 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
             var dbReservation = await this.Context.Reservations.FindAsync(request.Id).ConfigureAwait(false);
 
             Assert.Equal(request.ReservationState, dbReservation.ReservationState);
+        }
+
+        [Fact]
+        public async Task CanUpdateReturnsFalse_DoesNotUpdateReservation()
+        {
+            string oldState = reservation.ReservationState;
+
+            var request = new UpdateReservationCommand()
+            {
+                Id = this.reservation.Id,
+                ReservationState = ReservationStates.Accepted,
+                CanUpdate = (_) => false
+            };
+
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+
+            var dbReservation = await this.Context.Reservations.FindAsync(request.Id).ConfigureAwait(false);
+
+            Assert.Equal(oldState, dbReservation.ReservationState);
         }
 
         protected override void LoadTestData()

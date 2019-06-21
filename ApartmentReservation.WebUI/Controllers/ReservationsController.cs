@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -52,32 +54,52 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.GuestOnly)]
         public async Task<IActionResult> Withdraw(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Withdrawn);
+            return await UpdateReservationAsync(id, ReservationStates.Withdrawn, (args) =>
+            {
+                return args.ReservationState == ReservationStates.Created
+                    || args.ReservationState == ReservationStates.Accepted;
+            });
         }
 
         [HttpGet("{id}/Deny")]
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Deny(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Denied);
+            return await UpdateReservationAsync(id, ReservationStates.Denied, (args) =>
+            {
+                return args.ReservationState == ReservationStates.Created;
+            });
         }
 
         [HttpGet("{id}/Accept")]
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Accept(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Accepted);
+            return await UpdateReservationAsync(id, ReservationStates.Accepted, (args) =>
+            {
+                return args.ReservationState == ReservationStates.Created;
+            });
         }
 
         [HttpGet("{id}/Complete")]
         public async Task<IActionResult> Complete(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Completed);
+            return await UpdateReservationAsync(id, ReservationStates.Completed, (args) =>
+            {
+                var endDate = args.ReservationStartDate.AddDays(args.NumberOfNightsRented);
+                var today = DateTime.Now;
+                if (!DateTimeHelpers.AreSameDay(today, endDate) && today < endDate)
+                {
+                    return false;
+                }
+
+                return true;
+            });
         }
 
-        private async Task<IActionResult> UpdateReservationAsync(long id, string reservationState)
+        private async Task<IActionResult> UpdateReservationAsync(long id, string reservationState, Predicate<CanUpdateReservationArgs> CanUpdate)
         {
-            var command = new UpdateReservationCommand() { Id = id, ReservationState = reservationState };
+            var command = new UpdateReservationCommand() { Id = id, ReservationState = reservationState, CanUpdate = CanUpdate };
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
         }
