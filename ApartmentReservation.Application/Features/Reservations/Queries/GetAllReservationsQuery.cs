@@ -16,6 +16,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
     {
         public long? HostId { get; set; }
         public long? GuestId { get; set; }
+        public string ReservationState { get; set; }
     }
 
     public class GetAllReservationsQueryHandler : IRequestHandler<GetAllReservationsQuery, IEnumerable<ReservationDto>>
@@ -53,6 +54,10 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
                 query = query.Where(r => r.GuestId == filters.GuestId);
             }
 
+            if (!string.IsNullOrEmpty(filters.ReservationState))
+            {
+                query = query.Where(r => string.Equals(r.ReservationState, filters.ReservationState, StringComparison.OrdinalIgnoreCase));
+            }
             return query;
         }
     }
