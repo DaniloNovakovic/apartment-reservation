@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,40 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> Post([FromBody] CreateReservationCommand command)
         {
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
+        }
+
+        [HttpGet("{id}/Withdraw")]
+        [Authorize(Policy = Policies.GuestOnly)]
+        public async Task<IActionResult> Withdraw(long id)
+        {
+            return await UpdateReservationAsync(id, ReservationStates.Withdrawn);
+        }
+
+        [HttpGet("{id}/Deny")]
+        [Authorize(Policy = Policies.HostOnly)]
+        public async Task<IActionResult> Deny(long id)
+        {
+            return await UpdateReservationAsync(id, ReservationStates.Denied);
+        }
+
+        [HttpGet("{id}/Accept")]
+        [Authorize(Policy = Policies.HostOnly)]
+        public async Task<IActionResult> Accept(long id)
+        {
+            return await UpdateReservationAsync(id, ReservationStates.Accepted);
+        }
+
+        [HttpGet("{id}/Complete")]
+        public async Task<IActionResult> Complete(long id)
+        {
+            return await UpdateReservationAsync(id, ReservationStates.Completed);
+        }
+
+        private async Task<IActionResult> UpdateReservationAsync(long id, string reservationState)
+        {
+            var command = new UpdateReservationCommand() { Id = id, ReservationState = reservationState };
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
         }
     }
 }
