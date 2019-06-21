@@ -1,1 +1,1 @@
-export * from "./mapRoleNameToJsx";
+export * from "./mapRoleNameToJsxFactory";

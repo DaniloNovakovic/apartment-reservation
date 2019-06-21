@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { reservationStates } from "../../../constants";
 
-const guestStateToButtons = {
+const guestStateToButtonsFactory = {
   [reservationStates.Created]: ({ handleWithdraw }) => (
     <Button variant="danger" onClick={handleWithdraw}>
       Withdraw
@@ -15,9 +15,9 @@ const guestStateToButtons = {
   )
 };
 
-export const mapGuestReservationStateToJsx = state => {
-  if (guestStateToButtons.hasOwnProperty(state)) {
-    return guestStateToButtons[state];
+export const mapGuestReservationStateToJsxFactory = state => {
+  if (guestStateToButtonsFactory.hasOwnProperty(state)) {
+    return guestStateToButtonsFactory[state];
   } else {
     return () => <div />;
   }

@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { reservationService } from "../../services";
-import { mapRoleNameToJsx } from "./helpers";
+import { mapRoleNameToJsxFactory } from "./helpers";
 
 export default class ReservationTableButtons extends Component {
   handleAccept = () => {
@@ -30,7 +30,7 @@ export default class ReservationTableButtons extends Component {
       handleWithdraw: this.handleWithdraw
     };
 
-    return mapRoleNameToJsx(roleName, reservationState)({
+    return mapRoleNameToJsxFactory(roleName, reservationState)({
       reservation,
       ...onClickHandlers
     });

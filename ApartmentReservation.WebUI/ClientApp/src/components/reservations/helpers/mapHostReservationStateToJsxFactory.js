@@ -3,7 +3,7 @@ import { ButtonGroup, Button } from "react-bootstrap";
 import { reservationStates } from "../../../constants";
 import CompleteReservation from "../CompleteReservation";
 
-const hostStateToButtons = {
+const hostStateToButtonsFactory = {
   [reservationStates.Created]: ({ handleAccept, handleDeny }) => (
     <ButtonGroup>
       <Button variant="success" onClick={handleAccept}>
@@ -17,9 +17,9 @@ const hostStateToButtons = {
   [reservationStates.Accepted]: props => <CompleteReservation {...props} />
 };
 
-export const mapHostReservationStateToJsx = state => {
-  if (hostStateToButtons.hasOwnProperty(state)) {
-    return hostStateToButtons[state];
+export const mapHostReservationStateToJsxFactory = state => {
+  if (hostStateToButtonsFactory.hasOwnProperty(state)) {
+    return hostStateToButtonsFactory[state];
   } else {
     return () => <div />;
   }
