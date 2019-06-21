@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { reservationService } from "../../services";
 import { mapRoleNameToJsx } from "./helpers";
 
@@ -30,6 +30,9 @@ export default class ReservationTableButtons extends Component {
       handleWithdraw: this.handleWithdraw
     };
 
-    return mapRoleNameToJsx(roleName, reservationState, onClickHandlers);
+    return mapRoleNameToJsx(roleName, reservationState)({
+      reservation,
+      ...onClickHandlers
+    });
   }
 }

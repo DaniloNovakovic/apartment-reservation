@@ -15,10 +15,10 @@ const guestStateToButtons = {
   )
 };
 
-export const mapGuestReservationStateToJsx = (state, onClickHandlers) => {
+export const mapGuestReservationStateToJsx = state => {
   if (guestStateToButtons.hasOwnProperty(state)) {
-    return guestStateToButtons[state](onClickHandlers);
+    return guestStateToButtons[state];
   } else {
-    return <div />;
+    return () => <div />;
   }
 };

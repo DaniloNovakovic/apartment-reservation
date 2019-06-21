@@ -1,6 +1,7 @@
 import React from "react";
 import { ButtonGroup, Button } from "react-bootstrap";
 import { reservationStates } from "../../../constants";
+import CompleteReservation from "../CompleteReservation";
 
 const hostStateToButtons = {
   [reservationStates.Created]: ({ handleAccept, handleDeny }) => (
@@ -13,17 +14,13 @@ const hostStateToButtons = {
       </Button>
     </ButtonGroup>
   ),
-  [reservationStates.Accepted]: ({ handleComplete }) => (
-    <Button variant="success" onClick={handleComplete}>
-      Complete
-    </Button>
-  )
+  [reservationStates.Accepted]: props => <CompleteReservation {...props} />
 };
 
-export const mapHostReservationStateToJsx = (state, onClickHandlers) => {
+export const mapHostReservationStateToJsx = state => {
   if (hostStateToButtons.hasOwnProperty(state)) {
-    return hostStateToButtons[state](onClickHandlers);
+    return hostStateToButtons[state];
   } else {
-    return <div />;
+    return () => <div />;
   }
 };
