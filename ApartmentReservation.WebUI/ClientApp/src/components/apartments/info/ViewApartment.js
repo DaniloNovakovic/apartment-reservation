@@ -1,6 +1,6 @@
 import "./ViewApartment.css";
 import React, { Component } from "react";
-import { Spinner, Row, Col, Button } from "react-bootstrap";
+import { Spinner, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { apartmentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
@@ -76,7 +76,7 @@ export class ViewApartment extends Component {
           </Col>
           {isGuest && (
             <Col as="aside" sm="5" className="booking-part">
-              <BookingCard apartment={apartment} />
+              <BookingCard apartment={apartment} user={user} />
             </Col>
           )}
         </Row>

@@ -8,13 +8,15 @@ export const NumberOfNightsInput = ({
   placeholder = "ex. 1",
   required = true,
   ...other
-}) => (
-  <NumberInput
-    label={label}
-    name={name}
-    min={min}
-    placeholder={placeholder}
-    required={required}
-    {...other}
-  />
-);
+}) => {
+  return (
+    <NumberInput
+      label={label}
+      name={name}
+      min={min}
+      placeholder={placeholder}
+      required={required}
+      {...other}
+    />
+  );
+};

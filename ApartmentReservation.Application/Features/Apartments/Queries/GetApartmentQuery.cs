@@ -44,7 +44,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
             return await context.Apartments
                 .Include("ApartmentAmenities.Amenity")
                 .Include(a => a.ForRentalDates)
-                .Include(a => a.Reservations)
                 .Include(a => a.Images)
                 .Include(a => a.Location)
                 .ThenInclude(l => l.Address)

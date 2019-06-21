@@ -40,7 +40,6 @@ namespace ApartmentReservation.Application.Dtos
             this.NumberOfGuests = apartment.NumberOfGuests;
             this.NumberOfRooms = apartment.NumberOfRooms;
             this.PricePerNight = apartment.PricePerNight;
-            this.Reservations = apartment.Reservations.Where(r => !r.IsDeleted).Select(r => new ReservationDto(r));
             this.Title = apartment.Title;
         }
 
@@ -60,7 +59,6 @@ namespace ApartmentReservation.Application.Dtos
         public int NumberOfGuests { get; set; }
         public int NumberOfRooms { get; set; }
         public double PricePerNight { get; set; }
-        public IEnumerable<ReservationDto> Reservations { get; set; }
         public string Title { get; set; }
         public double Rating { get; set; }
     }

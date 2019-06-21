@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Hosts;
@@ -108,6 +109,7 @@ namespace ApartmentReservation.WebUI
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });

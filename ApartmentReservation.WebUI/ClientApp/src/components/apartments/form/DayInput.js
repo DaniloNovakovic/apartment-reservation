@@ -22,11 +22,21 @@ export default class DayInput extends React.Component {
     this.setState({
       selectedDay
     });
+    if (this.props.handleChange) {
+      this.props.handleChange({
+        target: {
+          name: this.props.name || "selectedDay",
+          value: selectedDay,
+          checkValidity: () => !!selectedDay,
+          validationMessage: "Please select date"
+        }
+      });
+    }
   };
 
   render() {
     const { selectedDay } = this.state;
-    let { availableDates = [] } = this.props;
+    let { availableDates = [], feedback } = this.props;
     availableDates = availableDates.map(d => new Date(d));
 
     return (
@@ -37,9 +47,13 @@ export default class DayInput extends React.Component {
           onDayChange={this.handleDayChange}
           dayPickerProps={{
             selectedDays: selectedDay,
-            disabledDays: day => !isContainedIn(day, availableDates)
+            disabledDays: [
+              day => !isContainedIn(day, availableDates),
+              { before: new Date() }
+            ]
           }}
         />
+        <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
       </Form.Group>
     );
   }
