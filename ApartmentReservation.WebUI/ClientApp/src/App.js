@@ -22,6 +22,7 @@ import ViewApartment from "./components/apartments/info/ViewApartment";
 import Amenities from "./components/amenities/Amenities";
 import EditAmenity from "./components/amenities/EditAmenity";
 import AddAmenity from "./components/amenities/AddAmenity";
+import Reservations from "./components/reservations/Reservations";
 
 class App extends Component {
   constructor(props) {
@@ -84,6 +85,7 @@ class App extends Component {
             roles={[roleNames.Admin]}
             component={EditAmenity}
           />
+          <PrivateRoute path="/reservations" component={Reservations} />
         </Layout>
       </Router>
     );

@@ -33,6 +33,13 @@ const SignedInLinks = ({ user }) => {
     <Nav>
       {roleLinks[user.roleName]}
 
+      <Nav.Item key="reservations-nav">
+        <Nav.Link as={Link} to="/reservations">
+          <IoIosList />
+          Reservations
+        </Nav.Link>
+      </Nav.Item>
+
       <NavDropdown title="Account" id="basic-nav-dropdown">
         <NavDropdown.Item as={Link} to="/Profile">
           Profile

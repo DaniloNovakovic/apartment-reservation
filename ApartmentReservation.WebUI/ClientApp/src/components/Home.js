@@ -7,7 +7,6 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Apartment reservation</h1>
         <DisplayApartments />
       </div>
     );
