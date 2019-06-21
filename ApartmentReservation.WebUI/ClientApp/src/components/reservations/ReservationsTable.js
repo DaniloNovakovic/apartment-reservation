@@ -1,7 +1,8 @@
 import React from "react";
 import { roleNames } from "../../constants";
-import { Table, ButtonToolbar } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { formatDateToYearMonthDayString } from "../../helpers";
+import ReservationTableButtons from "./ReservationTableButtons";
 
 export const ReservationsTable = ({ reservations, user }) => (
   <Table striped hover bordered className="reservations-table">
@@ -30,8 +31,7 @@ export const ReservationsTable = ({ reservations, user }) => (
           <td>{item.totalCost}</td>
           <td>{item.reservationState}</td>
           <td>
-            {user.roleName === roleNames.Guest && <ButtonToolbar />}
-            {user.roleName === roleNames.Host && <ButtonToolbar />}
+            <ReservationTableButtons user={user} reservation={item} />
           </td>
         </tr>
       ))}
