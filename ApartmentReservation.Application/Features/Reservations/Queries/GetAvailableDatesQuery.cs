@@ -10,6 +10,7 @@ using ApartmentReservation.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ApartmentReservation.Domain.Entities;
+using ApartmentReservation.Domain.Constants;
 
 namespace ApartmentReservation.Application.Features.Reservations.Queries
 {
@@ -43,7 +44,10 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             }
 
             var forRentalDates = apartment.ForRentalDates.Where(frd => !frd.IsDeleted).ToList();
-            var reservations = apartment.Reservations.Where(r => !r.IsDeleted).ToList();
+
+            var reservationStatesToIgnore = new[] { ReservationStates.Denied, ReservationStates.Withdrawn };
+            var reservations = apartment.Reservations
+                .Where(r => !r.IsDeleted && !reservationStatesToIgnore.Contains(r.ReservationState)).ToList();
 
             return forRentalDates
                 .Where(forRentalDate => IsDateAvailable(forRentalDate.Date, reservations))

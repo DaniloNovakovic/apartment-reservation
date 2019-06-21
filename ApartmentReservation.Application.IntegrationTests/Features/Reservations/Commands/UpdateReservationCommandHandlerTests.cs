@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
@@ -48,7 +49,9 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
                 CanUpdate = (_) => false
             };
 
-            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await Assert
+                .ThrowsAsync<CustomInvalidOperationException>(async () => await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false))
+                .ConfigureAwait(false);
 
             var dbReservation = await this.Context.Reservations.FindAsync(request.Id).ConfigureAwait(false);
 
