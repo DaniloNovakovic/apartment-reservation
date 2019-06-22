@@ -4,6 +4,10 @@ namespace ApartmentReservation.Application.Dtos
 {
     public class CommentDto
     {
+        public CommentDto()
+        {
+        }
+
         public CommentDto(Comment c)
         {
             Id = c.Id;
@@ -20,6 +24,7 @@ namespace ApartmentReservation.Application.Dtos
 
             Rating = c.Rating;
             Text = c.Text;
+            Approved = c.Approved;
         }
 
         public long? Id { get; set; }
@@ -31,5 +36,7 @@ namespace ApartmentReservation.Application.Dtos
         public byte Rating { get; set; }
 
         public string Text { get; set; }
+
+        public bool Approved { get; set; }
     }
 }
