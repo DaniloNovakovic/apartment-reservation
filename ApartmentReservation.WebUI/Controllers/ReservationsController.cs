@@ -92,7 +92,10 @@ namespace ApartmentReservation.WebUI.Controllers
                 {
                     return false;
                 }
-
+                if (args.ReservationState != ReservationStates.Accepted)
+                {
+                    return false;
+                }
                 return true;
             });
         }
