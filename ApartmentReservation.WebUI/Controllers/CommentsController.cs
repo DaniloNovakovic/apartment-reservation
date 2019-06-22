@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Comments.Commands;
+using ApartmentReservation.Application.Features.Comments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
@@ -21,6 +22,16 @@ namespace ApartmentReservation.WebUI.Controllers
         public CommentsController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] GetAllCommentsQuery query)
+        {
+            if (!this.User.IsInRole(RoleNames.Host) && !this.User.IsInRole(RoleNames.Administrator))
+            {
+                query.Approved = true;
+            }
+            return this.Ok(await mediator.Send(query).ConfigureAwait(false));
         }
 
         [HttpGet("{id}/Approve")]
