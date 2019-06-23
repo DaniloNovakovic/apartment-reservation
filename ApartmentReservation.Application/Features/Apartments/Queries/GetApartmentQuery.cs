@@ -36,7 +36,12 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 throw new NotFoundException("Requested apartment not found");
             }
 
-            return new ApartmentDto(dbApartment);
+            return new ApartmentDto(dbApartment)
+            {
+                Rating = await this.context.Comments.Where(c => !c.IsDeleted && c.ApartmentId == dbApartment.Id)
+                    .DefaultIfEmpty()
+                    .AverageAsync(c => (double)c.Rating).ConfigureAwait(false)
+            };
         }
 
         private async Task<Apartment> GetApartmentWithIncludedRelations(GetApartmentQuery request)

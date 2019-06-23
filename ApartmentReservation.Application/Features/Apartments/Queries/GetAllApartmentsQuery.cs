@@ -38,7 +38,14 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
             var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return apartments.Select(a => new ApartmentDto(a));
+            var tasks = apartments.Select(async item => new ApartmentDto(item)
+            {
+                Rating = await this.context.Comments.Where(c => !c.IsDeleted && c.ApartmentId == item.Id)
+                    .DefaultIfEmpty()
+                    .AverageAsync(c => (double)c.Rating).ConfigureAwait(false)
+            });
+
+            return await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
         private IQueryable<Apartment> GetApartmentsWithIncludedRelations()
