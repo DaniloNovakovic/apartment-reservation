@@ -56,6 +56,17 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
 
+        [HttpGet("CanPostComment")]
+        public async Task<IActionResult> CanPostComment(long? apartmentId, long? guestId)
+        {
+            bool isAllowed = false;
+            if (!(apartmentId is null) && !(guestId is null))
+            {
+                isAllowed = await IsAllowedToCreateComment(apartmentId.Value, guestId.Value).ConfigureAwait(false);
+            }
+            return Ok(new { Allowed = isAllowed });
+        }
+
         private async Task<bool> IsAllowedToCreateComment(long apartmentId, long guestId)
         {
             var query = new GetAllReservationsQuery() { ApartmentId = apartmentId, GuestId = guestId };

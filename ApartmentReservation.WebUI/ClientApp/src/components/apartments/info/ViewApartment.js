@@ -17,38 +17,33 @@ export class ViewApartment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apartmentId: props.match.params.id
+      apartmentId: props.match.params.id,
+      canPostComments: false
     };
   }
-  setCurrApartment = (apartment, comments) => {
-    this.props.setCurrentApartment({
-      ...apartment,
-      comments
-    });
+  setCurrApartment = apartment => {
+    this.props.setCurrentApartment(apartment);
     this.setState({ loading: false });
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     apartmentService.getById(this.state.apartmentId).then(apartment => {
-      commentService.getAll().then(
-        comments => {
-          this.setCurrApartment(apartment, comments);
-        },
-        _ => {
-          this.setCurrApartment(apartment, []);
-        }
-      );
+      this.setCurrApartment(apartment);
     });
+    commentService
+      .canPostComment(this.state.apartmentId, this.props.user.id)
+      .then(res => {
+        this.setState({ canPostComments: res.allowed });
+      });
   }
   render() {
-    const { loading } = this.state;
+    const { loading, canPostComments } = this.state;
     const { apartment = {}, user = {} } = this.props;
     const {
       location = { address: {} },
       images = [],
       amenities = [],
-      comments = [],
       forRentalDates = [],
       availableDates = []
     } = apartment;
@@ -83,7 +78,10 @@ export class ViewApartment extends Component {
               allowEdit={allowEdit}
             />
             <hr />
-            <ViewApartmentComments comments={comments} allowEdit={allowEdit} />
+            <ViewApartmentComments
+              apartment={apartment}
+              canPostComments={canPostComments}
+            />
             <hr />
             <ViewApartmentLocation location={location} allowEdit={allowEdit} />
             <hr />
