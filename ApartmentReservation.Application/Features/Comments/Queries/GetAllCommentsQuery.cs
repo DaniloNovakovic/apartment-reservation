@@ -26,7 +26,7 @@ namespace ApartmentReservation.Application.Features.Comments.Queries
 
         public async Task<IEnumerable<CommentDto>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
-            var query = this.context.Comments.Where(c => !c.IsDeleted);
+            var query = this.context.Comments.Include(c => c.Guest).ThenInclude(g => g.User).Where(c => !c.IsDeleted);
 
             query = ApplyFilters(request, query);
 

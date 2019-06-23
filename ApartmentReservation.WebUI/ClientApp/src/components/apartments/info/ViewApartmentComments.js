@@ -2,7 +2,8 @@ import React from "react";
 import { commentService } from "../../../services";
 import { makeCancelable } from "../../../helpers";
 import PostComment from "./edit/PostComment";
-import { Button } from "react-bootstrap";
+import { Button, Media } from "react-bootstrap";
+import ReactStars from "react-stars";
 
 export class ViewApartmentComments extends React.Component {
   constructor(props) {
@@ -42,25 +43,54 @@ export class ViewApartmentComments extends React.Component {
     const comments = this.state.comments || [];
     const canPostComments = this.props.canPostComments || false;
 
+    /*
+    {
+  "id": 1,
+  "apartment": null,
+  "guest": {
+    "id": 3,
+    "username": "guest",
+    "password": "guest",
+    "firstName": "Marko",
+    "lastName": "Markovic",
+    "gender": "Other",
+    "roleName": "Guest"
+  },
+  "rating": 5,
+  "text": "Great apartment, great location and great host! Can't wait for next year to visit again!",
+  "approved": true
+}
+    */
     return (
       <article className="view-comments">
         <h5>Comments</h5>
         {comments.length === 0 ? (
           <p>No comments available</p>
         ) : (
-          <ul>
+          <ul className="list-unstyled">
             {comments.map((item, index) => {
               return (
-                <li key={`comment-${index}`}>
-                  <div>
-                    <pre>{JSON.stringify(item, null, 2)}</pre>
+                <Media as="li" key={`comment-${index}`}>
+                  <Media.Body className="review">
+                    {index !== 0 && <hr />}
+                    <h5 className="username">{item.guest.username}</h5>
+                    <ReactStars
+                      className="rating"
+                      count={5}
+                      value={item.rating}
+                      edit={false}
+                    />
+                    <p className="text">{item.text}</p>
                     {!item.approved && (
-                      <Button onClick={() => this.approve(index)}>
+                      <Button
+                        variant="success"
+                        onClick={() => this.approve(index)}
+                      >
                         Approve
                       </Button>
                     )}
-                  </div>
-                </li>
+                  </Media.Body>
+                </Media>
               );
             })}
           </ul>

@@ -26,3 +26,7 @@
   top: 5rem;
   padding: 5px;
 }
+
+.view-comments .username {
+  font-style: italic;
+}
