@@ -22,7 +22,6 @@ namespace ApartmentReservation.Application.Dtos
             this.ApartmentType = apartment.ApartmentType;
             this.CheckInTime = apartment.CheckInTime;
             this.CheckOutTime = apartment.CheckOutTime;
-            this.Comments = apartment.Comments.Where(c => !c.IsDeleted).Select(c => new CommentDto(c));
             this.ForRentalDates = apartment.ForRentalDates.Where(a => !a.IsDeleted).Select(frd => frd.Date);
 
             if (apartment.Host != null)
@@ -50,7 +49,6 @@ namespace ApartmentReservation.Application.Dtos
         public string ApartmentType { get; set; }
         public string CheckInTime { get; set; }
         public string CheckOutTime { get; set; }
-        public IEnumerable<CommentDto> Comments { get; set; }
         public IEnumerable<DateTime> ForRentalDates { get; set; }
         public IEnumerable<DateTime> AvailableDates { get; set; }
         public UserPublicDto Host { get; set; }

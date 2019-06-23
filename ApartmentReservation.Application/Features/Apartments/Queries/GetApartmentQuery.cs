@@ -49,7 +49,6 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 .ThenInclude(l => l.Address)
                 .Include(a => a.Host)
                 .ThenInclude(h => h.User)
-                .Include(a => a.Comments)
                 .SingleOrDefaultAsync(a => a.Id == request.Id && !a.IsDeleted)
                 .ConfigureAwait(false);
         }
