@@ -42,25 +42,8 @@ export class ViewApartmentComments extends React.Component {
   render() {
     const comments = this.state.comments || [];
     const canPostComments = this.props.canPostComments || false;
+    const canApprove = this.props.canApprove || false;
 
-    /*
-    {
-  "id": 1,
-  "apartment": null,
-  "guest": {
-    "id": 3,
-    "username": "guest",
-    "password": "guest",
-    "firstName": "Marko",
-    "lastName": "Markovic",
-    "gender": "Other",
-    "roleName": "Guest"
-  },
-  "rating": 5,
-  "text": "Great apartment, great location and great host! Can't wait for next year to visit again!",
-  "approved": true
-}
-    */
     return (
       <article className="view-comments">
         <h5>Comments</h5>
@@ -81,7 +64,7 @@ export class ViewApartmentComments extends React.Component {
                       edit={false}
                     />
                     <p className="text">{item.text}</p>
-                    {!item.approved && (
+                    {!item.approved && canApprove && (
                       <Button
                         variant="success"
                         onClick={() => this.approve(index)}

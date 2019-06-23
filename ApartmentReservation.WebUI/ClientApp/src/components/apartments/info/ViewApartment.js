@@ -52,11 +52,11 @@ export class ViewApartment extends Component {
     } = apartment;
 
     const isGuest = user && user.roleName === roleNames.Guest;
+    const isHostOfCurrentApartment =
+      apartment && apartment.host && user.id === apartment.host.id;
 
     const allowEdit =
-      user &&
-      (user.roleName === roleNames.Admin ||
-        (apartment && apartment.host && user.id === apartment.host.id));
+      user && (user.roleName === roleNames.Admin || isHostOfCurrentApartment);
 
     return loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
@@ -84,6 +84,7 @@ export class ViewApartment extends Component {
             <ViewApartmentComments
               apartment={apartment}
               canPostComments={canPostComments}
+              canApprove={isHostOfCurrentApartment}
             />
             <hr />
             <ViewApartmentLocation location={location} allowEdit={allowEdit} />
