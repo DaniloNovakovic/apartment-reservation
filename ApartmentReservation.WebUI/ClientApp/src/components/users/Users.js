@@ -1,8 +1,11 @@
+import "./Users.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 import { userService } from "../../services";
 import { UsersTable } from "./UsersTable";
 import { Spinner, Button, ButtonGroup } from "react-bootstrap";
+import UsersFilter from "./UsersFilter";
 
 export default class Users extends Component {
   constructor(props) {
@@ -12,9 +15,9 @@ export default class Users extends Component {
   componentDidMount() {
     this.refreshData();
   }
-  refreshData = () => {
+  refreshData = (filters = {}) => {
     this.setState({ loading: true });
-    userService.getAll().then(data => {
+    userService.getAll(filters).then(data => {
       this.setState({ users: data, loading: false });
     });
   };
@@ -43,11 +46,12 @@ export default class Users extends Component {
         <main>
           <ButtonGroup aria-label="Add user">
             <Button as={Link} to="/add-guest" variant="primary">
-              Add Guest
+              <FaPlus /> Add Guest
             </Button>
             <Button as={Link} to="/add-host" variant="primary">
-              Add Host
+              <FaPlus /> Add Host
             </Button>
+            <UsersFilter handleSubmit={this.refreshData} />
           </ButtonGroup>
           <br />
           {contents}

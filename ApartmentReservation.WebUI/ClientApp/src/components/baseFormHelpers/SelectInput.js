@@ -1,6 +1,17 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
+export const mapObjToSelectOptions = obj => {
+  const retVal = [{ value: "", text: "" }];
+  for (var propName in obj) {
+    retVal.push({
+      value: obj[propName],
+      text: propName
+    });
+  }
+  return retVal;
+};
+
 export function SelectInput({
   handleChange,
   value,

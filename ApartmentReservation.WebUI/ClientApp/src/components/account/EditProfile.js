@@ -1,6 +1,7 @@
 import React from "react";
 import { history } from "../../helpers";
 import { Form, Row, Col } from "react-bootstrap";
+import { genders } from "../../constants";
 
 const defaultProps = {
   user: {
@@ -101,9 +102,9 @@ export class EditProfile extends React.Component {
                 value={this.state.gender}
                 onChange={this.handleChange}
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value={genders.Male}>Male</option>
+                <option value={genders.Female}>Female</option>
+                <option value={genders.Other}>Other</option>
               </Form.Control>
             </Col>
           </Form.Group>
