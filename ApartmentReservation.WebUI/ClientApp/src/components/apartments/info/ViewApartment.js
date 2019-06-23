@@ -2,7 +2,7 @@ import "./ViewApartment.css";
 import React, { Component } from "react";
 import { Spinner, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import { apartmentService } from "../../../services";
+import { apartmentService, commentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
 import { ViewApartmentAmenities } from "./ViewApartmentsAmenities";
 import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
@@ -20,11 +20,25 @@ export class ViewApartment extends Component {
       apartmentId: props.match.params.id
     };
   }
+  setCurrApartment = (apartment, comments) => {
+    this.props.setCurrentApartment({
+      ...apartment,
+      comments
+    });
+    this.setState({ loading: false });
+  };
+
   componentDidMount() {
     this.setState({ loading: true });
     apartmentService.getById(this.state.apartmentId).then(apartment => {
-      this.props.setCurrentApartment(apartment);
-      this.setState({ loading: false });
+      commentService.getAll().then(
+        comments => {
+          this.setCurrApartment(apartment, comments);
+        },
+        _ => {
+          this.setCurrApartment(apartment, []);
+        }
+      );
     });
   }
   render() {
