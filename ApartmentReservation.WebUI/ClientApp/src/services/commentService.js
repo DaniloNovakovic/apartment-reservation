@@ -3,7 +3,8 @@ import { handleResponse } from "./userService";
 
 export const commentService = {
   getAll,
-  canPostComment
+  canPostComment,
+  post
 };
 
 function getAll(filters = {}) {
@@ -24,4 +25,17 @@ function canPostComment(apartmentId, guestId) {
   return fetch(`api/Comments/CanPostComment${query}`, requestOptions).then(
     handleResponse
   );
+}
+
+function post(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+
+  return fetch(`api/Comments`, requestOptions).then(handleResponse);
 }

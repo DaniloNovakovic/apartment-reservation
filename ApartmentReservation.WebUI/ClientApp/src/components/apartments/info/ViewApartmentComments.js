@@ -16,6 +16,7 @@ export class ViewApartmentComments extends React.Component {
     this.promise = makeCancelable(commentService.getAll({ apartmentId }));
     this.promise
       .then(comments => {
+        console.log(comments);
         this.setState({ ...this.state, comments });
       })
       .catch(_ => {});
