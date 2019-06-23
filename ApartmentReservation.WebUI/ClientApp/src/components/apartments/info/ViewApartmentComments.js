@@ -2,6 +2,7 @@ import React from "react";
 import { commentService } from "../../../services";
 import { makeCancelable } from "../../../helpers";
 import PostComment from "./edit/PostComment";
+import { Button } from "react-bootstrap";
 
 export class ViewApartmentComments extends React.Component {
   constructor(props) {
@@ -16,7 +17,6 @@ export class ViewApartmentComments extends React.Component {
     this.promise = makeCancelable(commentService.getAll({ apartmentId }));
     this.promise
       .then(comments => {
-        console.log(comments);
         this.setState({ ...this.state, comments });
       })
       .catch(_ => {});
@@ -26,6 +26,18 @@ export class ViewApartmentComments extends React.Component {
       this.promise.cancel();
     }
   }
+  approve = index => {
+    const { comments = [] } = this.state;
+    if (index < 0 || index >= comments.length) return;
+
+    let currComment = comments[index];
+    this.promise = makeCancelable(commentService.approve(currComment.id));
+    this.promise.then(_ => {
+      let newComments = [...comments];
+      newComments[index] = { ...currComment, approved: true };
+      this.setState({ ...this.state, comments: newComments });
+    });
+  };
   render() {
     const comments = this.state.comments || [];
     const canPostComments = this.props.canPostComments || false;
@@ -38,7 +50,18 @@ export class ViewApartmentComments extends React.Component {
         ) : (
           <ul>
             {comments.map((item, index) => {
-              return <li key={`comment-${index}`}>{JSON.stringify(item)}</li>;
+              return (
+                <li key={`comment-${index}`}>
+                  <div>
+                    <pre>{JSON.stringify(item, null, 2)}</pre>
+                    {!item.approved && (
+                      <Button onClick={() => this.approve(index)}>
+                        Approve
+                      </Button>
+                    )}
+                  </div>
+                </li>
+              );
             })}
           </ul>
         )}

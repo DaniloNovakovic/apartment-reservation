@@ -4,7 +4,8 @@ import { handleResponse } from "./userService";
 export const commentService = {
   getAll,
   canPostComment,
-  post
+  post,
+  approve
 };
 
 function getAll(filters = {}) {
@@ -14,6 +15,15 @@ function getAll(filters = {}) {
   let query = queryStringify(filters);
 
   return fetch(`api/Comments${query}`, requestOptions).then(handleResponse);
+}
+
+function approve(commentId) {
+  const requestOptions = {
+    method: "GET"
+  };
+  return fetch(`api/Comments/${commentId}/Approve`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function canPostComment(apartmentId, guestId) {

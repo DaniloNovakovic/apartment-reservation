@@ -31,11 +31,14 @@ export class ViewApartment extends Component {
     apartmentService.getById(this.state.apartmentId).then(apartment => {
       this.setCurrApartment(apartment);
     });
-    commentService
-      .canPostComment(this.state.apartmentId, this.props.user.id)
-      .then(res => {
-        this.setState({ canPostComments: res.allowed });
-      });
+
+    if (this.props.user) {
+      commentService
+        .canPostComment(this.state.apartmentId, this.props.user.id)
+        .then(res => {
+          this.setState({ canPostComments: res.allowed });
+        });
+    }
   }
   render() {
     const { loading, canPostComments } = this.state;
