@@ -7,7 +7,7 @@ import {
   TextInput,
   SelectInput
 } from "../baseFormHelpers";
-import { reservationStates, roleNames } from "../../constants";
+import { reservationStates } from "../../constants";
 
 export default class ReservationsFilter extends Component {
   constructor(props, context) {
@@ -63,7 +63,6 @@ export default class ReservationsFilter extends Component {
   }
   render() {
     const { reservationState, guestUsername } = this.state.filters;
-    const { roleName } = this.props.user || {};
     return (
       <>
         <Button variant="primary" onClick={this.handleShow}>
@@ -86,24 +85,19 @@ export default class ReservationsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
-              {(roleName === roleNames.Admin ||
-                roleName === roleNames.Host) && (
-                <>
-                  <TextInput
-                    label="Guest Username"
-                    name="guestUsername"
-                    value={guestUsername}
-                    handleChange={this.handleChange}
-                  />
-                  <SelectInput
-                    label="Reservation State"
-                    name="reservationState"
-                    value={reservationState}
-                    options={this.reservationStateOptions}
-                    handleChange={this.handleChange}
-                  />
-                </>
-              )}
+              <TextInput
+                label="Guest Username"
+                name="guestUsername"
+                value={guestUsername}
+                handleChange={this.handleChange}
+              />
+              <SelectInput
+                label="Reservation State"
+                name="reservationState"
+                value={reservationState}
+                options={this.reservationStateOptions}
+                handleChange={this.handleChange}
+              />
             </Form>
           </Modal.Body>
           <Modal.Footer>

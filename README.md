@@ -18,8 +18,8 @@ You will need the following tools:
 Follow these steps to get your development environment set up:
 
   1. Clone the repository
-  1. Build solution in Visual Studio (2017 or 2019)
   1. (optional) Go to `ApartmentReservation.WebUI/ClientApp` directory and run: `npm install`
+  1. Build solution in Visual Studio (2017 or 2019)
   1. Start Application with `ApartmentReservation.WebUI` set as your StartUp Project
 
 ## Technologies

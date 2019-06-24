@@ -1,10 +1,20 @@
 import "./Reservations.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Button, ButtonGroup } from "react-bootstrap";
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import { reservationService } from "../../services";
 import ReservationsTable from "./ReservationsTable";
 import ReservationsFilter from "./ReservationsFilter";
+import { reservationStates, roleNames } from "../../constants";
+
+const getSortedReservations = (reservations, sortAsc = false) => {
+  let retVal = [...reservations];
+  retVal.sort((x, y) => {
+    return sortAsc ? x.totalCost - y.totalCost : y.totalCost - x.totalCost;
+  });
+  return retVal;
+};
 
 export class Reservations extends Component {
   state = {
@@ -17,12 +27,24 @@ export class Reservations extends Component {
   refreshData = (filters = {}) => {
     this.setState({ loading: true });
     reservationService.getAll(filters).then(reservations => {
-      this.setState({ loading: false, reservations });
+      const sorted = getSortedReservations(reservations, this.state.sortAsc);
+      this.setState({
+        loading: false,
+        reservations: sorted
+      });
     });
   };
+  toggleSort = () => {
+    let newSortAsc = !this.state.sortAsc;
+    let reservations = getSortedReservations(
+      this.state.reservations,
+      newSortAsc
+    );
+    this.setState({ sortAsc: newSortAsc, reservations });
+  };
   render() {
-    const { loading, reservations = [] } = this.state;
-    const { user } = this.props;
+    const { loading, reservations = [], sortAsc } = this.state;
+    const { user = {} } = this.props;
 
     const content = loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
@@ -38,7 +60,16 @@ export class Reservations extends Component {
           <h1>Reservations</h1>
         </header>
         <main>
-          <ReservationsFilter handleSubmit={this.refreshData} user={user} />
+          <ButtonGroup>
+            {(user.roleName === roleNames.Admin ||
+              user.roleName === roleNames.Host) && (
+              <ReservationsFilter handleSubmit={this.refreshData} />
+            )}
+            <Button variant="info" onClick={this.toggleSort}>
+              {sortAsc ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by
+              price
+            </Button>
+          </ButtonGroup>
           {content}
         </main>
       </section>
