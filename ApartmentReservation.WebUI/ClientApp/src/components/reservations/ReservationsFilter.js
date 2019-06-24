@@ -3,25 +3,23 @@ import { Button, Modal } from "react-bootstrap";
 import { FaFilter } from "react-icons/fa";
 import { Form } from "react-bootstrap";
 import {
-  SelectInput,
+  mapObjToSelectOptions,
   TextInput,
-  mapObjToSelectOptions
+  SelectInput
 } from "../baseFormHelpers";
-import { roleNames, genders } from "../../constants";
+import { reservationStates, roleNames } from "../../constants";
 
-export default class UsersFilter extends Component {
+export default class ReservationsFilter extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.roleNameOptions = mapObjToSelectOptions(roleNames);
-    this.genderOptions = mapObjToSelectOptions(genders);
+    this.reservationStateOptions = mapObjToSelectOptions(reservationStates);
 
     this.state = {
       show: false,
       filters: {
-        roleName: "",
-        gender: "",
-        username: ""
+        guestUsername: "",
+        reservationState: ""
       }
     };
 
@@ -57,16 +55,15 @@ export default class UsersFilter extends Component {
     this.handleClear = () => {
       this.setState({
         filters: {
-          roleName: "",
-          gender: "",
-          username: ""
+          guestUsername: "",
+          reservationState: ""
         }
       });
     };
   }
   render() {
-    const { roleName, gender, username } = this.state.filters;
-
+    const { reservationState, guestUsername } = this.state.filters;
+    const { roleName } = this.props.user || {};
     return (
       <>
         <Button variant="primary" onClick={this.handleShow}>
@@ -77,38 +74,36 @@ export default class UsersFilter extends Component {
           size="lg"
           show={this.state.show}
           onHide={this.handleHide}
-          className="modal-users-filter"
+          className="modal-reservations-filter"
         >
           <Modal.Header closeButton>
             <Modal.Title>
               Filter{" "}
               <span className="modal-subtitle">
-                Apply one or more filters to all users on the list.
+                Apply one or more filters to all reservations on the list.
               </span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
-              <SelectInput
-                label="Role Name"
-                name="roleName"
-                value={roleName}
-                options={this.roleNameOptions}
-                handleChange={this.handleChange}
-              />
-              <SelectInput
-                label="Gender"
-                name="gender"
-                value={gender}
-                options={this.genderOptions}
-                handleChange={this.handleChange}
-              />
-              <TextInput
-                label="Username"
-                name="username"
-                value={username}
-                handleChange={this.handleChange}
-              />
+              {(roleName === roleNames.Admin ||
+                roleName === roleNames.Host) && (
+                <>
+                  <TextInput
+                    label="Guest Username"
+                    name="guestUsername"
+                    value={guestUsername}
+                    handleChange={this.handleChange}
+                  />
+                  <SelectInput
+                    label="Reservation State"
+                    name="reservationState"
+                    value={reservationState}
+                    options={this.reservationStateOptions}
+                    handleChange={this.handleChange}
+                  />
+                </>
+              )}
             </Form>
           </Modal.Body>
           <Modal.Footer>

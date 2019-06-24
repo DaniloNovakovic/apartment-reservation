@@ -14,10 +14,16 @@ export class DisplayApartments extends Component {
   }
   refreshData = (filters = {}) => {
     this.setState({ loading: true });
-    apartmentService.getAll(filters).then(data => {
-      this.setState({ apartments: data, loading: false });
-      console.log(data);
-    });
+    apartmentService
+      .getAll(filters)
+      .then(data => {
+        this.setState({ apartments: data, loading: false });
+        console.log(data);
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ loading: false });
+      });
   };
   render() {
     const { apartments, loading } = this.state;

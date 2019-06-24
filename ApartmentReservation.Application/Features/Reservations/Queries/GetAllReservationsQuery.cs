@@ -17,7 +17,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
         public long? HostId { get; set; }
         public long? GuestId { get; set; }
         public long? ApartmentId { get; set; }
-
+        public string GuestUsername { get; set; }
         public string ReservationState { get; set; }
     }
 
@@ -54,6 +54,10 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             if (filters.GuestId != null)
             {
                 query = query.Where(r => r.GuestId == filters.GuestId);
+            }
+            if (!string.IsNullOrEmpty(filters.GuestUsername))
+            {
+                query = query.Where(r => string.Equals(r.Guest.User.Username, filters.GuestUsername, StringComparison.OrdinalIgnoreCase));
             }
 
             if (filters.ApartmentId != null)
