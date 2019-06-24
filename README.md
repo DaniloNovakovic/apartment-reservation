@@ -15,22 +15,8 @@ You will need the following tools:
 Follow these steps to get your development environment set up:
 
   1. Clone the repository
-  2. At the root directory, restore required packages by running:
-     ```
-     dotnet restore
-     ```
-  3. Next, build the solution by running:
-     ```
-     dotnet build
-     ```
-  4. Next, within the `ApartmentReservation.WebUI\ClientApp` directory, launch the front end by running:
-     ```
-     npm start
-     ```
-  5. Once the front end has started, within the `ApartmentReservation.WebUI` directory, launch the back end by running:
-     ```
-	 dotnet run
-	 ```
+  1. Build solution in Visual Studio
+  1. Start Application
 
 ## Technologies
 * .NET Core 2.1
