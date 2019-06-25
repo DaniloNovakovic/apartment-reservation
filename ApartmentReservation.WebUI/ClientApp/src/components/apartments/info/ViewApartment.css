@@ -4,6 +4,10 @@
 .view-apartment-page-header .Active {
   color: green;
 }
+.view-apartment-page-footer {
+  padding: 0.5em 1em 2em 1em;
+}
+
 .summary-content {
   padding-bottom: 1em;
 }

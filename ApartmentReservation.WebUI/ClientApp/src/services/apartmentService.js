@@ -9,7 +9,8 @@ export const apartmentService = {
   updateAmenities,
   updateForRentalDates,
   addImages,
-  deleteImages
+  deleteImages,
+  delete: _delete
 };
 
 function addImages(apartmentId, formData) {
@@ -80,6 +81,14 @@ function post(data) {
   };
 
   return fetch(`api/Apartments`, requestOptions).then(handleResponse);
+}
+
+function _delete(id) {
+  const requestOptions = {
+    method: "DELETE"
+  };
+
+  return fetch(`api/Apartments/${id}`, requestOptions).then(handleResponse);
 }
 
 function updateAmenities(data) {

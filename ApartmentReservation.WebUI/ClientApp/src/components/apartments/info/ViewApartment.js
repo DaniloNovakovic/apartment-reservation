@@ -1,6 +1,6 @@
 import "./ViewApartment.css";
 import React, { Component } from "react";
-import { Spinner, Row, Col } from "react-bootstrap";
+import { Spinner, Row, Col, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { apartmentService, commentService } from "../../../services";
 import { ViewApartmentSummary } from "./ViewApartmentSummary";
@@ -9,7 +9,7 @@ import { ViewApartmentAvailability } from "./ViewApartmentsAvailability";
 import { ViewApartmentComments } from "./ViewApartmentComments";
 import ViewApartmentImages from "./ViewApartmentImages";
 import ViewApartmentLocation from "./ViewApartmentLocation";
-import { setCurrentApartment } from "../../../store/actions";
+import { setCurrentApartment, deleteApartment } from "../../../store/actions";
 import { roleNames } from "../../../constants";
 import BookingCard from "./BookingCard";
 
@@ -38,6 +38,11 @@ export class ViewApartment extends Component {
         .then(res => {
           this.setState({ canPostComments: res.allowed });
         });
+    }
+  }
+  handleDelete() {
+    if (this.props.deleteApartment) {
+      this.props.deleteApartment(this.state.apartmentId);
     }
   }
   render() {
@@ -95,8 +100,15 @@ export class ViewApartment extends Component {
               <BookingCard apartment={apartment} user={user} />
             </Col>
           )}
+
+          <footer class="view-apartment-page-footer">
+            {allowEdit && (
+              <Button variant="danger" onClick={this.handleDelete}>
+                Delete Apartment
+              </Button>
+            )}
+          </footer>
         </Row>
-        <footer />
       </>
     );
   }
@@ -111,5 +123,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { setCurrentApartment }
+  { setCurrentApartment, deleteApartment }
 )(ViewApartment);

@@ -20,6 +20,19 @@ export const createApartment = (hostId, apartment) => {
   };
 };
 
+export const deleteApartment = apartmentId => {
+  return dispatch => {
+    return apartmentService.delete(apartmentId).then(
+      _ => {
+        history.push("/");
+      },
+      error => {
+        dispatch(alertActions.error(JSON.stringify(error)));
+      }
+    );
+  };
+};
+
 export const updateCurrentApartmentAmenities = apartmentAmenityData => {
   return dispatch => {
     return apartmentService.updateAmenities(apartmentAmenityData).then(
