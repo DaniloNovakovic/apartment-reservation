@@ -4,6 +4,10 @@ import SelectedImage from "./SelectedImage";
 import { Button } from "react-bootstrap";
 
 const mapImages = images => {
+  if (!images) {
+    return [];
+  }
+
   return images.map(img => {
     return {
       src: img.uri,

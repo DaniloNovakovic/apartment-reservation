@@ -13,16 +13,14 @@ export function ViewApartmentImages({ images = [], allowEdit = false }) {
       {images.length === 0 ? (
         <p>No images are currently available</p>
       ) : (
-        <div>
-          <ApartmentCarousel images={images} />
-          <ButtonGroup aria-label="Images Buttons">
-            {allowEdit && <AddImagesModal form={AddImagesInput} />}
-            {allowEdit && (
-              <DeleteImagesModal formData={{ images }} form={SelectImages} />
-            )}
-          </ButtonGroup>
-        </div>
+        <ApartmentCarousel images={images} />
       )}
+      <ButtonGroup aria-label="Images Buttons">
+        {allowEdit && <AddImagesModal form={AddImagesInput} />}
+        {allowEdit && images.length > 0 && (
+          <DeleteImagesModal formData={{ images }} form={SelectImages} />
+        )}
+      </ButtonGroup>
     </article>
   );
 }
