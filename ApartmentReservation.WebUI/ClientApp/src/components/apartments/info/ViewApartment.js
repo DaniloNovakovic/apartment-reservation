@@ -40,11 +40,11 @@ export class ViewApartment extends Component {
         });
     }
   }
-  handleDelete() {
+  handleDelete = () => {
     if (this.props.deleteApartment) {
       this.props.deleteApartment(this.state.apartmentId);
     }
-  }
+  };
   render() {
     const { loading, canPostComments } = this.state;
     const { apartment = {}, user = {} } = this.props;

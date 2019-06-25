@@ -1,7 +1,7 @@
 import "./DisplayApartments.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Spinner, ButtonGroup, Button } from "react-bootstrap";
+import { Spinner, ButtonGroup, Button, Alert } from "react-bootstrap";
 import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import ApartmentCard from "./ApartmentCard";
 import { apartmentService } from "../../services";
@@ -44,19 +44,21 @@ export class DisplayApartments extends Component {
     this.setState({ sortAsc: newSortAsc, apartments });
   };
   render() {
-    const { apartments, loading, sortAsc } = this.state;
+    const { apartments = [], loading, sortAsc } = this.state;
     const { user } = this.props;
 
     const content = loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
-    ) : (
+    ) : apartments.length > 0 ? (
       apartments.map(apartment => {
         return (
           <ApartmentCard key={`apc-${apartment.id}`} apartment={apartment} />
         );
       })
+    ) : (
+      <Alert variant="info">No apartments available</Alert>
     );
 
     return (
