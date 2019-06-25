@@ -6,6 +6,8 @@ using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
+using MediatR;
+using Moq;
 using Xunit;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.Queries
@@ -55,13 +57,15 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
     public class GetAllApartmentsQueryHandlerTests : IClassFixture<GetAllApartmentsQueryDataSetup>
     {
+        private readonly Mock<IMediator> mediatorMock;
         private readonly GetAllApartmentsQueryHandler sut;
         private readonly IEnumerable<Apartment> dbApartments;
         private readonly Host dbHost;
 
         public GetAllApartmentsQueryHandlerTests(GetAllApartmentsQueryDataSetup data)
         {
-            this.sut = new GetAllApartmentsQueryHandler(data.Context);
+            this.mediatorMock = new Mock<IMediator>();
+            this.sut = new GetAllApartmentsQueryHandler(data.Context, mediatorMock.Object);
             this.dbApartments = data.DbApartments.Where(a => !a.IsDeleted);
             this.dbHost = data.DbHost;
         }
