@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Guests.Commands;
+using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
@@ -44,7 +45,7 @@ namespace ApartmentReservation.Application.Features.Users.Commands
             }
             else if (dbUser.RoleName == RoleNames.Host)
             {
-                // TODO...
+                await mediator.Send(new DeleteHostCommand() { HostId = dbUser.Id }).ConfigureAwait(false);
             }
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
