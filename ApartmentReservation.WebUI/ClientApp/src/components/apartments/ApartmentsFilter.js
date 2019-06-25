@@ -4,7 +4,8 @@ import { FaFilter } from "react-icons/fa";
 import {
   mapObjToSelectOptions,
   TextInput,
-  SelectInput
+  SelectInput,
+  NumberInput
 } from "../baseFormHelpers";
 import { activityStates, apartmentTypes } from "../../constants";
 import { DayInput } from "./form";
@@ -166,6 +167,25 @@ export default class ApartmentsFilter extends Component {
                   value={toDate}
                   disabledDays={{ before: fromDate || new Date() }}
                   handleChange={this.handleChange}
+                />
+              </Form.Row>
+              <Form.Row>
+                <NumberInput
+                  as={Col}
+                  label="From Price ($)"
+                  name="fromPrice"
+                  value={fromPrice}
+                  handleChange={this.handleChange}
+                  min={0}
+                  max={toPrice}
+                />
+                <NumberInput
+                  as={Col}
+                  label="To Price ($)"
+                  name="toPrice"
+                  value={toPrice}
+                  handleChange={this.handleChange}
+                  min={fromPrice}
                 />
               </Form.Row>
               <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
