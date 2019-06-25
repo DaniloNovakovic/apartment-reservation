@@ -101,10 +101,6 @@ export default class ApartmentsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             {/*
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
-        public double? FromPrice { get; set; }
-        public double? ToPrice { get; set; }
         public int? FromNumberOfRooms { get; set; }
         public int? ToNumberOfRooms { get; set; }
         public int? NumberOfGuests { get; set; } */}
@@ -186,6 +182,25 @@ export default class ApartmentsFilter extends Component {
                   value={toPrice}
                   handleChange={this.handleChange}
                   min={fromPrice}
+                />
+              </Form.Row>
+              <Form.Row>
+                <NumberInput
+                  as={Col}
+                  label="From Number of Rooms"
+                  name="fromNumberOfRooms"
+                  value={fromNumberOfRooms}
+                  handleChange={this.handleChange}
+                  min={0}
+                  max={toNumberOfRooms}
+                />
+                <NumberInput
+                  as={Col}
+                  label="To Number of Rooms"
+                  name="toNumberOfRooms"
+                  value={toNumberOfRooms}
+                  handleChange={this.handleChange}
+                  min={fromNumberOfRooms}
                 />
               </Form.Row>
               <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
