@@ -1,8 +1,9 @@
 import "./DisplayApartments.css";
 import React, { Component } from "react";
-import ApartmentCard from "./ApartmentCard";
+import { connect } from "react-redux";
 import { Spinner, ButtonGroup, Button } from "react-bootstrap";
 import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
+import ApartmentCard from "./ApartmentCard";
 import { apartmentService } from "../../services";
 import ApartmentsFilter from "./ApartmentsFilter";
 
@@ -44,6 +45,8 @@ export class DisplayApartments extends Component {
   };
   render() {
     const { apartments, loading, sortAsc } = this.state;
+    const { user } = this.props;
+
     const content = loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
         <span className="sr-only">Loading...</span>
@@ -62,6 +65,7 @@ export class DisplayApartments extends Component {
           <ApartmentsFilter
             handleSubmit={this.refreshData}
             filters={this.props.filters}
+            user={user}
           />
           <Button variant="info" onClick={this.toggleSort}>
             {sortAsc ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by price
@@ -73,4 +77,10 @@ export class DisplayApartments extends Component {
   }
 }
 
-export default DisplayApartments;
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  };
+};
+
+export default connect(mapStateToProps)(DisplayApartments);

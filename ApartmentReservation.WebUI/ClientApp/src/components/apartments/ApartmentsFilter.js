@@ -7,7 +7,7 @@ import {
   SelectInput,
   NumberInput
 } from "../baseFormHelpers";
-import { activityStates, apartmentTypes } from "../../constants";
+import { activityStates, apartmentTypes, roleNames } from "../../constants";
 import { DayInput } from "./form";
 
 export default class ApartmentsFilter extends Component {
@@ -79,6 +79,8 @@ export default class ApartmentsFilter extends Component {
       numberOfGuests
     } = this.state.filters;
 
+    const { user = {} } = this.props;
+
     return (
       <>
         <Button variant="primary" onClick={this.handleShow}>
@@ -101,13 +103,16 @@ export default class ApartmentsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
-              <SelectInput
-                label="Activity State"
-                name="activityState"
-                value={activityState || ""}
-                options={this.activityStateOptions}
-                handleChange={this.handleChange}
-              />
+              {(user.roleName === roleNames.Admin ||
+                user.roleName === roleNames.Host) && (
+                <SelectInput
+                  label="Activity State"
+                  name="activityState"
+                  value={activityState || ""}
+                  options={this.activityStateOptions}
+                  handleChange={this.handleChange}
+                />
+              )}
               <Form.Row>
                 <TextInput
                   as={Col}
