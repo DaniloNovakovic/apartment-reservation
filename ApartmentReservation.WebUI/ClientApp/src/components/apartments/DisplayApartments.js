@@ -19,10 +19,10 @@ const getSortedApartments = (apartments, sortAsc = false) => {
 export class DisplayApartments extends Component {
   constructor(props) {
     super(props);
-    this.state = { apartments: [], loading: true };
+    this.state = { apartments: [], loading: true, sortAsc: true };
   }
   componentDidMount() {
-    this.refreshData();
+    this.refreshData(this.props.filters);
   }
   refreshData = (filters = {}) => {
     this.setState({ loading: true });
@@ -59,7 +59,10 @@ export class DisplayApartments extends Component {
     return (
       <section>
         <ButtonGroup>
-          <ApartmentsFilter />
+          <ApartmentsFilter
+            handleSubmit={this.refreshData}
+            filters={this.props.filters}
+          />
           <Button variant="info" onClick={this.toggleSort}>
             {sortAsc ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by price
           </Button>

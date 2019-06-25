@@ -1,9 +1,10 @@
 import React from "react";
 import { SelectInput } from "../../baseFormHelpers";
+import { activityStates } from "../../../constants";
 
 const options = [
-  { value: "Active", text: "Active" },
-  { value: "Inactive", text: "Inactive" }
+  { value: activityStates.Active, text: "Active" },
+  { value: activityStates.Inactive, text: "Inactive" }
 ];
 
 export function ActivityStateInput({

@@ -45,7 +45,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
         {
             var query = this.GetApartmentsWithIncludedRelations();
 
-            query = ApplyFilters(request, query);
+            query = ApplyBasicFilters(request, query);
 
             var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -58,12 +58,19 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
             });
 
             var apartmentDtos = await Task.WhenAll(tasks).ConfigureAwait(false);
-            return this.FilterByAvailableDates(request, apartmentDtos);
+            return this.ApplyComplexFilters(request, apartmentDtos);
         }
 
-        private IEnumerable<ApartmentDto> FilterByAvailableDates(GetAllApartmentsQuery filter, IEnumerable<ApartmentDto> apartmentDtos)
+        private IEnumerable<ApartmentDto> ApplyComplexFilters(GetAllApartmentsQuery filter, IEnumerable<ApartmentDto> apartmentDtos)
         {
             var query = apartmentDtos;
+
+            if (!string.IsNullOrWhiteSpace(filter.AmenityName))
+            {
+                query = query.Where(apartment =>
+                    apartment.Amenities.Any(amenity =>
+                        string.Equals(amenity.Name, filter.AmenityName, StringComparison.OrdinalIgnoreCase)));
+            }
 
             if (filter.FromDate != null)
             {
@@ -93,18 +100,11 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 .Where(a => !a.IsDeleted);
         }
 
-        private static IQueryable<Apartment> ApplyFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)
+        private static IQueryable<Apartment> ApplyBasicFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)
         {
             if (!string.IsNullOrWhiteSpace(filters.ActivityState))
             {
                 query = query.Where(apartment => string.Equals(apartment.ActivityState, filters.ActivityState, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrWhiteSpace(filters.AmenityName))
-            {
-                query = query.Where(apartment =>
-                    apartment.Amenities.Any(amenity =>
-                        string.Equals(amenity.Name, filters.AmenityName, StringComparison.OrdinalIgnoreCase)));
             }
 
             if (!string.IsNullOrEmpty(filters.ApartmentType))

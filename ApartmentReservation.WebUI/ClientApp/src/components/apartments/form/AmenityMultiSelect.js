@@ -23,7 +23,7 @@ const loadOptions = (inputValue, callback) => {
   );
 };
 
-export default class AmenityMultiSelect extends Component {
+export class AmenityMultiSelect extends Component {
   handleChange = selectedItems => {
     if (this.props.handleChange) {
       this.props.handleChange(mapToAmenities(selectedItems));
@@ -45,3 +45,5 @@ export default class AmenityMultiSelect extends Component {
     );
   }
 }
+
+export default AmenityMultiSelect;

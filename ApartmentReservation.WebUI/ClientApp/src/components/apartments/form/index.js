@@ -1,6 +1,7 @@
 export * from "./ActivityStateInput";
 export * from "./ApartmentTitleInput";
 export * from "./ApartmentTypeInput";
+export * from "./AmenityMultiSelect";
 export * from "./CheckInTimeInput";
 export * from "./CheckOutTimeInput";
 export * from "./CityNameInput";
