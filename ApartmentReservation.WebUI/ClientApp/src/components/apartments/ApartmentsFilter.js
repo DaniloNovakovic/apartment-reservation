@@ -99,8 +99,6 @@ export default class ApartmentsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             {/*
-        public string CityName { get; set; }
-        public string CountryName { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public double? FromPrice { get; set; }
@@ -127,6 +125,18 @@ export default class ApartmentsFilter extends Component {
                 name="apartmentType"
                 value={apartmentType || ""}
                 options={this.apartmentTypeOptions}
+                handleChange={this.handleChange}
+              />
+              <TextInput
+                label="Country Name"
+                name="countryName"
+                value={countryName || ""}
+                handleChange={this.handleChange}
+              />
+              <TextInput
+                label="City Name"
+                name="cityName"
+                value={cityName || ""}
                 handleChange={this.handleChange}
               />
               <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
