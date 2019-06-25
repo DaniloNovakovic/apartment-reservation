@@ -33,18 +33,6 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Apartments
         [Theory]
         [InlineData(ActivityStates.Active)]
         [InlineData(ActivityStates.Inactive)]
-        public async Task WhenUserIsHost_CallsMediatorWithRequestedQuery(string activityState)
-        {
-            var controller = this.CreateController(userId: 2, role: RoleNames.Host);
-            var query = new GetAllApartmentsQuery() { ActivityState = activityState };
-            var result = await controller.Get(query).ConfigureAwait(false);
-
-            this.mediatorMock.Verify(m => m.Send(query, It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Theory]
-        [InlineData(ActivityStates.Active)]
-        [InlineData(ActivityStates.Inactive)]
         public async Task WhenUserIsAdmin_CallsMediatorWithRequestedQuery(string activityState)
         {
             var controller = this.CreateController(userId: 3, role: RoleNames.Administrator);
@@ -55,13 +43,13 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Apartments
         }
 
         [Fact]
-        public async Task WhenUserIsHostAndStranger_CallsMediatorWithActiveQuery()
+        public async Task WhenUserIsHostAndStranger_CallsMediatorWithHostIdChangedToUserId()
         {
             var controller = this.CreateController(userId: 2, role: RoleNames.Host);
             var query = new GetAllApartmentsQuery() { ActivityState = ActivityStates.Inactive, HostId = 3 };
             var result = await controller.Get(query).ConfigureAwait(false);
 
-            this.mediatorMock.Verify(m => m.Send(It.Is<GetAllApartmentsQuery>(q => q.ActivityState == ActivityStates.Active), It.IsAny<CancellationToken>()), Times.Once);
+            this.mediatorMock.Verify(m => m.Send(It.Is<GetAllApartmentsQuery>(q => q.HostId == 2), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]

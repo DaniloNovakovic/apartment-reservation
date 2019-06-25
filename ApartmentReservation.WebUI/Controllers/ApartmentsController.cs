@@ -28,10 +28,19 @@ namespace ApartmentReservation.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
-            if (!this.CanSeeInactiveApartments(query))
+            if (this.User.IsInRole(RoleNames.Host))
+            {
+                var currClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+                if (long.TryParse(currClaim?.Value ?? "", out long id))
+                {
+                    query.HostId = id;
+                }
+            }
+            else if (!this.User.IsInRole(RoleNames.Administrator))
             {
                 query.ActivityState = ActivityStates.Active;
             }
+
             return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
@@ -90,28 +99,6 @@ namespace ApartmentReservation.WebUI.Controllers
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
-        }
-
-        private bool CanSeeInactiveApartments(GetAllApartmentsQuery query)
-        {
-            if (this.User.IsInRole(RoleNames.Administrator))
-            {
-                return true;
-            }
-
-            if (this.User.IsInRole(RoleNames.Host))
-            {
-                return query.HostId is null || this.IsAskingForStrangerInfo(query.HostId.Value);
-            }
-
-            return false;
-        }
-
-        private bool IsAskingForStrangerInfo(long requestedUserId)
-        {
-            var currClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-            return requestedUserId.ToString().Equals(currClaim?.Value ?? "");
         }
     }
 }
