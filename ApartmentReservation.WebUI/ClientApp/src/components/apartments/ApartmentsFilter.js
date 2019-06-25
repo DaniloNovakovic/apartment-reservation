@@ -79,7 +79,7 @@ export default class ApartmentsFilter extends Component {
       numberOfGuests
     } = this.state.filters;
 
-    const { user = {} } = this.props;
+    const { roleName } = this.props.user || {};
 
     return (
       <>
@@ -103,8 +103,8 @@ export default class ApartmentsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
-              {(user.roleName === roleNames.Admin ||
-                user.roleName === roleNames.Host) && (
+              {(roleName === roleNames.Admin ||
+                roleName === roleNames.Host) && (
                 <SelectInput
                   label="Activity State"
                   name="activityState"

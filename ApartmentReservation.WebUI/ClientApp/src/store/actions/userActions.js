@@ -33,6 +33,7 @@ export const signup = user => {
       user => {
         dispatch({ type: userConstants.REGISTER_SUCCESS, user });
         dispatch(alertActions.success("Registration successful"));
+        dispatch(login(user.username, user.password));
       },
       error => {
         dispatch({ type: userConstants.REGISTER_ERROR, error });

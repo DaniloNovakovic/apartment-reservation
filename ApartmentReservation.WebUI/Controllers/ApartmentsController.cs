@@ -69,6 +69,14 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var command = new DeleteApartmentCommand() { ApartmentId = id };
+            await this.mediator.Send(command).ConfigureAwait(false);
+            return this.Ok();
+        }
+
         [HttpPut("{id}/Amenities")]
         public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
         {
