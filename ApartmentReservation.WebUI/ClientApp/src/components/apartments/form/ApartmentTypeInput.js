@@ -1,9 +1,10 @@
 import React from "react";
 import { SelectInput } from "../../baseFormHelpers";
+import { apartmentTypes } from "../../../constants";
 
 const options = [
-  { value: "Full", text: "Full" },
-  { value: "SingleRoom", text: "Single Room" }
+  { value: apartmentTypes.Full, text: "Full" },
+  { value: apartmentTypes.SingleRoom, text: "Single Room" }
 ];
 
 export function ApartmentTypeInput({

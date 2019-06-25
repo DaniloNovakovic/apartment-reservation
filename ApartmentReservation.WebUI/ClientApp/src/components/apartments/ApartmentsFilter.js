@@ -6,14 +6,14 @@ import {
   TextInput,
   SelectInput
 } from "../baseFormHelpers";
-import { reservationStates, activityStates } from "../../constants";
+import { activityStates, apartmentTypes } from "../../constants";
 
 export default class ApartmentsFilter extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.reservationStateOptions = mapObjToSelectOptions(reservationStates);
     this.activityStateOptions = mapObjToSelectOptions(activityStates);
+    this.apartmentTypeOptions = mapObjToSelectOptions(apartmentTypes);
 
     this.state = {
       show: false,
@@ -62,7 +62,21 @@ export default class ApartmentsFilter extends Component {
     };
   }
   render() {
-    const { activityState, amenityName } = this.state.filters;
+    const {
+      activityState,
+      amenityName,
+      apartmentType,
+      cityName,
+      countryName,
+      fromDate,
+      toDate,
+      fromPrice,
+      toPrice,
+      fromNumberOfRooms,
+      toNumberOfRooms,
+      numberOfGuests
+    } = this.state.filters;
+
     return (
       <>
         <Button variant="primary" onClick={this.handleShow}>
@@ -85,8 +99,6 @@ export default class ApartmentsFilter extends Component {
           </Modal.Header>
           <Modal.Body>
             {/*
-        public string AmenityName { get; set; }
-        public string ApartmentType { get; set; }
         public string CityName { get; set; }
         public string CountryName { get; set; }
         public DateTime? FromDate { get; set; }
@@ -108,6 +120,13 @@ export default class ApartmentsFilter extends Component {
                 label="Amenity Name"
                 name="amenityName"
                 value={amenityName || ""}
+                handleChange={this.handleChange}
+              />
+              <SelectInput
+                label="Apartment Type"
+                name="apartmentType"
+                value={apartmentType || ""}
+                options={this.apartmentTypeOptions}
                 handleChange={this.handleChange}
               />
               <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
