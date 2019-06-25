@@ -4,18 +4,22 @@ using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Users.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Domain.Entities;
+using MediatR;
+using Moq;
 using Xunit;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Commands
 {
     public class DeleteUserCommandHandlerTests : InMemoryContextTestBase
     {
+        private Mock<IMediator> mediator;
         private readonly DeleteUserCommandHandler sut;
         private User dbUser;
 
         public DeleteUserCommandHandlerTests()
         {
-            this.sut = new DeleteUserCommandHandler(this.Context);
+            this.mediator = new Mock<IMediator>();
+            this.sut = new DeleteUserCommandHandler(this.Context, mediator.Object);
         }
 
         protected override void LoadTestData()

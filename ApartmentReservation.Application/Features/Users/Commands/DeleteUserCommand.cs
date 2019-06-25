@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Application.Features.Guests.Commands;
+using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +17,12 @@ namespace ApartmentReservation.Application.Features.Users.Commands
     public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
     {
         private readonly IApartmentReservationDbContext context;
+        private readonly IMediator mediator;
 
-        public DeleteUserCommandHandler(IApartmentReservationDbContext context)
+        public DeleteUserCommandHandler(IApartmentReservationDbContext context, IMediator mediator)
         {
             this.context = context;
+            this.mediator = mediator;
         }
 
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
@@ -33,6 +37,15 @@ namespace ApartmentReservation.Application.Features.Users.Commands
             }
 
             dbUser.IsDeleted = true;
+
+            if (dbUser.RoleName == RoleNames.Guest)
+            {
+                await mediator.Send(new DeleteGuestCommand() { GuestId = dbUser.Id }).ConfigureAwait(false);
+            }
+            else if (dbUser.RoleName == RoleNames.Host)
+            {
+                // TODO...
+            }
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
