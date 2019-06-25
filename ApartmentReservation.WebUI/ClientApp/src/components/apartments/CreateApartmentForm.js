@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { CreateApartmentInfoForm, CreateApartmentLocationForm } from "./create";
+import {
+  CreateApartmentInfoForm,
+  CreateApartmentLocationForm,
+  CreateApartmentAmenities
+} from "./create";
 
 export default class CreateApartmentForm extends Component {
   constructor(props) {
@@ -48,11 +52,16 @@ export default class CreateApartmentForm extends Component {
         />
         <CreateApartmentLocationForm
           hidden={currFormIndex !== 1}
+          handleSubmit={this.handleNext}
+          handleBack={this.handleBack}
+          formData={{ ...this.state }}
+        />
+        <CreateApartmentAmenities
+          hidden={currFormIndex !== 2}
           handleSubmit={this.handleComplete}
           handleBack={this.handleBack}
           formData={{ ...this.state }}
         />
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
       </div>
     );
   }

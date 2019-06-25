@@ -2,16 +2,22 @@ import React, { Component } from "react";
 import AsyncSelect from "react-select/async";
 import { amenitiesService } from "../../../services";
 
-const mapToAmenities = options =>
-  options.map(item => {
+const mapToAmenities = options => {
+  if (!options) {
+    return [];
+  }
+  return options.map(item => {
     return { id: item.value, name: item.label };
   });
-
-const mapToOptions = amenities =>
-  amenities.map(amenity => {
+};
+const mapToOptions = amenities => {
+  if (!amenities) {
+    return [];
+  }
+  return amenities.map(amenity => {
     return { value: amenity.id, label: amenity.name };
   });
-
+};
 const loadOptions = (inputValue, callback) => {
   amenitiesService.getAll({ search: inputValue }).then(
     amenities => {
@@ -24,7 +30,7 @@ const loadOptions = (inputValue, callback) => {
 };
 
 export class AmenityMultiSelect extends Component {
-  handleChange = selectedItems => {
+  handleChange = (selectedItems = []) => {
     if (this.props.handleChange) {
       this.props.handleChange(mapToAmenities(selectedItems));
     }
