@@ -59,6 +59,10 @@ export default class ReservationsFilter extends Component {
           reservationState: ""
         }
       });
+      if (this.props.handleSubmit) {
+        this.props.handleSubmit({});
+      }
+      this.handleHide();
     };
   }
   render() {

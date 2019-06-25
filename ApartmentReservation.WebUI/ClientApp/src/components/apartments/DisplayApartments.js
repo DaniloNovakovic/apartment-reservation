@@ -1,8 +1,20 @@
 import "./DisplayApartments.css";
 import React, { Component } from "react";
 import ApartmentCard from "./ApartmentCard";
-import { Spinner } from "react-bootstrap";
+import { Spinner, ButtonGroup, Button } from "react-bootstrap";
+import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import { apartmentService } from "../../services";
+import ApartmentsFilter from "./ApartmentsFilter";
+
+const getSortedApartments = (apartments, sortAsc = false) => {
+  let retVal = [...apartments];
+  retVal.sort((x, y) => {
+    return sortAsc
+      ? x.pricePerNight - y.pricePerNight
+      : y.pricePerNight - x.pricePerNight;
+  });
+  return retVal;
+};
 
 export class DisplayApartments extends Component {
   constructor(props) {
@@ -17,16 +29,21 @@ export class DisplayApartments extends Component {
     apartmentService
       .getAll(filters)
       .then(data => {
-        this.setState({ apartments: data, loading: false });
-        console.log(data);
+        let sorted = getSortedApartments(data, this.state.sortAsc);
+        this.setState({ apartments: sorted, loading: false });
       })
       .catch(err => {
         console.error(err);
         this.setState({ loading: false });
       });
   };
+  toggleSort = () => {
+    let newSortAsc = !this.state.sortAsc;
+    let apartments = getSortedApartments(this.state.apartments, newSortAsc);
+    this.setState({ sortAsc: newSortAsc, apartments });
+  };
   render() {
-    const { apartments, loading } = this.state;
+    const { apartments, loading, sortAsc } = this.state;
     const content = loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
         <span className="sr-only">Loading...</span>
@@ -37,7 +54,17 @@ export class DisplayApartments extends Component {
       })
     );
 
-    return <section className="apartment-display">{content}</section>;
+    return (
+      <section>
+        <ButtonGroup>
+          <ApartmentsFilter />
+          <Button variant="info" onClick={this.toggleSort}>
+            {sortAsc ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by price
+          </Button>
+        </ButtonGroup>
+        <main className="apartment-display">{content}</main>
+      </section>
+    );
   }
 }
 

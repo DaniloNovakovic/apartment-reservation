@@ -6,7 +6,7 @@ import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import { reservationService } from "../../services";
 import ReservationsTable from "./ReservationsTable";
 import ReservationsFilter from "./ReservationsFilter";
-import { reservationStates, roleNames } from "../../constants";
+import { roleNames } from "../../constants";
 
 const getSortedReservations = (reservations, sortAsc = false) => {
   let retVal = [...reservations];
