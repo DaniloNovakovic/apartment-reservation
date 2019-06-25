@@ -101,7 +101,7 @@ export class ViewApartment extends Component {
             </Col>
           )}
 
-          <footer class="view-apartment-page-footer">
+          <footer className="view-apartment-page-footer">
             {allowEdit && (
               <Button variant="danger" onClick={this.handleDelete}>
                 Delete Apartment

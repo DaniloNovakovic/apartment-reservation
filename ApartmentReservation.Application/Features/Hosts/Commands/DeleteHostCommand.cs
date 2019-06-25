@@ -51,7 +51,7 @@ namespace ApartmentReservation.Application.Features.Hosts.Commands
         {
             host.User.IsDeleted = true;
 
-            foreach (long id in host.ApartmentsForRental.Select(a => a.Id).ToList())
+            foreach (long id in host.ApartmentsForRental.Where(a => !a.IsDeleted).Select(a => a.Id).ToList())
             {
                 var command = new DeleteApartmentCommand() { ApartmentId = id };
                 await this.mediator.Send(command, cancellationToken).ConfigureAwait(false);
