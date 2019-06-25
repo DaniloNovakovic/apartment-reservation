@@ -10,11 +10,11 @@ function isContainedIn(day, dates) {
   return index >= 0;
 }
 
-export default class DayInput extends React.Component {
+export class DayInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDay: undefined
+      selectedDay: this.props.value
     };
   }
 
@@ -36,21 +36,32 @@ export default class DayInput extends React.Component {
 
   render() {
     const { selectedDay } = this.state;
-    let { availableDates = [], feedback } = this.props;
+    let {
+      availableDates = [],
+      disabledDays,
+      feedback,
+      label = "Date",
+      checkAvailableDates = true,
+      ...groupProps
+    } = this.props;
+
     availableDates = availableDates.map(d => new Date(d));
 
+    if (!disabledDays) {
+      disabledDays = [
+        day => checkAvailableDates && !isContainedIn(day, availableDates),
+        { before: new Date() }
+      ];
+    }
     return (
-      <Form.Group>
-        <Form.Label>Date</Form.Label>
+      <Form.Group {...groupProps}>
+        <Form.Label>{label}</Form.Label>
         <DayPickerInput
           value={selectedDay}
           onDayChange={this.handleDayChange}
           dayPickerProps={{
             selectedDays: selectedDay,
-            disabledDays: [
-              day => !isContainedIn(day, availableDates),
-              { before: new Date() }
-            ]
+            disabledDays: disabledDays
           }}
         />
         <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
@@ -58,3 +69,5 @@ export default class DayInput extends React.Component {
     );
   }
 }
+
+export default DayInput;

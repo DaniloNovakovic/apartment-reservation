@@ -15,3 +15,4 @@ export * from "./PostalCodeInput";
 export * from "./PricePerNightInput";
 export * from "./StreetNameInput";
 export * from "./StreetNumberInput";
+export * from "./DayInput";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, Col } from "react-bootstrap";
 import { FaFilter } from "react-icons/fa";
 import {
   mapObjToSelectOptions,
@@ -7,6 +7,7 @@ import {
   SelectInput
 } from "../baseFormHelpers";
 import { activityStates, apartmentTypes } from "../../constants";
+import { DayInput } from "./form";
 
 export default class ApartmentsFilter extends Component {
   constructor(props, context) {
@@ -114,31 +115,59 @@ export default class ApartmentsFilter extends Component {
                 options={this.activityStateOptions}
                 handleChange={this.handleChange}
               />
-              <TextInput
-                label="Amenity Name"
-                name="amenityName"
-                value={amenityName || ""}
-                handleChange={this.handleChange}
-              />
-              <SelectInput
-                label="Apartment Type"
-                name="apartmentType"
-                value={apartmentType || ""}
-                options={this.apartmentTypeOptions}
-                handleChange={this.handleChange}
-              />
-              <TextInput
-                label="Country Name"
-                name="countryName"
-                value={countryName || ""}
-                handleChange={this.handleChange}
-              />
-              <TextInput
-                label="City Name"
-                name="cityName"
-                value={cityName || ""}
-                handleChange={this.handleChange}
-              />
+              <Form.Row>
+                <TextInput
+                  as={Col}
+                  sm={7}
+                  label="Amenity Name"
+                  name="amenityName"
+                  value={amenityName || ""}
+                  handleChange={this.handleChange}
+                />
+                <SelectInput
+                  as={Col}
+                  sm={5}
+                  label="Apartment Type"
+                  name="apartmentType"
+                  value={apartmentType || ""}
+                  options={this.apartmentTypeOptions}
+                  handleChange={this.handleChange}
+                />
+              </Form.Row>
+              <Form.Row>
+                <TextInput
+                  as={Col}
+                  label="City Name"
+                  name="cityName"
+                  value={cityName || ""}
+                  handleChange={this.handleChange}
+                />
+                <TextInput
+                  as={Col}
+                  label="Country Name"
+                  name="countryName"
+                  value={countryName || ""}
+                  handleChange={this.handleChange}
+                />
+              </Form.Row>
+              <Form.Row>
+                <DayInput
+                  as={Col}
+                  label="From Date"
+                  name="fromDate"
+                  value={fromDate}
+                  disabledDays={{ before: new Date(), after: toDate }}
+                  handleChange={this.handleChange}
+                />
+                <DayInput
+                  as={Col}
+                  label="To Date"
+                  name="toDate"
+                  value={toDate}
+                  disabledDays={{ before: fromDate || new Date() }}
+                  handleChange={this.handleChange}
+                />
+              </Form.Row>
               <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
             </Form>
           </Modal.Body>
