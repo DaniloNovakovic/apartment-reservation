@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   CreateApartmentInfoForm,
   CreateApartmentLocationForm,
-  CreateApartmentAmenities
+  CreateApartmentAmenities,
+  CreateApartmentAvailability
 } from "./create";
 
 export default class CreateApartmentForm extends Component {
@@ -58,6 +59,12 @@ export default class CreateApartmentForm extends Component {
         />
         <CreateApartmentAmenities
           hidden={currFormIndex !== 2}
+          handleSubmit={this.handleNext}
+          handleBack={this.handleBack}
+          formData={{ ...this.state }}
+        />
+        <CreateApartmentAvailability
+          hidden={currFormIndex !== 3}
           handleSubmit={this.handleComplete}
           handleBack={this.handleBack}
           formData={{ ...this.state }}

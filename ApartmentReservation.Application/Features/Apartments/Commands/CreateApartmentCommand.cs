@@ -17,7 +17,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         public CreateApartmentCommand()
         {
             Amenities = new List<AmenityDto>();
-            ForRentalDates = new List<ForRentalDateDto>();
+            ForRentalDates = new List<DateTime>();
         }
 
         public IEnumerable<AmenityDto> Amenities { get; set; }
@@ -26,11 +26,12 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
         public string CheckOutTime { get; set; }
         public string CityName { get; set; }
         public string CountryName { get; set; }
-        public IEnumerable<ForRentalDateDto> ForRentalDates { get; set; }
+        public IEnumerable<DateTime> ForRentalDates { get; set; }
         public long HostId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int NumberOfRooms { get; set; }
+        public int NumberOfGuests { get; set; }
         public string PostalCode { get; set; }
 
         public double PricePerNight { get; set; }
@@ -59,6 +60,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                 CheckOutTime = request.CheckOutTime,
                 HostId = request.HostId,
                 NumberOfRooms = request.NumberOfRooms,
+                NumberOfGuests = request.NumberOfGuests,
                 PricePerNight = request.PricePerNight,
                 Title = request.Title,
                 Location = new Location()
@@ -98,11 +100,11 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        private async Task AppendForRentalDatesAsync(IEnumerable<ForRentalDateDto> from, Apartment to, CancellationToken cancellationToken)
+        private async Task AppendForRentalDatesAsync(IEnumerable<DateTime> from, Apartment to, CancellationToken cancellationToken)
         {
             foreach (var frd in from)
             {
-                to.ForRentalDates.Add(new ForRentalDate() { Date = frd.Date });
+                to.ForRentalDates.Add(new ForRentalDate() { Date = frd });
             }
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
