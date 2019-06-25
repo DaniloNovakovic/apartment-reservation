@@ -49,8 +49,10 @@ export class DisplayApartments extends Component {
         <span className="sr-only">Loading...</span>
       </Spinner>
     ) : (
-      apartments.map((apartment, index) => {
-        return <ApartmentCard key={`apc-${index}`} apartment={apartment} />;
+      apartments.map(apartment => {
+        return (
+          <ApartmentCard key={`apc-${apartment.id}`} apartment={apartment} />
+        );
       })
     );
 
