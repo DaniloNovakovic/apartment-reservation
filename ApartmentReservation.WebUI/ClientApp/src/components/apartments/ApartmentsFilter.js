@@ -100,10 +100,6 @@ export default class ApartmentsFilter extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {/*
-        public int? FromNumberOfRooms { get; set; }
-        public int? ToNumberOfRooms { get; set; }
-        public int? NumberOfGuests { get; set; } */}
             <Form onSubmit={this.handleSubmit}>
               <SelectInput
                 label="Activity State"
@@ -203,7 +199,13 @@ export default class ApartmentsFilter extends Component {
                   min={fromNumberOfRooms}
                 />
               </Form.Row>
-              <pre>{JSON.stringify(this.state.filters, null, 2)}</pre>
+              <NumberInput
+                label="Number of Guests"
+                name="numberOfGuests"
+                value={numberOfGuests}
+                handleChange={this.handleChange}
+                min={1}
+              />
             </Form>
           </Modal.Body>
           <Modal.Footer>
