@@ -24,6 +24,11 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             if (dbUser.Password != webUser.Password)
                 throw new UnauthorizedException("Incorrect password!");
 
+            if (dbUser.IsBanned)
+            {
+                throw new UnauthorizedException($"Access denied: User `{dbUser.Username}` has been banned by the administrator!");
+            }
+
             var claims = this.claimsFactory.GenerateClaims(dbUser);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

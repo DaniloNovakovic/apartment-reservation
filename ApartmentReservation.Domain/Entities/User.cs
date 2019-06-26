@@ -17,5 +17,7 @@ namespace ApartmentReservation.Domain.Entities
         public string Gender { get; set; }
 
         public string RoleName { get; set; }
+
+        public bool IsBanned { get; set; } = false;
     }
 }
