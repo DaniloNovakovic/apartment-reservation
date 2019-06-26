@@ -40,6 +40,15 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok(await this.mediator.Send(new GetUserByIdQuery() { Id = id }).ConfigureAwait(false));
         }
 
+        [HttpGet("{id}/Ban")]
+        [Authorize(Policy = Policies.AdministratorOnly)]
+        public async Task<IActionResult> BanUser(long id)
+        {
+            var request = new BanUserCommand() { UserId = id };
+            await this.mediator.Send(request).ConfigureAwait(false);
+            return this.Ok();
+        }
+
         // PUT: api/Users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody] UpdateUserCommand command)
