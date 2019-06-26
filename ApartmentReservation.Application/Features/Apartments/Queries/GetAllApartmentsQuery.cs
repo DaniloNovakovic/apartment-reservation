@@ -105,11 +105,9 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 .Include("ApartmentAmenities.Amenity")
                 .Include(a => a.ForRentalDates)
                 .Include(a => a.Images)
-                .Include(a => a.Location)
-                .ThenInclude(l => l.Address)
-                .Include(a => a.Host)
-                .ThenInclude(h => h.User)
-                .Where(a => !a.IsDeleted);
+                .Include(a => a.Location).ThenInclude(l => l.Address)
+                .Include(a => a.Host).ThenInclude(h => h.User)
+                .Where(a => !a.IsDeleted && !a.Host.User.IsBanned);
         }
 
         private static IQueryable<Apartment> ApplyBasicFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)
