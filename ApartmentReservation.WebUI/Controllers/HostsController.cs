@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace ApartmentReservation.WebUI.Controllers
     public class HostsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IAuthService authService;
 
-        public HostsController(IMediator mediator)
+        public HostsController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
+            this.authService = authService;
         }
 
         // GET: api/Hosts
@@ -32,6 +35,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpGet("{id}", Name = "GetHost")]
         public async Task<IActionResult> Get(long id)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             if (this.IsUserAStranger(id))
             {
                 return this.Unauthorized();
