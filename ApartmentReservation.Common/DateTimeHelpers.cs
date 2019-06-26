@@ -43,5 +43,35 @@ namespace ApartmentReservation.Common
             }
             return days;
         }
+
+        public static IEnumerable<DateTime> GetDateDayRange(DateTime fromDate, DateTime toDate)
+        {
+            var daysRange = new List<DateTime>();
+            for (var currDate = fromDate; !IsDayAfter(currDate, toDate); currDate = currDate.AddDays(1))
+            {
+                daysRange.Add(currDate);
+            }
+            return daysRange;
+        }
+
+        public static bool IsBeforeToday(DateTime date)
+        {
+            return IsDayBefore(date, DateTime.Now);
+        }
+
+        public static bool IsAfterToday(DateTime date)
+        {
+            return IsDayAfter(date, DateTime.Now);
+        }
+
+        public static bool IsDayBefore(DateTime day, DateTime beforeWhen)
+        {
+            return !AreSameDay(day, beforeWhen) && day < beforeWhen;
+        }
+
+        public static bool IsDayAfter(DateTime day, DateTime afterWhen)
+        {
+            return !AreSameDay(day, afterWhen) && day > afterWhen;
+        }
     }
 }

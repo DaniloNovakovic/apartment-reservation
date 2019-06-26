@@ -56,6 +56,11 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
         private static bool IsDateAvailable(DateTime date, IEnumerable<Reservation> reservations)
         {
+            if (DateTimeHelpers.IsBeforeToday(date))
+            {
+                return false;
+            }
+
             foreach (var reservation in reservations)
             {
                 if (DateTimeHelpers.IsContainedInDayRange(date, reservation.ReservationStartDate, reservation.NumberOfNightsRented))

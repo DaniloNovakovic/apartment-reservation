@@ -54,6 +54,20 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
                 availableDates,
                 date => Assert.Contains(data.ForRentalDates.Skip(1), frd => DateTimeHelpers.AreSameDay(frd.Date, date)));
         }
+
+        [Fact]
+        public async Task DoesNotReturnDaysBeforeToday()
+        {
+            data.Context.Add(new ForRentalDate()
+            {
+                ApartmentId = data.Apartment.Id,
+                Date = DateTime.Now.AddDays(-5)
+            });
+
+            var availableDates = await sut.Handle(new GetAvailableDatesQuery() { ApartmentId = data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
+
+            Assert.DoesNotContain(availableDates, DateTimeHelpers.IsBeforeToday);
+        }
     }
 
     public class GetAvailableDatesQueryDataSetup : InMemoryContextTestBase

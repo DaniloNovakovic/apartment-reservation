@@ -72,16 +72,28 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                         string.Equals(amenity.Name, filter.AmenityName, StringComparison.OrdinalIgnoreCase)));
             }
 
-            if (filter.FromDate != null)
+            if (filter.FromDate != null && filter.ToDate != null)
             {
                 var fromDate = filter.FromDate.Value;
-                query = query.Where(a => a.AvailableDates.Any(d => d >= fromDate || DateTimeHelpers.AreSameDay(d, fromDate)));
-            }
+                var toDate = filter.ToDate.Value;
 
-            if (filter.ToDate != null)
+                var daysRangeStr = DateTimeHelpers.GetDateDayRange(fromDate, toDate)
+                    .Select(d => DateTimeHelpers.FormatToYearMonthDayString(d))
+                    .ToArray();
+
+                query = query.Where(a => !daysRangeStr
+                    .Except(a.AvailableDates.Select(d => DateTimeHelpers.FormatToYearMonthDayString(d)).ToArray())
+                    .Any()).ToArray();
+            }
+            else if (filter.FromDate != null)
+            {
+                var fromDate = filter.FromDate.Value;
+                query = query.Where(a => a.AvailableDates.Any(d => !DateTimeHelpers.IsDayBefore(d, fromDate)));
+            }
+            else if (filter.ToDate != null)
             {
                 var toDate = filter.ToDate.Value;
-                query = query.Where(a => a.AvailableDates.Any(d => d <= toDate || DateTimeHelpers.AreSameDay(d, toDate)));
+                query = query.Where(a => a.AvailableDates.Any(d => !DateTimeHelpers.IsDayAfter(d, toDate)));
             }
 
             return query.ToArray();
