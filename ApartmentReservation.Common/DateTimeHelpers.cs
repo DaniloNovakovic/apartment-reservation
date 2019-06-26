@@ -73,5 +73,11 @@ namespace ApartmentReservation.Common
         {
             return !AreSameDay(day, afterWhen) && day > afterWhen;
         }
+
+        public static DateTime StartOfWeek(DateTime date, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (date.DayOfWeek - startOfWeek)) % 7;
+            return date.AddDays(-1 * diff).Date;
+        }
     }
 }
