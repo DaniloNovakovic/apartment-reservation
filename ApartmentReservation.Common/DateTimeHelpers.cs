@@ -79,5 +79,12 @@ namespace ApartmentReservation.Common
             int diff = (7 + (date.DayOfWeek - startOfWeek)) % 7;
             return date.AddDays(-1 * diff).Date;
         }
+
+        public static bool IsWeekend(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Friday
+                || date.DayOfWeek == DayOfWeek.Saturday
+                || date.DayOfWeek == DayOfWeek.Sunday;
+        }
     }
 }

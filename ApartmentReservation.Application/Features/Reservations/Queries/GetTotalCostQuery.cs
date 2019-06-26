@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,13 +14,15 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
     {
         public long ApartmentId { get; set; }
 
-        public DateTime StartDate { get; set; }
-
         public int NumberOfNights { get; set; }
+        public DateTime StartDate { get; set; }
     }
 
     public class GetTotalCostQueryHandler : IRequestHandler<GetTotalCostQuery, double>
     {
+        public const double HolidayRate = 0.05;
+        public const double WeekendRate = 0.1;
+
         private readonly IApartmentReservationDbContext context;
         private readonly IHolidayService holidayService;
 
@@ -41,7 +45,27 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
             var holidays = await this.holidayService.GetHolidaysAsync(cancellationToken).ConfigureAwait(false);
 
-            return apartment.PricePerNight * request.NumberOfNights;
+            double totalCost = 0;
+
+            for (int nightCount = 0; nightCount < request.NumberOfNights; ++nightCount)
+            {
+                var currDate = request.StartDate.AddDays(nightCount);
+                double currPrice = apartment.PricePerNight;
+
+                if (DateTimeHelpers.IsWeekend(currDate))
+                {
+                    currPrice -= (apartment.PricePerNight * WeekendRate);
+                }
+
+                if (holidays.Any(h => h.Day == currDate.Day && h.Month == currDate.Month))
+                {
+                    currPrice += (apartment.PricePerNight * HolidayRate);
+                }
+
+                totalCost += currPrice;
+            }
+
+            return totalCost;
         }
     }
 }
