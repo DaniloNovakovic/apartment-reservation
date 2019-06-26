@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { roleNames } from "../../constants";
 import { Table, ButtonToolbar, Button } from "react-bootstrap";
 
-export const UsersTable = ({ users, deleteUserHandler }) => (
+export const UsersTable = ({
+  users,
+  deleteUserHandler = () => {},
+  banUserHandler = () => {},
+  unbanUserHandler = () => {}
+}) => (
   <Table striped hover bordered className="users-table">
     <thead>
       <tr>
@@ -34,6 +39,21 @@ export const UsersTable = ({ users, deleteUserHandler }) => (
                 >
                   Edit
                 </Button>
+                {user.banned ? (
+                  <Button
+                    variant="outline-success"
+                    onClick={() => unbanUserHandler(user)}
+                  >
+                    Unban
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => banUserHandler(user)}
+                  >
+                    Ban
+                  </Button>
+                )}
                 <Button
                   variant="danger"
                   onClick={() => deleteUserHandler(user)}

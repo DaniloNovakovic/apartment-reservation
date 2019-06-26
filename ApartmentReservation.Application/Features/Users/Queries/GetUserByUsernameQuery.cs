@@ -33,7 +33,7 @@ namespace ApartmentReservation.Application.Features.Users.Queries
                 throw new NotFoundException($"Could not find user with username '{request.Username}'");
             }
 
-            return new UserDto(dbUser);
+            return new UserDto(dbUser) { Banned = dbUser.IsBanned };
         }
     }
 }

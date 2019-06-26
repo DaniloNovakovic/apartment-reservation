@@ -11,6 +11,8 @@ export const userService = {
   getById,
   update,
   updateCurrentUser,
+  ban,
+  unban,
   delete: _delete
 };
 
@@ -87,4 +89,20 @@ function _delete(id) {
   };
 
   return fetch(`api/Users/${id}`, requestOptions).then(handleResponse);
+}
+
+function ban(id) {
+  const requestOptions = {
+    method: "GET"
+  };
+
+  return fetch(`api/Users/${id}/Ban`, requestOptions).then(handleResponse);
+}
+
+function unban(id) {
+  const requestOptions = {
+    method: "GET"
+  };
+
+  return fetch(`api/Users/${id}/Unban`, requestOptions).then(handleResponse);
 }

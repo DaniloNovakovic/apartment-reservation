@@ -34,7 +34,7 @@ namespace ApartmentReservation.Application.Features.Users.Queries
 
             var users = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return users.Select(u => new UserDto(u));
+            return users.Select(u => new UserDto(u) { Banned = u.IsBanned });
         }
 
         private static IQueryable<User> ApplyFilters(GetAllUsersQuery filters, IQueryable<User> query)

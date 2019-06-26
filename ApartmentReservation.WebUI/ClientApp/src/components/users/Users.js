@@ -21,7 +21,12 @@ export default class Users extends Component {
       this.setState({ users: data, loading: false });
     });
   };
-
+  banUserHandler = user => {
+    userService.ban(user.id).then(_ => this.refreshData());
+  };
+  unbanUserHandler = user => {
+    userService.unban(user.id).then(_ => this.refreshData());
+  };
   deleteUserHandler = user => {
     userService.delete(user.id).then(_ => this.refreshData());
   };
@@ -35,6 +40,8 @@ export default class Users extends Component {
       <UsersTable
         users={this.state.users}
         deleteUserHandler={this.deleteUserHandler}
+        banUserHandler={this.banUserHandler}
+        unbanUserHandler={this.unbanUserHandler}
       />
     );
 

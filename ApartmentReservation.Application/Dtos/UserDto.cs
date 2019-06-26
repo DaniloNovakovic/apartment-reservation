@@ -38,6 +38,7 @@ namespace ApartmentReservation.Application.Dtos
         public string Password { get; set; }
         public string RoleName { get; set; } = RoleNames.Guest;
         public string Username { get; set; }
+        public bool Banned { get; set; } = false;
     }
 
     public class UserDtoValidation : AbstractValidator<UserDto>
