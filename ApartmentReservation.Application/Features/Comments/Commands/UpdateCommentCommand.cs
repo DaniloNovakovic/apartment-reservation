@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
@@ -28,7 +25,7 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
 
         public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
-            var comment = await context.Comments.FindAsync(request.Id).ConfigureAwait(false);
+            var comment = await this.context.Comments.FindAsync(request.Id).ConfigureAwait(false);
 
             if (comment is null)
             {
@@ -42,7 +39,7 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
                 comment.Text = request.Text;
             }
 
-            await context.SaveChangesAsync(cancellationToken);
+            await this.context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

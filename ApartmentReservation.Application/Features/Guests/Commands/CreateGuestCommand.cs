@@ -5,7 +5,6 @@ using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Entities;
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

@@ -54,7 +54,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.GuestOnly)]
         public async Task<IActionResult> Withdraw(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Withdrawn, (args) =>
+            return await this.UpdateReservationAsync(id, ReservationStates.Withdrawn, (args) =>
             {
                 return args.ReservationState == ReservationStates.Created
                     || args.ReservationState == ReservationStates.Accepted;
@@ -65,7 +65,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Deny(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Denied, (args) =>
+            return await this.UpdateReservationAsync(id, ReservationStates.Denied, (args) =>
             {
                 return args.ReservationState == ReservationStates.Created;
             });
@@ -75,7 +75,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Accept(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Accepted, (args) =>
+            return await this.UpdateReservationAsync(id, ReservationStates.Accepted, (args) =>
             {
                 return args.ReservationState == ReservationStates.Created;
             });
@@ -84,7 +84,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpGet("{id}/Complete")]
         public async Task<IActionResult> Complete(long id)
         {
-            return await UpdateReservationAsync(id, ReservationStates.Completed, (args) =>
+            return await this.UpdateReservationAsync(id, ReservationStates.Completed, (args) =>
             {
                 var endDate = args.ReservationStartDate.AddDays(args.NumberOfNightsRented);
                 var today = DateTime.Now;

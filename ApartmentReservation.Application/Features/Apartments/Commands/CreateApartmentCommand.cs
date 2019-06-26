@@ -16,8 +16,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
     {
         public CreateApartmentCommand()
         {
-            Amenities = new List<AmenityDto>();
-            ForRentalDates = new List<DateTime>();
+            this.Amenities = new List<AmenityDto>();
+            this.ForRentalDates = new List<DateTime>();
         }
 
         public IEnumerable<AmenityDto> Amenities { get; set; }
@@ -78,26 +78,26 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                 }
             };
 
-            var entityEntry = await context.Apartments.AddAsync(apartment, cancellationToken).ConfigureAwait(false);
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            var entityEntry = await this.context.Apartments.AddAsync(apartment, cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             apartment = entityEntry.Entity;
-            await AppendAmenitiesAsync(request.Amenities, apartment, cancellationToken).ConfigureAwait(false);
-            await AppendForRentalDatesAsync(request.ForRentalDates, apartment, cancellationToken).ConfigureAwait(false);
+            await this.AppendAmenitiesAsync(request.Amenities, apartment, cancellationToken).ConfigureAwait(false);
+            await this.AppendForRentalDatesAsync(request.ForRentalDates, apartment, cancellationToken).ConfigureAwait(false);
 
             return new EntityCreatedResult() { Id = apartment.Id };
         }
 
         private async Task AppendAmenitiesAsync(IEnumerable<AmenityDto> from, Apartment to, CancellationToken cancellationToken = default)
         {
-            var dbAmenities = context.Amenities.Where(amenity => from.Any(a => a.Name == amenity.Name)).ToList();
+            var dbAmenities = this.context.Amenities.Where(amenity => from.Any(a => a.Name == amenity.Name)).ToList();
 
             foreach (var amenity in dbAmenities)
             {
                 to.ApartmentAmenities.Add(new ApartmentAmenity() { Amenity = amenity, Apartment = to });
             }
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         private async Task AppendForRentalDatesAsync(IEnumerable<DateTime> from, Apartment to, CancellationToken cancellationToken)

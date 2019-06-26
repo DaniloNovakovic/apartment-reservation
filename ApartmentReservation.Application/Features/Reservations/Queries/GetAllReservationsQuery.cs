@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -32,7 +31,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
         public async Task<IEnumerable<ReservationDto>> Handle(GetAllReservationsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Reservations
+            var query = this.context.Reservations
                 .Include(r => r.Guest).ThenInclude(g => g.User)
                 .Include(r => r.Apartment).ThenInclude(a => a.Host).ThenInclude(h => h.User)
                 .Where(r => !r.IsDeleted && !r.Apartment.IsDeleted && !r.Guest.IsDeleted);

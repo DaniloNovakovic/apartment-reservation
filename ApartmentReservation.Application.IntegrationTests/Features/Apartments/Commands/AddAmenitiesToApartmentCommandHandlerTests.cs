@@ -23,7 +23,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         [Fact]
         public async Task AddsAmenitiesToApartment()
         {
-            var amenities = await Context.Amenities.Select(a => new AmenityDto(a)).ToListAsync();
+            var amenities = await this.Context.Amenities.Select(a => new AmenityDto(a)).ToListAsync();
 
             var request = new AddAmenitiesToApartmentCommand()
             {
@@ -31,13 +31,13 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                 Amenities = amenities
             };
 
-            await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
-            dbApartment = await this.Context.Apartments
+            this.dbApartment = await this.Context.Apartments
                 .Include("ApartmentAmenities.Amenity")
                 .SingleOrDefaultAsync(CancellationToken.None).ConfigureAwait(false);
 
-            Assert.Equal(amenities.Select(a => a.Name), dbApartment.Amenities.Select(a => a.Name));
+            Assert.Equal(amenities.Select(a => a.Name), this.dbApartment.Amenities.Select(a => a.Name));
         }
 
         protected override void LoadTestData()

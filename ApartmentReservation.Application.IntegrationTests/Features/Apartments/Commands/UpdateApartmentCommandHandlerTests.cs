@@ -23,7 +23,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new UpdateApartmentCommand()
             {
-                Id = dbApartment.Id,
+                Id = this.dbApartment.Id,
                 ActivityState = ActivityStates.Inactive,
                 ApartmentType = ApartmentTypes.SingleRoom,
                 CheckInTime = "11:00:00",
@@ -37,21 +37,21 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                 CountryName = "America"
             };
 
-            await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
-            dbApartment = await this.Context.Apartments
+            this.dbApartment = await this.Context.Apartments
                 .Include(a => a.Location)
                 .ThenInclude(l => l.Address)
                 .SingleOrDefaultAsync(a => a.Id == request.Id && !a.IsDeleted)
                 .ConfigureAwait(false);
 
-            Assert.NotNull(dbApartment);
-            Assert.Equal(dbApartment.Title, request.Title);
-            Assert.NotNull(dbApartment.Location);
-            Assert.Equal(dbApartment.Location.Latitude, request.Latitude);
-            Assert.Equal(dbApartment.Location.Longitude, request.Longitude);
-            Assert.NotNull(dbApartment.Location.Address);
-            Assert.Equal(dbApartment.Location.Address.CountryName, request.CountryName);
+            Assert.NotNull(this.dbApartment);
+            Assert.Equal(this.dbApartment.Title, request.Title);
+            Assert.NotNull(this.dbApartment.Location);
+            Assert.Equal(this.dbApartment.Location.Latitude, request.Latitude);
+            Assert.Equal(this.dbApartment.Location.Longitude, request.Longitude);
+            Assert.NotNull(this.dbApartment.Location.Address);
+            Assert.Equal(this.dbApartment.Location.Address.CountryName, request.CountryName);
         }
 
         protected override void LoadTestData()

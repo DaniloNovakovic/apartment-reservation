@@ -41,11 +41,11 @@ namespace ApartmentReservation.Application.Features.Users.Commands
 
             if (dbUser.RoleName == RoleNames.Guest)
             {
-                await mediator.Send(new DeleteGuestCommand() { GuestId = dbUser.Id }).ConfigureAwait(false);
+                await this.mediator.Send(new DeleteGuestCommand() { GuestId = dbUser.Id }).ConfigureAwait(false);
             }
             else if (dbUser.RoleName == RoleNames.Host)
             {
-                await mediator.Send(new DeleteHostCommand() { HostId = dbUser.Id }).ConfigureAwait(false);
+                await this.mediator.Send(new DeleteHostCommand() { HostId = dbUser.Id }).ConfigureAwait(false);
             }
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

@@ -1,5 +1,4 @@
 ﻿using System;
-using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 
 namespace ApartmentReservation.Application.Dtos
@@ -12,13 +11,13 @@ namespace ApartmentReservation.Application.Dtos
 
         public ReservationDto(Reservation reservation)
         {
-            Id = reservation.Id;
-            Apartment = new ApartmentDto(reservation.Apartment);
-            ReservationStartDate = reservation.ReservationStartDate;
-            NumberOfNightsRented = reservation.NumberOfNightsRented;
-            TotalCost = reservation.TotalCost;
-            Guest = new UserPublicDto(reservation.Guest);
-            ReservationState = reservation.ReservationState;
+            this.Id = reservation.Id;
+            this.Apartment = new ApartmentDto(reservation.Apartment);
+            this.ReservationStartDate = reservation.ReservationStartDate;
+            this.NumberOfNightsRented = reservation.NumberOfNightsRented;
+            this.TotalCost = reservation.TotalCost;
+            this.Guest = new UserPublicDto(reservation.Guest);
+            this.ReservationState = reservation.ReservationState;
         }
 
         public long Id { get; set; }

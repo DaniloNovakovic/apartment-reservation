@@ -46,7 +46,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                 new Amenity(){Name="Heating"}
             };
 
-            Context.AddRange(
+            this.Context.AddRange(
                 new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[0] },
                 new ApartmentAmenity() { Apartment = apartments[0], Amenity = amenities[1] },
                 new ApartmentAmenity() { Apartment = apartments[1], Amenity = amenities[0] }
@@ -68,7 +68,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         public GetAllApartmentsQueryHandlerTests(GetAllApartmentsQueryDataSetup data)
         {
             this.mediatorMock = new Mock<IMediator>();
-            this.sut = new GetAllApartmentsQueryHandler(data.Context, mediatorMock.Object);
+            this.sut = new GetAllApartmentsQueryHandler(data.Context, this.mediatorMock.Object);
             this.dbApartments = data.DbApartments.Where(a => !a.IsDeleted).ToList();
             this.dbHost = data.DbHost;
         }
@@ -116,7 +116,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new GetAllApartmentsQuery()
             {
-                HostId = dbHost.UserId
+                HostId = this.dbHost.UserId
             };
 
             var apartments = await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
@@ -128,17 +128,17 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         [Fact]
         public async Task FilterByDateRange_ReturnsApartmentsThatAreAvailableInGivenRange()
         {
-            mediatorMock.Setup(m => m.Send(It.Is<GetAvailableDatesQuery>(q => q.ApartmentId == dbApartments[0].Id), It.IsAny<CancellationToken>()))
+            this.mediatorMock.Setup(m => m.Send(It.Is<GetAvailableDatesQuery>(q => q.ApartmentId == this.dbApartments[0].Id), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(DateTimeHelpers.GetDateDayRange(DateTime.Now, 5));
-            mediatorMock.Setup(m => m.Send(It.Is<GetAvailableDatesQuery>(q => q.ApartmentId == dbApartments[1].Id), It.IsAny<CancellationToken>()))
+            this.mediatorMock.Setup(m => m.Send(It.Is<GetAvailableDatesQuery>(q => q.ApartmentId == this.dbApartments[1].Id), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(DateTimeHelpers.GetDateDayRange(DateTime.Now, 2));
 
             var request = new GetAllApartmentsQuery() { FromDate = DateTime.Now, ToDate = DateTime.Now.AddDays(4) };
 
-            var apartments = await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            var apartments = await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
             var apartment = Assert.Single(apartments);
-            Assert.Equal(dbApartments[0].Id, apartment.Id);
+            Assert.Equal(this.dbApartments[0].Id, apartment.Id);
         }
 
         [Fact]

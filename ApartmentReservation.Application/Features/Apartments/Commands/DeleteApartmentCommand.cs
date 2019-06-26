@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
@@ -25,7 +23,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
         public async Task<Unit> Handle(DeleteApartmentCommand request, CancellationToken cancellationToken)
         {
-            var apartment = await context.Apartments
+            var apartment = await this.context.Apartments
                 .Include(a => a.Images)
                 .Include(a => a.Reservations)
                 .Include(a => a.Comments)
@@ -41,7 +39,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             apartment.IsDeleted = true;
             CascadeLogicalDelete(apartment);
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;
         }

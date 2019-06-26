@@ -12,14 +12,14 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Users.Comma
 {
     public class DeleteUserCommandHandlerTests : InMemoryContextTestBase
     {
-        private Mock<IMediator> mediator;
+        private readonly Mock<IMediator> mediator;
         private readonly DeleteUserCommandHandler sut;
         private User dbUser;
 
         public DeleteUserCommandHandlerTests()
         {
             this.mediator = new Mock<IMediator>();
-            this.sut = new DeleteUserCommandHandler(this.Context, mediator.Object);
+            this.sut = new DeleteUserCommandHandler(this.Context, this.mediator.Object);
         }
 
         protected override void LoadTestData()

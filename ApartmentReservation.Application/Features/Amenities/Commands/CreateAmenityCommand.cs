@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

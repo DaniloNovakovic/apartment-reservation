@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Apartments.Queries;
@@ -31,7 +28,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
             this.Context.SaveChanges();
 
-            DbApartment = Context.Add(new Apartment()
+            this.DbApartment = this.Context.Add(new Apartment()
             {
                 ApartmentType = ApartmentTypes.Full,
                 ActivityState = ActivityStates.Active,
@@ -44,7 +41,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                 new Amenity(){Name="Heating"}
             };
 
-            Context.AddRange(
+            this.Context.AddRange(
                 new ApartmentAmenity() { Apartment = DbApartment, Amenity = amenities[0] },
                 new ApartmentAmenity() { Apartment = DbApartment, Amenity = amenities[1] }
             );
@@ -69,12 +66,12 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         [Fact]
         public async Task WhenExists_ReturnsApartmentWithRequestedId()
         {
-            var request = new GetApartmentQuery() { Id = dbApartment.Id };
+            var request = new GetApartmentQuery() { Id = this.dbApartment.Id };
 
-            var result = await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            var result = await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
             Assert.NotNull(result);
-            Assert.Equal(dbApartment.Id, result.Id);
+            Assert.Equal(this.dbApartment.Id, result.Id);
         }
 
         [Fact]
@@ -82,7 +79,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new GetApartmentQuery() { Id = -1 };
             await Assert
-                .ThrowsAsync<NotFoundException>(async () => await sut.Handle(request, CancellationToken.None).ConfigureAwait(false))
+                .ThrowsAsync<NotFoundException>(async () => await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false))
                 .ConfigureAwait(false);
         }
     }

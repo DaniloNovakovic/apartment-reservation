@@ -8,7 +8,7 @@ namespace ApartmentReservation.Domain.Entities
 
         public Logical()
         {
-            IsDeleted = false;
+            this.IsDeleted = false;
         }
     }
 }

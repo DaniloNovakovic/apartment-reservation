@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Xunit;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.Commands
 {
     public class UpdateForRentalDatesCommandHandlerTests : InMemoryContextTestBase
     {
-        private UpdateForRentalDatesCommandHandler sut;
+        private readonly UpdateForRentalDatesCommandHandler sut;
         private Apartment dbApartment;
 
         public UpdateForRentalDatesCommandHandlerTests()
@@ -30,13 +27,13 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
             var request = new UpdateForRentalDatesCommand()
             {
-                ApartmentId = dbApartment.Id,
+                ApartmentId = this.dbApartment.Id,
                 ForRentalDates = new[] { requestedDate }
             };
 
-            await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
-            var dbRentalDates = await Context.ForRentalDates
+            var dbRentalDates = await this.Context.ForRentalDates
                 .Where(frd => frd.ApartmentId == request.ApartmentId && !frd.IsDeleted)
                 .ToListAsync()
                 .ConfigureAwait(false);
@@ -47,20 +44,20 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 
         protected override void LoadTestData()
         {
-            this.dbApartment = Context.Add(new Apartment()
+            this.dbApartment = this.Context.Add(new Apartment()
             {
                 Title = "Test Apartment",
                 ActivityState = ActivityStates.Inactive,
                 ApartmentType = ApartmentTypes.Full
             }).Entity;
 
-            Context.AddRange(new ForRentalDate()
+            this.Context.AddRange(new ForRentalDate()
             {
                 Apartment = dbApartment,
                 Date = new DateTime(year: 2018, month: 4, day: 5)
             });
 
-            Context.SaveChanges();
+            this.Context.SaveChanges();
         }
     }
 }

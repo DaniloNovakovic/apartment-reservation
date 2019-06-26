@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -15,7 +13,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
 {
     public class UpdateApartmentAmenitiesCommandHandlerTests : InMemoryContextTestBase
     {
-        private UpdateApartmentAmenitiesCommandHandler sut;
+        private readonly UpdateApartmentAmenitiesCommandHandler sut;
         private Apartment dbApartment;
 
         public UpdateApartmentAmenitiesCommandHandlerTests()
@@ -26,7 +24,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         [Fact]
         public async Task UpdatesAmenitiesInApartment()
         {
-            var reqAmenity = Context.Add(new Amenity() { Name = "Microwave" }).Entity;
+            var reqAmenity = this.Context.Add(new Amenity() { Name = "Microwave" }).Entity;
 
             var request = new UpdateApartmentAmenitiesCommand()
             {
@@ -34,13 +32,13 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
                 Amenities = new List<AmenityDto>() { new AmenityDto(reqAmenity) }
             };
 
-            await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
-            dbApartment = await this.Context.Apartments
+            this.dbApartment = await this.Context.Apartments
                 .Include("ApartmentAmenities.Amenity")
-                .SingleOrDefaultAsync(a => a.Id == dbApartment.Id, CancellationToken.None).ConfigureAwait(false);
+                .SingleOrDefaultAsync(a => a.Id == this.dbApartment.Id, CancellationToken.None).ConfigureAwait(false);
 
-            var dbAmenities = dbApartment.ApartmentAmenities
+            var dbAmenities = this.dbApartment.ApartmentAmenities
                 .Where(x => !x.IsDeleted)
                 .Select(x => x.Amenity)
                 .Where(a => !a.IsDeleted);

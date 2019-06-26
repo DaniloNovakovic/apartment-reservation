@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Comments.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -12,7 +9,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Comments.Co
 {
     public class CreateCommentCommandHandlerTests : InMemoryContextTestBase
     {
-        private CreateCommentCommandHandler sut;
+        private readonly CreateCommentCommandHandler sut;
         private Apartment apartment;
         private Guest guest;
 
@@ -26,15 +23,15 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Comments.Co
         {
             var request = new CreateCommentCommand()
             {
-                ApartmentId = apartment.Id,
-                GuestId = guest.UserId,
+                ApartmentId = this.apartment.Id,
+                GuestId = this.guest.UserId,
                 Rating = 5,
                 Text = "Good apartment, i really like it."
             };
 
-            var response = await sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
+            var response = await this.sut.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
-            var comment = await Context.Comments.FindAsync(response.Id).ConfigureAwait(false);
+            var comment = await this.Context.Comments.FindAsync(response.Id).ConfigureAwait(false);
 
             Assert.NotNull(comment);
             Assert.Equal(request.Rating, comment.Rating);
@@ -45,11 +42,11 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Comments.Co
 
         protected override void LoadTestData()
         {
-            var host = Context.Add(new Host() { User = new User() { Username = "host", Password = "host", RoleName = RoleNames.Host } }).Entity;
-            this.apartment = Context.Add(new Apartment() { Host = host, Title = "Test apartment" }).Entity;
-            this.guest = Context.Add(new Guest() { User = new User() { Username = "guest", Password = "guest", RoleName = RoleNames.Guest } }).Entity;
+            var host = this.Context.Add(new Host() { User = new User() { Username = "host", Password = "host", RoleName = RoleNames.Host } }).Entity;
+            this.apartment = this.Context.Add(new Apartment() { Host = host, Title = "Test apartment" }).Entity;
+            this.guest = this.Context.Add(new Guest() { User = new User() { Username = "guest", Password = "guest", RoleName = RoleNames.Guest } }).Entity;
 
-            Context.SaveChanges();
+            this.Context.SaveChanges();
         }
     }
 }

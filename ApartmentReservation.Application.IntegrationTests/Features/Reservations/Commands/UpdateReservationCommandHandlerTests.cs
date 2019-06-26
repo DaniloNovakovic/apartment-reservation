@@ -40,7 +40,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
         [Fact]
         public async Task CanUpdateReturnsFalse_DoesNotUpdateReservation()
         {
-            string oldState = reservation.ReservationState;
+            string oldState = this.reservation.ReservationState;
 
             var request = new UpdateReservationCommand()
             {

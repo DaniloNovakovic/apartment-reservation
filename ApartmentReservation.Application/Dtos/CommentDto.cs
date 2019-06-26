@@ -10,21 +10,21 @@ namespace ApartmentReservation.Application.Dtos
 
         public CommentDto(Comment c)
         {
-            Id = c.Id;
+            this.Id = c.Id;
 
             if (c.Apartment != null)
             {
-                Apartment = new ApartmentDto(c.Apartment);
+                this.Apartment = new ApartmentDto(c.Apartment);
             }
 
             if (c.Guest != null)
             {
-                Guest = new GuestDto(c.Guest);
+                this.Guest = new GuestDto(c.Guest);
             }
 
-            Rating = c.Rating;
-            Text = c.Text;
-            Approved = c.Approved;
+            this.Rating = c.Rating;
+            this.Text = c.Text;
+            this.Approved = c.Approved;
         }
 
         public long? Id { get; set; }

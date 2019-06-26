@@ -45,7 +45,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                 string key = ConvertDateToKey(date);
                 if (!forRentalDates.ContainsKey(key))
                 {
-                    context.ForRentalDates.Add(new ForRentalDate()
+                    this.context.ForRentalDates.Add(new ForRentalDate()
                     {
                         ApartmentId = request.ApartmentId,
                         Date = date
@@ -80,8 +80,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             public HelperClass(ForRentalDate frd)
             {
-                ForRentalDate = frd;
-                IsFound = false;
+                this.ForRentalDate = frd;
+                this.IsFound = false;
             }
         }
     }

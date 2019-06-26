@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +24,7 @@ namespace ApartmentReservation.Application.Features.Amenities.Queries
 
         public async Task<AmenityDto> Handle(GetAmenityQuery request, CancellationToken cancellationToken)
         {
-            var amenity = await context.Amenities
+            var amenity = await this.context.Amenities
                 .SingleOrDefaultAsync(a => a.Id == request.Id && !a.IsDeleted)
                 .ConfigureAwait(false);
 

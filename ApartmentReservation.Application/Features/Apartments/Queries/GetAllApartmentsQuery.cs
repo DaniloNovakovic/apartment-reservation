@@ -77,7 +77,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
                 var fromDate = filter.FromDate.Value;
                 var toDate = filter.ToDate.Value;
 
-                var daysRangeStr = DateTimeHelpers.GetDateDayRange(fromDate, toDate)
+                string[] daysRangeStr = DateTimeHelpers.GetDateDayRange(fromDate, toDate)
                     .Select(d => DateTimeHelpers.FormatToYearMonthDayString(d))
                     .ToArray();
 

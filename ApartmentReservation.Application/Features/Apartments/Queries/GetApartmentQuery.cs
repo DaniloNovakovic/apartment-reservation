@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -29,7 +26,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
         public async Task<ApartmentDto> Handle(GetApartmentQuery request, CancellationToken cancellationToken)
         {
-            var dbApartment = await GetApartmentWithIncludedRelations(request);
+            var dbApartment = await this.GetApartmentWithIncludedRelations(request);
 
             if (dbApartment is null || dbApartment.IsDeleted)
             {
@@ -46,7 +43,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
         private async Task<Apartment> GetApartmentWithIncludedRelations(GetApartmentQuery request)
         {
-            return await context.Apartments
+            return await this.context.Apartments
                 .Include("ApartmentAmenities.Amenity")
                 .Include(a => a.ForRentalDates)
                 .Include(a => a.Images)

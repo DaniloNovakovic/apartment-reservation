@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
+using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ApartmentReservation.Domain.Entities;
-using ApartmentReservation.Domain.Constants;
 
 namespace ApartmentReservation.Application.Features.Reservations.Queries
 {
@@ -32,7 +31,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
         {
             long apartmentId = request.ApartmentId;
 
-            var apartment = await context.Apartments
+            var apartment = await this.context.Apartments
                 .Include(a => a.ForRentalDates)
                 .Include(a => a.Reservations)
                 .SingleOrDefaultAsync(a => a.Id == apartmentId && !a.IsDeleted, cancellationToken)
@@ -45,7 +44,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
             var forRentalDates = apartment.ForRentalDates.Where(frd => !frd.IsDeleted).ToList();
 
-            var reservationStatesToIgnore = new[] { ReservationStates.Denied, ReservationStates.Withdrawn };
+            string[] reservationStatesToIgnore = new[] { ReservationStates.Denied, ReservationStates.Withdrawn };
             var reservations = apartment.Reservations
                 .Where(r => !r.IsDeleted && !reservationStatesToIgnore.Contains(r.ReservationState)).ToList();
 

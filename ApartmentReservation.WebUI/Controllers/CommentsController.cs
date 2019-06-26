@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Comments.Commands;
 using ApartmentReservation.Application.Features.Comments.Queries;
@@ -31,7 +30,7 @@ namespace ApartmentReservation.WebUI.Controllers
             {
                 query.Approved = true;
             }
-            return this.Ok(await mediator.Send(query).ConfigureAwait(false));
+            return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
         [HttpGet("{id}/Approve")]
@@ -62,9 +61,9 @@ namespace ApartmentReservation.WebUI.Controllers
             bool isAllowed = false;
             if (!(apartmentId is null) && !(guestId is null))
             {
-                isAllowed = await IsAllowedToCreateComment(apartmentId.Value, guestId.Value).ConfigureAwait(false);
+                isAllowed = await this.IsAllowedToCreateComment(apartmentId.Value, guestId.Value).ConfigureAwait(false);
             }
-            return Ok(new { Allowed = isAllowed });
+            return this.Ok(new { Allowed = isAllowed });
         }
 
         private async Task<bool> IsAllowedToCreateComment(long apartmentId, long guestId)

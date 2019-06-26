@@ -8,7 +8,6 @@ using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Reservations.Queries
@@ -27,44 +26,44 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
         [Fact]
         public async Task WhenNoReservations_ReturnForRentalDates()
         {
-            var availableDates = await sut.Handle(new GetAvailableDatesQuery() { ApartmentId = data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
+            var availableDates = await this.sut.Handle(new GetAvailableDatesQuery() { ApartmentId = this.data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
 
             Assert.All(
                 availableDates,
-                date => Assert.Contains(data.ForRentalDates, frd => DateTimeHelpers.AreSameDay(frd.Date, date)));
+                date => Assert.Contains(this.data.ForRentalDates, frd => DateTimeHelpers.AreSameDay(frd.Date, date)));
         }
 
         [Fact]
         public async Task WhenReserved_ReturnAvailable()
         {
-            data.Context.Add(new Reservation()
+            this.data.Context.Add(new Reservation()
             {
-                ApartmentId = data.Apartment.Id,
-                GuestId = data.Guest.UserId,
-                ReservationStartDate = data.MinDate,
+                ApartmentId = this.data.Apartment.Id,
+                GuestId = this.data.Guest.UserId,
+                ReservationStartDate = this.data.MinDate,
                 NumberOfNightsRented = 1,
                 ReservationState = ReservationStates.Accepted
             });
 
-            data.Context.SaveChanges();
+            this.data.Context.SaveChanges();
 
-            var availableDates = await sut.Handle(new GetAvailableDatesQuery() { ApartmentId = data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
+            var availableDates = await this.sut.Handle(new GetAvailableDatesQuery() { ApartmentId = this.data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
 
             Assert.All(
                 availableDates,
-                date => Assert.Contains(data.ForRentalDates.Skip(1), frd => DateTimeHelpers.AreSameDay(frd.Date, date)));
+                date => Assert.Contains(this.data.ForRentalDates.Skip(1), frd => DateTimeHelpers.AreSameDay(frd.Date, date)));
         }
 
         [Fact]
         public async Task DoesNotReturnDaysBeforeToday()
         {
-            data.Context.Add(new ForRentalDate()
+            this.data.Context.Add(new ForRentalDate()
             {
-                ApartmentId = data.Apartment.Id,
+                ApartmentId = this.data.Apartment.Id,
                 Date = DateTime.Now.AddDays(-5)
             });
 
-            var availableDates = await sut.Handle(new GetAvailableDatesQuery() { ApartmentId = data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
+            var availableDates = await this.sut.Handle(new GetAvailableDatesQuery() { ApartmentId = this.data.Apartment.Id }, CancellationToken.None).ConfigureAwait(false);
 
             Assert.DoesNotContain(availableDates, DateTimeHelpers.IsBeforeToday);
         }
@@ -82,15 +81,15 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
 
         protected override void LoadTestData()
         {
-            this.Host = Context.Add(new Host() { User = new User() { Username = "host", Password = "host", RoleName = RoleNames.Host } }).Entity;
-            this.Guest = Context.Add(new Guest() { User = new User() { Username = "guest", Password = "guest", RoleName = RoleNames.Guest } }).Entity;
-            this.Apartment = Context.Add(new Apartment() { Title = "Test apartment" }).Entity;
+            this.Host = this.Context.Add(new Host() { User = new User() { Username = "host", Password = "host", RoleName = RoleNames.Host } }).Entity;
+            this.Guest = this.Context.Add(new Guest() { User = new User() { Username = "guest", Password = "guest", RoleName = RoleNames.Guest } }).Entity;
+            this.Apartment = this.Context.Add(new Apartment() { Title = "Test apartment" }).Entity;
 
-            this.ForRentalDates = DateTimeHelpers.GetDateDayRange(MinDate, DaysToAdd)
+            this.ForRentalDates = DateTimeHelpers.GetDateDayRange(this.MinDate, DaysToAdd)
                 .Select(day => new ForRentalDate() { Date = day, Apartment = Apartment });
 
-            Context.AddRange(ForRentalDates);
-            Context.SaveChanges();
+            this.Context.AddRange(this.ForRentalDates);
+            this.Context.SaveChanges();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new CreateApartmentCommand()
             {
-                HostId = dbHost.UserId,
+                HostId = this.dbHost.UserId,
                 PricePerNight = 10,
                 ApartmentType = ApartmentTypes.Full,
                 Title = "My fabulous apartment",
@@ -44,7 +44,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new CreateApartmentCommand()
             {
-                HostId = dbHost.UserId,
+                HostId = this.dbHost.UserId,
                 PricePerNight = 10,
                 ApartmentType = ApartmentTypes.Full,
                 Title = "My fabulous apartment",
@@ -63,7 +63,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Apartments.
         {
             var request = new CreateApartmentCommand()
             {
-                HostId = dbHost.UserId,
+                HostId = this.dbHost.UserId,
                 Longitude = 40.3,
                 Latitude = -73.556,
                 CityName = "New York",

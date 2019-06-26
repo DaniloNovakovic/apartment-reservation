@@ -6,6 +6,7 @@ using ApartmentReservation.Application.Infrastructure;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Infrastructure.AutoMapper;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Infrastructure;
 using ApartmentReservation.Persistence;
 using ApartmentReservation.WebUI.Filters;
 using AutoMapper;
@@ -41,6 +42,8 @@ namespace ApartmentReservation.WebUI
 
             services.AddScoped<RoleFactory>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddTransient<IHolidayService, HolidayService>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);

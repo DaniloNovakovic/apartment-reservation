@@ -88,8 +88,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             public HelperClass(ApartmentAmenity aa)
             {
-                ApartmentAmenity = aa;
-                IsFound = false;
+                this.ApartmentAmenity = aa;
+                this.IsFound = false;
             }
         }
     }

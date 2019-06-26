@@ -51,7 +51,7 @@ namespace ApartmentReservation.Application.Exceptions
 
             var errors = new List<string>();
 
-            foreach (var propNameFailures in ((CustomValidationException)context.Exception).Failures.Values)
+            foreach (string[] propNameFailures in ((CustomValidationException)context.Exception).Failures.Values)
             {
                 errors.AddRange(propNameFailures);
             }

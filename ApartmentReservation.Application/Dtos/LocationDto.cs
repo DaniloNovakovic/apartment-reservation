@@ -14,11 +14,11 @@ namespace ApartmentReservation.Application.Dtos
                 return;
 
             location.Id = location.Id;
-            Latitude = location.Latitude;
-            Longitude = location.Longitude;
+            this.Latitude = location.Latitude;
+            this.Longitude = location.Longitude;
             if (location.Address != null)
             {
-                Address = new AddressDto(location.Address);
+                this.Address = new AddressDto(location.Address);
             }
         }
 

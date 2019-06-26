@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,12 +36,12 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
 
         public async Task<EntityCreatedResult> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            await ThrowIfGuestDoesNotExist(request, cancellationToken).ConfigureAwait(false);
-            await ThrowIfApartmentIsUnavailable(request, cancellationToken).ConfigureAwait(false);
+            await this.ThrowIfGuestDoesNotExist(request, cancellationToken).ConfigureAwait(false);
+            await this.ThrowIfApartmentIsUnavailable(request, cancellationToken).ConfigureAwait(false);
 
-            double totalCost = await GetTotalCost(request, cancellationToken).ConfigureAwait(false);
+            double totalCost = await this.GetTotalCost(request, cancellationToken).ConfigureAwait(false);
 
-            var reservation = context.Reservations.Add(new Domain.Entities.Reservation()
+            var reservation = this.context.Reservations.Add(new Domain.Entities.Reservation()
             {
                 ApartmentId = request.ApartmentId,
                 GuestId = request.GuestId,
@@ -52,14 +51,14 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
                 TotalCost = totalCost
             }).Entity;
 
-            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return new EntityCreatedResult() { Id = reservation.Id };
         }
 
         private async Task<double> GetTotalCost(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            return await mediator
+            return await this.mediator
                 .Send(new GetTotalCostQuery()
                 {
                     ApartmentId = request.ApartmentId,
@@ -71,7 +70,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
 
         private async Task ThrowIfApartmentIsUnavailable(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            var availableDates = await mediator.Send(new GetAvailableDatesQuery() { ApartmentId = request.ApartmentId }, cancellationToken);
+            var availableDates = await this.mediator.Send(new GetAvailableDatesQuery() { ApartmentId = request.ApartmentId }, cancellationToken);
 
             var currDay = request.StartDate;
             for (int i = 0; i < request.NumberOfNights; ++i)
@@ -87,7 +86,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
 
         private async Task ThrowIfGuestDoesNotExist(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            var guest = await context.Guests
+            var guest = await this.context.Guests
                             .SingleOrDefaultAsync(g => g.UserId == request.GuestId && !g.IsDeleted, cancellationToken)
                             .ConfigureAwait(false);
 
