@@ -1,3 +1,5 @@
+import "ol/ol.css";
+import "./OpenLayersMap.css";
 import React, { Component } from "react";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -22,14 +24,14 @@ export class OpenLayersMap extends Component {
       target: this.mapRef.current,
       view: new View({
         center: fromLonLat([lon, lat]),
-        zoom: 16
+        zoom: 15
       })
     });
 
     this.setState({ map });
   }
   render() {
-    return <div ref={this.mapRef} />;
+    return <div className="ol-map" ref={this.mapRef} />;
   }
 }
 
