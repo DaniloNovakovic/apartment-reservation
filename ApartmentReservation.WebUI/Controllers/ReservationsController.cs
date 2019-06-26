@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
@@ -19,15 +20,22 @@ namespace ApartmentReservation.WebUI.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IAuthService authService;
 
-        public ReservationsController(IMediator mediator)
+        public ReservationsController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
+            this.authService = authService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetAllReservationsQuery query)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             var currClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (this.User.IsInRole(RoleNames.Guest))
             {
@@ -47,6 +55,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.GuestOnly)]
         public async Task<IActionResult> Post([FromBody] CreateReservationCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
 
@@ -102,6 +115,11 @@ namespace ApartmentReservation.WebUI.Controllers
 
         private async Task<IActionResult> UpdateReservationAsync(long id, string reservationState, Predicate<CanUpdateReservationArgs> CanUpdate)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             var command = new UpdateReservationCommand() { Id = id, ReservationState = reservationState, CanUpdate = CanUpdate };
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();

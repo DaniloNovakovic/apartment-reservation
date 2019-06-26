@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Users.Commands;
 using ApartmentReservation.Application.Features.Users.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace ApartmentReservation.WebUI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IAuthService authService;
 
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
+            this.authService = authService;
         }
 
         // GET: api/Users
@@ -32,6 +35,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> Get(long id)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             if (this.IsUserAStranger(id))
             {
                 return this.Unauthorized();
@@ -62,6 +70,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody] UpdateUserCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             if (this.IsUserAStranger(id))
             {
                 return this.Unauthorized();
@@ -76,6 +89,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = Policies.AdministratorOnly)]
         public async Task<IActionResult> Delete(long id)
         {
             if (this.IsUserAStranger(id))

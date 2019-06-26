@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
@@ -44,6 +46,24 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
         protected async Task<User> GetUserAsync(string username)
         {
             return await this.context.Users.SingleOrDefaultAsync(u => u.Username == username && !u.IsDeleted).ConfigureAwait(false);
+        }
+
+        public async Task<User> GetUserAsync(ClaimsPrincipal userPrincipal)
+        {
+            string nameIdentifier = userPrincipal?.Claims?.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
+
+            if (long.TryParse(nameIdentifier, out long userId))
+            {
+                return await this.context.Users.SingleOrDefaultAsync(u => u.Id == userId && !u.IsDeleted).ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        public async Task<bool> CheckIfBanned(ClaimsPrincipal userPrincipal)
+        {
+            var dbUser = await GetUserAsync(userPrincipal).ConfigureAwait(false);
+            return dbUser?.IsBanned ?? false;
         }
     }
 }
