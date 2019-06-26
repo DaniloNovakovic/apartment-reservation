@@ -49,6 +49,15 @@ namespace ApartmentReservation.WebUI.Controllers
             return this.Ok();
         }
 
+        [HttpGet("{id}/Unban")]
+        [Authorize(Policy = Policies.AdministratorOnly)]
+        public async Task<IActionResult> UnbanUser(long id)
+        {
+            var request = new UnbanUserCommand() { UserId = id };
+            await this.mediator.Send(request).ConfigureAwait(false);
+            return this.Ok();
+        }
+
         // PUT: api/Users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody] UpdateUserCommand command)
