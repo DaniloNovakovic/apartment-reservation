@@ -5,6 +5,7 @@ using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,10 +19,12 @@ namespace ApartmentReservation.WebUI.Controllers
     public class ApartmentsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IAuthService authService;
 
-        public ApartmentsController(IMediator mediator)
+        public ApartmentsController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
+            this.authService = authService;
         }
 
         [HttpGet]
@@ -58,12 +61,22 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody]UpdateApartmentCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             command.Id = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
@@ -72,6 +85,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             var command = new DeleteApartmentCommand() { ApartmentId = id };
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
@@ -80,6 +98,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPut("{id}/Amenities")]
         public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
@@ -88,6 +111,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPut("{id}/ForRentalDates")]
         public async Task<IActionResult> UpdateForRentalDates(long id, [FromBody]UpdateForRentalDatesCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
@@ -96,6 +124,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPost("{id}/Images")]
         public async Task<IActionResult> AddImages(long id, [FromForm]AddImagesToApartmentCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
@@ -104,6 +137,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [HttpPost("{id}/delete-images")]
         public async Task<IActionResult> DeleteImages(long id, [FromBody]DeleteImagesFromApartmentCommand command)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             command.ApartmentId = id;
             await this.mediator.Send(command).ConfigureAwait(false);
             return this.Ok();
