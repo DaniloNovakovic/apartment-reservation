@@ -5,6 +5,7 @@ using ApartmentReservation.Application.Features.Comments.Commands;
 using ApartmentReservation.Application.Features.Comments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,12 @@ namespace ApartmentReservation.WebUI.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IAuthService authService;
 
-        public CommentsController(IMediator mediator)
+        public CommentsController(IMediator mediator, IAuthService authService)
         {
             this.mediator = mediator;
+            this.authService = authService;
         }
 
         [HttpGet]
@@ -37,6 +40,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.HostOnly)]
         public async Task<IActionResult> Approve(long id)
         {
+            if (await this.authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             var command = new UpdateCommentCommand() { Id = id, Approved = true };
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));
         }
@@ -68,6 +76,11 @@ namespace ApartmentReservation.WebUI.Controllers
 
         private async Task<bool> IsAllowedToCreateComment(long apartmentId, long guestId)
         {
+            if (await this.authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return false;
+            }
+
             var query = new GetAllReservationsQuery() { ApartmentId = apartmentId, GuestId = guestId };
             var reservations = await this.mediator.Send(query).ConfigureAwait(false);
             string[] allowedStates = new[] { ReservationStates.Completed, ReservationStates.Denied };
