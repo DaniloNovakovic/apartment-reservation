@@ -1,6 +1,7 @@
 import React from "react";
 import EditApartmentLocationModal from "./edit/EditApartmentLocationModal";
 import EditApartmentLocationForm from "./edit/EditApartmentLocationForm";
+import OpenLayersMap from "../../map/OpenLayersMap";
 
 export default function ViewApartmentLocation({
   location = { address: {} },
@@ -34,6 +35,7 @@ export default function ViewApartmentLocation({
           <b>Latitude:</b> {latitude}
         </p>
       </div>
+      <OpenLayersMap lon={longitude} lat={latitude} />
       {allowEdit && (
         <EditApartmentLocationModal
           formData={{ ...address, longitude, latitude }}
