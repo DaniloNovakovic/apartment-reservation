@@ -31,6 +31,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             if (this.User.IsInRole(RoleNames.Host))
             {
                 var currClaim = this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
@@ -52,6 +57,11 @@ namespace ApartmentReservation.WebUI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(long id)
         {
+            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            {
+                return this.Forbid();
+            }
+
             var apartment = await this.mediator.Send(new GetApartmentQuery() { Id = id }).ConfigureAwait(false);
             apartment.AvailableDates = await this.mediator.Send(new GetAvailableDatesQuery() { ApartmentId = id }).ConfigureAwait(false);
             return this.Ok(apartment);
