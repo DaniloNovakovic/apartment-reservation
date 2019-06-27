@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import EditApartmentLocationModal from "./edit/EditApartmentLocationModal";
 import EditApartmentLocationForm from "./edit/EditApartmentLocationForm";
 import OpenLayersMap from "../../map/OpenLayersMap";
+import { countriesService } from "../../../services";
 
 export default function ViewApartmentLocation({
   location = { address: {} },
   allowEdit = false
 }) {
+  const [countryName, setCountryName] = useState("");
+
+  useEffect(() => {
+    let promise = countriesService.mapCountryCodeToCountryName(
+      location.address.countryName
+    );
+    promise
+      .then(name => setCountryName(name))
+      .catch(_ => {
+        console.log("canceled promise.");
+      });
+
+    return () => {
+      promise.cancel();
+    };
+  }, [location.address.countryName]);
+
   let { longitude, latitude, address } = location;
   address = address || {};
   return (
@@ -24,7 +42,7 @@ export default function ViewApartmentLocation({
             <b>City:</b> {address.cityName}
           </p>
           <p>
-            <b>State:</b> {address.countryName}
+            <b>State:</b> {countryName}
           </p>
           <p>
             <b>Zip:</b> {address.postalCode}
