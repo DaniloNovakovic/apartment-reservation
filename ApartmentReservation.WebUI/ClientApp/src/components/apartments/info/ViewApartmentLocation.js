@@ -35,7 +35,7 @@ export default function ViewApartmentLocation({
           <b>Latitude:</b> {latitude}
         </p>
       </div>
-      <OpenLayersMap lon={longitude} lat={latitude} />
+      <OpenLayersMap lon={longitude} lat={latitude} readonly />
       {allowEdit && (
         <EditApartmentLocationModal
           formData={{ ...address, longitude, latitude }}
