@@ -15,12 +15,15 @@ export class OpenLayersMap extends Component {
     this.mapRef = React.createRef();
   }
   componentDidUpdate() {
-    this.state.map.updateSize();
+    this.map.updateSize();
   }
   componentDidMount() {
-    const { lon = 0, lat = 0 } = this.props;
+    this.initMap();
+  }
 
-    var map = new Map({
+  initMap = () => {
+    const { lon = 0, lat = 0, markerLon, markerLat } = this.props;
+    this.map = new Map({
       layers: [
         new TileLayer({
           source: new OSM()
@@ -33,16 +36,39 @@ export class OpenLayersMap extends Component {
       })
     });
 
+    if (markerLon && markerLat) {
+      const lonlat = [markerLon, markerLat];
+      this.createOrUpdateMarker(lonlat);
+    }
+
     if (!this.props.readonly) {
-      map.on("click", evt => {
-        var lonlat = transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
-        var coord = toLonLat(evt.coordinate);
+      this.map.on("click", evt => {
+        const lonlat = transform(evt.coordinate, "EPSG:3857", "EPSG:4326");
+        const coord = toLonLat(evt.coordinate);
         this.reverseGeocode(coord);
-        this.makeMarker(lonlat);
+        this.createOrUpdateMarker(lonlat);
       });
     }
-    this.setState({ map });
-  }
+  };
+
+  createOrUpdateMarker = lonlat => {
+    if (this.marker) {
+      this.marker.setGeometry(new Point(fromLonLat(lonlat)));
+      return;
+    }
+    this.marker = new Feature({
+      geometry: new Point(fromLonLat(lonlat))
+    });
+    this.vectorSource = new VectorSource({
+      features: [this.marker]
+    });
+
+    this.markerVectorLayer = new VectorLayer({
+      source: this.vectorSource
+    });
+    this.map.addLayer(this.markerVectorLayer);
+  };
+
   reverseGeocode = coords => {
     fetch(
       "https://nominatim.openstreetmap.org/reverse?format=json&lon=" +
@@ -64,22 +90,6 @@ export class OpenLayersMap extends Component {
           this.props.onClick(json);
         }
       });
-  };
-
-  makeMarker = lonlat => {
-    var marker = new Feature({
-      geometry: new Point(fromLonLat(lonlat))
-    });
-
-    var vectorSource = new VectorSource({
-      features: [marker]
-    });
-
-    var markerVectorLayer = new VectorLayer({
-      source: vectorSource
-    });
-
-    this.state.map.addLayer(markerVectorLayer);
   };
 
   render() {

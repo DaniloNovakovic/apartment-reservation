@@ -54,7 +54,13 @@ export default function ViewApartmentLocation({
             <b>Latitude:</b> {latitude}
           </p>
         </div>
-        <OpenLayersMap lon={longitude} lat={latitude} readonly />
+        <OpenLayersMap
+          lon={longitude}
+          lat={latitude}
+          markerLon={longitude}
+          markerLat={latitude}
+          readonly
+        />
       </div>
       {allowEdit && (
         <EditApartmentLocationModal
