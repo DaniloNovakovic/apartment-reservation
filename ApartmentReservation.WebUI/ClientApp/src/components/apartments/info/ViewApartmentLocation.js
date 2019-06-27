@@ -58,6 +58,7 @@ export default function ViewApartmentLocation({
           lat={latitude}
           markerLon={longitude}
           markerLat={latitude}
+          markerProps={{ onClick: () => console.log("hello world!") }}
           readonly
         />
       </div>

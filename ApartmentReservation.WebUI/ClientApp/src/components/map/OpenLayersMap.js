@@ -4,11 +4,12 @@ import React, { Component } from "react";
 import { Feature, Map, View } from "ol";
 import OSM from "ol/source/OSM.js";
 import VectorSource from "ol/source/Vector";
-import TileLayer from "ol/layer/Tile.js";
 import { Point } from "ol/geom";
-import VectorLayer from "ol/layer/Vector";
+import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer.js";
 import { Icon, Style } from "ol/style";
 import { fromLonLat, toLonLat, transform } from "ol/proj";
+import { click } from "ol/events/condition";
+import Select from "ol/interaction/Select.js";
 
 export class OpenLayersMap extends Component {
   constructor(props) {
@@ -50,6 +51,8 @@ export class OpenLayersMap extends Component {
         this.createOrUpdateMarker(lonlat);
       });
     }
+
+    this.addEventHandlers();
   };
 
   createOrUpdateMarker = lonlat => {
@@ -57,6 +60,7 @@ export class OpenLayersMap extends Component {
       this.marker.setGeometry(new Point(fromLonLat(lonlat)));
       return;
     }
+
     this.marker = new Feature({
       geometry: new Point(fromLonLat(lonlat))
     });
@@ -69,6 +73,9 @@ export class OpenLayersMap extends Component {
       })
     );
 
+    const markerProps = this.props.markerProps || {};
+    this.marker.setProperties({ ...markerProps, name: "marker" });
+
     this.vectorSource = new VectorSource({
       features: [this.marker]
     });
@@ -78,6 +85,24 @@ export class OpenLayersMap extends Component {
     });
     this.map.addLayer(this.markerVectorLayer);
   };
+
+  addEventHandlers() {
+    var selectClick = new Select({
+      condition: click
+    });
+
+    this.map.addInteraction(selectClick);
+
+    selectClick.on("select", event => {
+      const feature = event.selected[0];
+      if (feature && feature.get("name") === "marker") {
+        const onClick = feature.get("onClick");
+        if (onClick) {
+          onClick();
+        }
+      }
+    });
+  }
 
   reverseGeocode = coords => {
     fetch(

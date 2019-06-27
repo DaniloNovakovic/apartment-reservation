@@ -29,7 +29,7 @@ class EditApartmentLocationModal extends Component {
     this.olmRef = React.createRef();
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.show != prevState.show) {
+    if (this.state.show !== prevState.show) {
       this.olmRef.current.forceUpdate();
     }
   }
