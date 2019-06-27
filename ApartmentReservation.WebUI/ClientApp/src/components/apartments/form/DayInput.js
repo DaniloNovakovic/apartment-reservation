@@ -1,11 +1,11 @@
 import React from "react";
-import { DateUtils } from "react-day-picker";
+import { dateUtils } from "react-day-picker/utils";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import { Form } from "react-bootstrap";
 
 function isContainedIn(day, dates) {
   const index = dates.findIndex(rentalDate =>
-    DateUtils.isSameDay(rentalDate, day)
+    dateUtils.isSameDay(rentalDate, day)
   );
   return index >= 0;
 }

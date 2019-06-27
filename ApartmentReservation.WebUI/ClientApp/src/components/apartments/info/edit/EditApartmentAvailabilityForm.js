@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
-import DayPicker, { DateUtils } from "react-day-picker";
+import DayPicker, { DateUtils } from "react-day-picker/DayPicker";
 
 export default class EditApartmentAvailabilityForm extends Component {
   handleChange = dates => {
