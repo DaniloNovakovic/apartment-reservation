@@ -1,0 +1,13 @@
+.location-form {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.location-form .ol-map {
+  width: 500px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.location-form-inputs {
+  min-width: 320px;
+}

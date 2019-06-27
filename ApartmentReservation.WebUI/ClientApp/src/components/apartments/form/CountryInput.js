@@ -15,7 +15,7 @@ export class CountryInput extends React.Component {
       .then(data => {
         this.setState({
           countries: data.map(item => {
-            return { text: item.text, value: item.text };
+            return { text: item.text, value: item.value };
           })
         });
       });

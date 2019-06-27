@@ -57,6 +57,9 @@ export class OpenLayersMap extends Component {
             json.address.city
           },${json.address.postcode} `
         );
+        if (this.props.onClick) {
+          this.props.onClick(json);
+        }
       });
   };
 

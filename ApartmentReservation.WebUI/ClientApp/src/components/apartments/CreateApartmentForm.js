@@ -1,3 +1,4 @@
+import "./CreateApartmentForm.css";
 import React, { Component } from "react";
 import {
   CreateApartmentInfoForm,
@@ -45,7 +46,7 @@ export default class CreateApartmentForm extends Component {
   render() {
     const { currFormIndex } = this.state;
     return (
-      <div>
+      <div className="create-apartment-forms">
         <CreateApartmentInfoForm
           hidden={currFormIndex !== 0}
           handleSubmit={this.handleNext}
