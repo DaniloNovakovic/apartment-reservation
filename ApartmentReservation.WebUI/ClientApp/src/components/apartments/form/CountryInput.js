@@ -1,5 +1,6 @@
 import React from "react";
 import { SelectInput } from "../../baseFormHelpers";
+import { countriesService } from "../../../services";
 
 export class CountryInput extends React.Component {
   constructor(props) {
@@ -11,19 +12,17 @@ export class CountryInput extends React.Component {
 
   componentDidMount() {
     const { required } = this.props;
-    fetch("./countries.json")
-      .then(req => req.json())
-      .then(data => {
-        let countries = data.map(item => {
-          return { text: item.text, value: item.value };
-        });
-
-        if (!required) {
-          countries = [{ text: "", value: "" }, ...countries];
-        }
-
-        this.setState({ countries });
+    countriesService.getCountries().then(data => {
+      let countries = data.map(item => {
+        return { text: item.text, value: item.value };
       });
+
+      if (!required) {
+        countries = [{ text: "", value: "" }, ...countries];
+      }
+
+      this.setState({ countries });
+    });
   }
 
   render() {

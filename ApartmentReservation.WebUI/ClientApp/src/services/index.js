@@ -5,3 +5,4 @@ export * from "./apartmentService";
 export * from "./amenitiesService";
 export * from "./reservationService";
 export * from "./commentService";
+export * from "./countriesService";
