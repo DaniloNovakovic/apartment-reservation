@@ -7,6 +7,7 @@ import VectorSource from "ol/source/Vector";
 import TileLayer from "ol/layer/Tile.js";
 import { Point } from "ol/geom";
 import VectorLayer from "ol/layer/Vector";
+import { Icon, Style } from "ol/style";
 import { fromLonLat, toLonLat, transform } from "ol/proj";
 
 export class OpenLayersMap extends Component {
@@ -59,6 +60,15 @@ export class OpenLayersMap extends Component {
     this.marker = new Feature({
       geometry: new Point(fromLonLat(lonlat))
     });
+
+    this.marker.setStyle(
+      new Style({
+        image: new Icon({
+          src: "images/bighouse.png"
+        })
+      })
+    );
+
     this.vectorSource = new VectorSource({
       features: [this.marker]
     });
