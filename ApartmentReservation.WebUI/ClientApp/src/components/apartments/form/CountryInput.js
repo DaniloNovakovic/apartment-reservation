@@ -5,19 +5,24 @@ export class CountryInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      countries: [{ text: "Serbia", value: "RS" }]
+      countries: [{ text: "Loading...", value: "RS" }]
     };
   }
 
   componentDidMount() {
+    const { required } = this.props;
     fetch("./countries.json")
       .then(req => req.json())
       .then(data => {
-        this.setState({
-          countries: data.map(item => {
-            return { text: item.text, value: item.value };
-          })
+        let countries = data.map(item => {
+          return { text: item.text, value: item.value };
         });
+
+        if (!required) {
+          countries = [{ text: "", value: "" }, ...countries];
+        }
+
+        this.setState({ countries });
       });
   }
 

@@ -8,7 +8,7 @@ import {
   NumberInput
 } from "../baseFormHelpers";
 import { activityStates, apartmentTypes, roleNames } from "../../constants";
-import { DayInput } from "./form";
+import { DayInput, CountryInput } from "./form";
 
 export default class ApartmentsFilter extends Component {
   constructor(props, context) {
@@ -140,7 +140,7 @@ export default class ApartmentsFilter extends Component {
                   value={cityName || ""}
                   handleChange={this.handleChange}
                 />
-                <TextInput
+                <CountryInput
                   as={Col}
                   label="Country Name"
                   name="countryName"

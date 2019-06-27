@@ -48,11 +48,12 @@ export default class EditApartmentLocationForm extends Component {
           />
           <CountryInput
             as={Col}
-            value={this.props.countryName || "Serbia"}
+            value={this.props.countryName || "RS"}
             handleChange={this.handleChange}
             feedback={
               validation.countryName && validation.countryName.validationMessage
             }
+            required
           />
           <PostalCodeInput
             as={Col}

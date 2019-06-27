@@ -97,6 +97,7 @@ export class CreateApartmentLocationForm extends Component {
                 sm="7"
                 value={countryName || ""}
                 handleChange={this.handleChange}
+                required
               />
               <PostalCodeInput
                 as={Col}
