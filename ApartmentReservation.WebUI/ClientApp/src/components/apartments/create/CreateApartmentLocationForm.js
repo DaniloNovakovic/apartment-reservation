@@ -62,7 +62,7 @@ export class CreateApartmentLocationForm extends Component {
     return (
       <Form
         onSubmit={this.handleSubmit}
-        className={`location-form ${hidden && "d-none"}`}
+        className={`location-form ${hidden ? "d-none" : "d-block"}`}
       >
         <Row>
           <Col>

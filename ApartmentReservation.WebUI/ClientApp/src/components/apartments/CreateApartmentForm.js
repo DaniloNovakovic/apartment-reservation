@@ -7,6 +7,8 @@ import {
   CreateApartmentAvailability
 } from "./create";
 
+const isDebug = false;
+
 export default class CreateApartmentForm extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +49,12 @@ export default class CreateApartmentForm extends Component {
     const { currFormIndex } = this.state;
     return (
       <div className="create-apartment-forms">
+        {isDebug && (
+          <>
+            <button onClick={() => this.handleBack()}>{"<"}</button>
+            <button onClick={() => this.handleNext()}>{">"}</button>
+          </>
+        )}
         <CreateApartmentInfoForm
           hidden={currFormIndex !== 0}
           handleSubmit={this.handleNext}

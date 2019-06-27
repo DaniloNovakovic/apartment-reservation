@@ -14,6 +14,9 @@ export class OpenLayersMap extends Component {
     super(props);
     this.mapRef = React.createRef();
   }
+  componentDidUpdate() {
+    this.state.map.updateSize();
+  }
   componentDidMount() {
     const { lon = 0, lat = 0 } = this.props;
 

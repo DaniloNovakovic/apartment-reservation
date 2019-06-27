@@ -4,6 +4,7 @@
 }
 .location-form .ol-map {
   width: 500px;
+  height: 300px;
   margin-top: 1em;
   margin-bottom: 1em;
 }
