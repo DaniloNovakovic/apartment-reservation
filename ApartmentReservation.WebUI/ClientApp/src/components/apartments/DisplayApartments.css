@@ -1,3 +1,16 @@
+.apartment-map-display {
+  padding: 1em;
+}
+
+.apartment-map-display .ol-map {
+  min-width: 500px;
+  min-height: 400px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5rem;
+  margin: 2rem;
+}
+
 .apartment-display {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -1,11 +1,13 @@
 import "./DisplayApartments.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Spinner, ButtonGroup, Button, Alert } from "react-bootstrap";
+import { Spinner, ButtonGroup, Button, Alert, Row, Col } from "react-bootstrap";
 import { FaSortAmountDown, FaSortAmountUp } from "react-icons/fa";
 import ApartmentCard from "./ApartmentCard";
 import { apartmentService } from "../../services";
 import ApartmentsFilter from "./ApartmentsFilter";
+import OpenLayersMap from "../map/OpenLayersMap";
+import { history } from "../../helpers";
 
 const getSortedApartments = (apartments, sortAsc = false) => {
   let retVal = [...apartments];
@@ -20,7 +22,12 @@ const getSortedApartments = (apartments, sortAsc = false) => {
 export class DisplayApartments extends Component {
   constructor(props) {
     super(props);
-    this.state = { apartments: [], loading: true, sortAsc: true };
+    this.state = {
+      apartments: [],
+      loading: true,
+      sortAsc: true,
+      showMap: true
+    };
   }
   componentDidMount() {
     this.refreshData(this.props.filters);
@@ -43,9 +50,26 @@ export class DisplayApartments extends Component {
     let apartments = getSortedApartments(this.state.apartments, newSortAsc);
     this.setState({ sortAsc: newSortAsc, apartments });
   };
+  toggleMap = () => {
+    this.setState({ showMap: !this.state.showMap });
+  };
   render() {
-    const { apartments = [], loading, sortAsc } = this.state;
+    const { apartments = [], loading, sortAsc, showMap } = this.state;
     const { user } = this.props;
+
+    const markers = apartments.map(apartment => {
+      const { longitude, latitude } = apartment.location || {};
+      return {
+        lon: longitude,
+        lat: latitude,
+        props: {
+          id: apartment.id,
+          onClick: () => {
+            history.push(`/view-apartment/${apartment.id}`);
+          }
+        }
+      };
+    });
 
     const content = loading ? (
       <Spinner animation="grow" variant="secondary" role="status">
@@ -72,8 +96,32 @@ export class DisplayApartments extends Component {
           <Button variant="info" onClick={this.toggleSort}>
             {sortAsc ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by price
           </Button>
+
+          <Button variant="outline-info" onClick={this.toggleMap}>
+            {showMap ? "Hide" : "Show"} map
+          </Button>
         </ButtonGroup>
-        <main className="apartment-display">{content}</main>
+
+        <Row as="section" className="apartment-display-wrapper">
+          <Col
+            as="main"
+            sm={showMap ? "5" : "12"}
+            className="apartment-display"
+          >
+            {content}
+          </Col>
+          {showMap && markers.length > 0 && (
+            <Col as="aside" sm="7" className="apartment-map-display">
+              <OpenLayersMap
+                lat={51.044848}
+                lon={12.074263}
+                zoom={2}
+                markers={markers}
+                readonly
+              />
+            </Col>
+          )}
+        </Row>
       </section>
     );
   }

@@ -11,20 +11,53 @@ import { fromLonLat, toLonLat, transform } from "ol/proj";
 import { click } from "ol/events/condition";
 import Select from "ol/interaction/Select.js";
 
+function areMarkersEqual(newMarkers = [], oldMarkers = []) {
+  if (newMarkers.length !== oldMarkers.length) {
+    return false;
+  }
+  for (let i = 0; i < newMarkers.length; ++i) {
+    if (
+      JSON.stringify(newMarkers[i]) !== JSON.stringify(oldMarkers[i].props.id)
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export class OpenLayersMap extends Component {
   constructor(props) {
     super(props);
     this.mapRef = React.createRef();
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    console.group("UPDATE OpenLayersMap");
+
     this.map.updateSize();
+
+    const markers = this.props.markers || [];
+    const prevMarkers = prevProps.markers || [];
+
+    if (!areMarkersEqual(markers, prevMarkers)) {
+      const layers = this.map.getLayers();
+      for (let layer of layers.getArray()) {
+        if (layer.type !== "TILE") {
+          layer.setVisible(false);
+          layer.setOpacity(0);
+        }
+      }
+      this.createMarkers();
+    }
+    console.groupEnd();
   }
+
   componentDidMount() {
     this.initMap();
+    this.createMarkers();
   }
 
   initMap = () => {
-    const { lon = 0, lat = 0, markerLon, markerLat } = this.props;
+    const { lon = 0, lat = 0, markerLon, markerLat, zoom = 15 } = this.props;
     this.map = new Map({
       layers: [
         new TileLayer({
@@ -34,7 +67,7 @@ export class OpenLayersMap extends Component {
       target: this.mapRef.current,
       view: new View({
         center: fromLonLat([lon, lat]),
-        zoom: 15
+        zoom: zoom
       })
     });
 
@@ -54,7 +87,31 @@ export class OpenLayersMap extends Component {
 
     this.addEventHandlers();
   };
-
+  createMarkers = () => {
+    const { markers = [] } = this.props;
+    console.log(markers);
+    for (let item of markers) {
+      const lonlat = [item.lon, item.lat];
+      const marker = new Feature({
+        geometry: new Point(fromLonLat(lonlat))
+      });
+      marker.setStyle(
+        new Style({
+          image: new Icon({
+            src: "images/bighouse.png"
+          })
+        })
+      );
+      marker.setProperties({ ...(item.props || {}), name: "marker" });
+      const vectorSource = new VectorSource({
+        features: [marker]
+      });
+      const markerVectorLayer = new VectorLayer({
+        source: vectorSource
+      });
+      this.map.addLayer(markerVectorLayer);
+    }
+  };
   createOrUpdateMarker = lonlat => {
     if (this.marker) {
       this.marker.setGeometry(new Point(fromLonLat(lonlat)));
@@ -115,12 +172,6 @@ export class OpenLayersMap extends Component {
         return response.json();
       })
       .then(json => {
-        console.log(json);
-        console.log(
-          `${json.address.road},${json.address.house_number},${
-            json.address.city
-          },${json.address.postcode} `
-        );
         if (this.props.onClick) {
           this.props.onClick(json);
         }
