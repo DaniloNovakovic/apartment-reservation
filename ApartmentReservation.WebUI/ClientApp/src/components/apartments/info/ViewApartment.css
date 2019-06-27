@@ -8,9 +8,6 @@
   padding: 0.5em 1em 2em 1em;
 }
 
-.summary-content {
-  padding-bottom: 1em;
-}
 .view-apartment-images .apartment-carousel {
   width: 300px;
   height: 200px;
@@ -33,4 +30,29 @@
 
 .view-comments .username {
   font-style: italic;
+}
+
+.view-apartment-location .location-details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: space-between;
+  -ms-flex-pack: space-between;
+  justify-content: space-between;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.view-apartment-location .location-details .summary-content {
+  margin: 0.2em;
+}
+.view-apartment-location .location-details .ol-map {
+  margin: 0.1em;
+  width: 500px;
 }
