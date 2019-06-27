@@ -42,6 +42,8 @@ export class DayInput extends React.Component {
       feedback,
       label = "Date",
       checkAvailableDates = true,
+      handleChange,
+      value,
       ...groupProps
     } = this.props;
 

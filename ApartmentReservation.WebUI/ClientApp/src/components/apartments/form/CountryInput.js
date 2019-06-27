@@ -28,9 +28,20 @@ export class CountryInput extends React.Component {
 
   render() {
     const { countries } = this.state;
-    const { name = "countryName", label = "State", ...others } = this.props;
+    let {
+      name = "countryName",
+      label = "State",
+      value = "",
+      ...others
+    } = this.props;
     return (
-      <SelectInput name={name} label={label} options={countries} {...others} />
+      <SelectInput
+        name={name}
+        label={label}
+        value={value.toUpperCase()}
+        options={countries}
+        {...others}
+      />
     );
   }
 }
