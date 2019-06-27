@@ -1,0 +1,9 @@
+.edit-location-form .ol-map {
+  display: block;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+.edit-location-form-inputs {
+  min-width: 320px;
+}
