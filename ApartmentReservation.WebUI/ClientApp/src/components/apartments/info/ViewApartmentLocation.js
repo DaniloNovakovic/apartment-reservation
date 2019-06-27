@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import EditApartmentLocationModal from "./edit/EditApartmentLocationModal";
-import EditApartmentLocationForm from "./edit/EditApartmentLocationForm";
 import OpenLayersMap from "../../map/OpenLayersMap";
 import { countriesService } from "../../../services";
 
@@ -65,7 +64,6 @@ export default function ViewApartmentLocation({
       {allowEdit && (
         <EditApartmentLocationModal
           formData={{ ...address, longitude, latitude }}
-          form={EditApartmentLocationForm}
         />
       )}
     </article>

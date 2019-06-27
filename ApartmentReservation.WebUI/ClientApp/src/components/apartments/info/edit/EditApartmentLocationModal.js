@@ -100,7 +100,7 @@ class EditApartmentLocationModal extends Component {
 
         <Modal size="lg" show={this.state.show} onHide={this.handleCancel}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Edit Apartment Location</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form
