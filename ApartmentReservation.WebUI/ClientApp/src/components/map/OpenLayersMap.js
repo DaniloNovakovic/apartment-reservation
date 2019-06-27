@@ -95,10 +95,12 @@ export class OpenLayersMap extends Component {
       const marker = new Feature({
         geometry: new Point(fromLonLat(lonlat))
       });
+      const src = item.src || "images/bighouse.png";
+      console.log(src);
       marker.setStyle(
         new Style({
           image: new Icon({
-            src: "images/bighouse.png"
+            src: src
           })
         })
       );

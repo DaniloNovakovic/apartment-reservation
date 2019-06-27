@@ -8,6 +8,7 @@ import { apartmentService } from "../../services";
 import ApartmentsFilter from "./ApartmentsFilter";
 import OpenLayersMap from "../map/OpenLayersMap";
 import { history } from "../../helpers";
+import { activityStates } from "../../constants";
 
 const getSortedApartments = (apartments, sortAsc = false) => {
   let retVal = [...apartments];
@@ -62,6 +63,10 @@ export class DisplayApartments extends Component {
       return {
         lon: longitude,
         lat: latitude,
+        src:
+          apartment.activityState === activityStates.Active
+            ? "/images/bighouse.png"
+            : "/images/bighouse_inactive.png",
         props: {
           id: apartment.id,
           onClick: () => {
