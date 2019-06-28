@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,15 @@ namespace ApartmentReservation.Persistence
 {
     public class ApartmentReservationInitializer
     {
-        private readonly Dictionary<long, User> Users = new Dictionary<long, User>();
-        private IEnumerable<Administrator> Administrators = new List<Administrator>();
-        private List<Amenity> Amenities = new List<Amenity>();
-        private IEnumerable<Guest> Guests = new List<Guest>();
-        private IEnumerable<Host> Hosts = new List<Host>();
+        public Amenity[] Amenities { get; private set; }
+        public Administrator Admin { get; private set; }
+        public Host Host { get; private set; }
+        public Guest[] Guests { get; private set; }
+        public Apartment[] Apartments { get; private set; }
+        public Image[] Images { get; private set; }
+        public DateTime MinDate { get; } = new DateTime(year: 2019, month: 6, day: 24); // Monday
+        public DateTime MaxDate { get; } = new DateTime(year: 2019, month: 7, day: 24); // Wednesday
+        public Reservation[] Reservations { get; private set; }
 
         public static void Initialize(ApartmentReservationDbContext context)
         {
@@ -24,85 +29,97 @@ namespace ApartmentReservation.Persistence
         protected void SeedEverything(ApartmentReservationDbContext context)
         {
             context.Database.Migrate();
-            //context.Database.EnsureCreated();
 
             if (context.Administrators.Any())
             {
-                return; // Db is seeded
+                return;
             }
 
-            this.SeedUsers(context);
             this.SeedAdministrators(context);
             this.SeedHosts(context);
             this.SeedGuests(context);
             this.SeedAmenities(context);
             this.SeedApartments(context);
-        }
-
-        private void SeedUsers(ApartmentReservationDbContext context)
-        {
-            this.Users[1] = new User()
-            {
-                Username = "admin",
-                Password = "admin",
-                RoleName = RoleNames.Administrator
-            };
-
-            this.Users[2] = new User()
-            {
-                Username = "host",
-                Password = "host",
-                RoleName = RoleNames.Host
-            };
-
-            this.Users[3] = new User()
-            {
-                Username = "guest",
-                Password = "guest",
-                RoleName = RoleNames.Guest
-            };
-
-            context.Users.AddRange(this.Users.Values);
-
-            context.SaveChanges();
+            this.SeedApartmentAmenities(context);
+            this.SeedImages(context);
+            this.SeedForRentalDates(context);
+            this.SeedReservations(context);
+            this.SeedComments(context);
         }
 
         private void SeedAdministrators(ApartmentReservationDbContext context)
         {
-            this.Administrators = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Administrator)
-                .Select(u => new Administrator() { User = u });
-
-            context.Administrators.AddRange(this.Administrators);
+            this.Admin = context.Add(new Administrator()
+            {
+                User = new User()
+                {
+                    Username = "admin",
+                    Password = "admin",
+                    FirstName = "Jotaro",
+                    LastName = "Kujo",
+                    Gender = Genders.Male,
+                    RoleName = RoleNames.Administrator
+                }
+            }).Entity;
 
             context.SaveChanges();
         }
 
         private void SeedHosts(ApartmentReservationDbContext context)
         {
-            this.Hosts = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Host)
-                .Select(u => new Host() { User = u });
-
-            context.Hosts.AddRange(this.Hosts);
+            this.Host = context.Add(new Host()
+            {
+                User = new User()
+                {
+                    Username = "host",
+                    Password = "host",
+                    FirstName = "Enyaba",
+                    LastName = "Geil",
+                    Gender = Genders.Female,
+                    RoleName = RoleNames.Host
+                }
+            }).Entity;
 
             context.SaveChanges();
         }
 
         private void SeedGuests(ApartmentReservationDbContext context)
         {
-            this.Guests = this.Users.Values
-                .Where(u => u.RoleName == RoleNames.Guest)
-                .Select(u => new Guest() { User = u });
+            this.Guests = new[]
+            {
+                new Guest()
+                {
+                    User = new User()
+                    {
+                        Username = "guest",
+                        Password = "guest",
+                        FirstName = "Dio",
+                        LastName = "Brando",
+                        Gender = Genders.Other,
+                        RoleName = RoleNames.Guest
+                    }
+                },
+                new Guest()
+                {
+                    User = new User()
+                    {
+                        Username = "guest2",
+                        Password = "guest2",
+                        FirstName = "Joseph",
+                        LastName = "Joester",
+                        Gender = Genders.Male,
+                        RoleName = RoleNames.Guest
+                    }
+                }
+            };
 
             context.Guests.AddRange(this.Guests);
-
             context.SaveChanges();
         }
 
         private void SeedAmenities(ApartmentReservationDbContext context)
         {
-            this.Amenities = new List<Amenity>()
+            this.Amenities = new[]
             {
                 new Amenity(){Name ="TV"},
                 new Amenity(){Name ="Kitchen"},
@@ -114,77 +131,238 @@ namespace ApartmentReservation.Persistence
                 new Amenity(){Name ="Microwave"}
             };
 
-            context.AddRange(this.Amenities);
+            context.Amenities.AddRange(this.Amenities);
             context.SaveChanges();
         }
 
         private void SeedApartments(ApartmentReservationDbContext context)
         {
-            var address = GetAddress(context);
-            var location = GetLocation(context, address);
-            var host = context.Hosts.FirstOrDefault();
-            var amenities = context.Amenities.ToList();
-
-            var apartment = new Apartment()
+            this.Apartments = new[]
             {
-                ActivityState = ActivityStates.Active,
-                ApartmentType = ApartmentTypes.Full,
-                Host = host,
-                Location = location,
-                Title = "Magnificent apartment",
-                PricePerNight = 23
+                new Apartment()
+                {
+                    Host = this.Host,
+                    ActivityState = ActivityStates.Active,
+                    ApartmentType = ApartmentTypes.Full,
+                    CheckInTime = "14:00:00",
+                    CheckOutTime = "10:00:00",
+                    NumberOfGuests = 3,
+                    NumberOfRooms = 4,
+                    PricePerNight = 83,
+                    Title = "Great apartment, affordable",
+                    Location = new Location()
+                    {
+                        Latitude = 45.2615316,
+                        Longitude = 19.8347492,
+                        Address = new Address()
+                        {
+                            CityName = "Нови Сад",
+                            CountryName = "RS",
+                            PostalCode = "21101",
+                            StreetName = "Булевар краља Петра I",
+                            StreetNumber = "12"
+                        }
+                    }
+                },
+                new Apartment()
+                {
+                    Host = this.Host,
+                    ActivityState = ActivityStates.Active,
+                    ApartmentType = ApartmentTypes.SingleRoom,
+                    CheckInTime = "14:00:00",
+                    CheckOutTime = "10:00:00",
+                    NumberOfGuests = 1,
+                    NumberOfRooms = 1,
+                    PricePerNight = 37,
+                    Title = "The Pondhouse - A Magical Place",
+                    Location = new Location()
+                    {
+                        Latitude = 48.865425,
+                        Longitude = 2.3800042,
+                        Address = new Address()
+                        {
+                            CityName = "Париз",
+                            CountryName = "FR",
+                            PostalCode = "75011",
+                            StreetName = "Rue Dranem",
+                            StreetNumber = "2"
+                        }
+                    }
+                },
+                new Apartment()
+                {
+                    Host = this.Host,
+                    ActivityState = ActivityStates.Inactive,
+                    ApartmentType = ApartmentTypes.Full,
+                    CheckInTime = "14:00:00",
+                    CheckOutTime = "10:00:00",
+                    NumberOfGuests = 4,
+                    NumberOfRooms = 3,
+                    PricePerNight = 54,
+                    Title = "Good location, nice view.",
+                    Location = new Location()
+                    {
+                        Latitude = 45.2517311,
+                        Longitude = 19.8362212,
+                        Address = new Address()
+                        {
+                            CityName = "Нови Сад",
+                            CountryName = "RS",
+                            PostalCode = "21101",
+                            StreetName = "Футошка",
+                            StreetNumber = "8a"
+                        }
+                    }
+                },
             };
 
-            apartment = context.Apartments.Add(apartment).Entity;
-            foreach (var amenity in amenities)
-            {
-                context.Add(new ApartmentAmenity() { Amenity = amenity, Apartment = apartment });
-            }
-
-            context.SaveChanges();
-
-            var images = GetImages();
-            images.ForEach(i => apartment.Images.Add(i));
+            context.Apartments.AddRange(this.Apartments);
             context.SaveChanges();
         }
 
-        private static List<Image> GetImages()
+        private void SeedApartmentAmenities(ApartmentReservationDbContext context)
         {
-            return new List<Image>()
+            var apartmentAmenities = new[]
             {
-                new Image(){ImageUri = "https://www.onni.com/wp-content/uploads/2016/11/Rental-Apartment-Page-new-min.jpg"},
-                new Image(){ImageUri = "https://arystudios.files.wordpress.com/2015/08/3dcontemperoryapartmentrenderingarchitecturalduskviewrealisticarystudios.jpg"},
-                new Image(){ImageUri = "https://www.travelonline.com/melbourne/city-cbd/accommodation/adina-apartment-hotel-melbourne-flinders-street/penthouse-76880.jpg"},
+                new ApartmentAmenity() {Apartment = Apartments[0], Amenity = Amenities[0]},
+                new ApartmentAmenity() {Apartment = Apartments[0], Amenity = Amenities[1]},
+                new ApartmentAmenity() {Apartment = Apartments[0], Amenity = Amenities[2]},
+                new ApartmentAmenity() {Apartment = Apartments[0], Amenity = Amenities[3]},
+                new ApartmentAmenity() {Apartment = Apartments[0], Amenity = Amenities[4]},
+                new ApartmentAmenity() {Apartment = Apartments[1], Amenity = Amenities[2]},
+                new ApartmentAmenity() {Apartment = Apartments[1], Amenity = Amenities[3]},
+                new ApartmentAmenity() {Apartment = Apartments[1], Amenity = Amenities[4]}
             };
+
+            context.ApartmentAmenities.AddRange(apartmentAmenities);
+            context.SaveChanges();
         }
 
-        private static Address GetAddress(ApartmentReservationDbContext context)
+        private void SeedImages(ApartmentReservationDbContext context)
         {
-            var address = new Address()
+            string[] imgUris = new[]
             {
-                CityName = "Novi Sad",
-                PostalCode = "21102",
-                StreetName = "Bulevar kralja Petra",
-                StreetNumber = "25",
-                CountryName = "Serbia"
+                "https://www.onni.com/wp-content/uploads/2016/11/Rental-Apartment-Page-new-min.jpg",
+                "https://arystudios.files.wordpress.com/2015/08/3dcontemperoryapartmentrenderingarchitecturalduskviewrealisticarystudios.jpg",
+                "https://www.travelonline.com/melbourne/city-cbd/accommodation/adina-apartment-hotel-melbourne-flinders-street/penthouse-76880.jpg",
+                "./images/apartment_1_pond_chair_stunning.JPG",
+                "./images/apartment_1_pond_flowers.JPG",
+                "./images/apartment_1_pond_view_from_bed.JPG"
             };
 
-            address = context.Addresses.Add(address).Entity;
+            this.Images = new[]
+            {
+                new Image(){Apartment = this.Apartments[0], ImageUri = imgUris[0]},
+                new Image(){Apartment = this.Apartments[0], ImageUri = imgUris[1]},
+                new Image(){Apartment = this.Apartments[2], ImageUri = imgUris[2]},
+                new Image(){Apartment = this.Apartments[1], ImageUri = imgUris[3]},
+                new Image(){Apartment = this.Apartments[1], ImageUri = imgUris[4]},
+                new Image(){Apartment = this.Apartments[1], ImageUri = imgUris[5]}
+            };
+
+            context.Images.AddRange(this.Images);
             context.SaveChanges();
-            return address;
         }
 
-        private static Location GetLocation(ApartmentReservationDbContext context, Address address)
+        private void SeedForRentalDates(ApartmentReservationDbContext context)
         {
-            var location = new Location()
-            {
-                Latitude = 45.267136,
-                Longitude = 19.833549,
-                Address = address
-            };
-            location = context.Locations.Add(location).Entity;
+            var days = DateTimeHelpers.GetDateDayRange(this.MinDate, this.MaxDate);
+
+            context.ForRentalDates.AddRange(days.Select(d => new ForRentalDate() { Apartment = this.Apartments[0], Date = d }).ToArray());
+            context.ForRentalDates.AddRange(days.Select(d => new ForRentalDate() { Apartment = this.Apartments[1], Date = d }).ToArray());
+            context.ForRentalDates.AddRange(days.Select(d => new ForRentalDate() { Apartment = this.Apartments[2], Date = d }).ToArray());
+
             context.SaveChanges();
-            return location;
+        }
+
+        private void SeedReservations(ApartmentReservationDbContext context)
+        {
+            this.Reservations = new[]
+            {
+                new Reservation()
+                {
+                    Apartment = this.Apartments[0],
+                    Guest = this.Guests[0],
+                    ReservationStartDate = MinDate,
+                    NumberOfNightsRented = 3,
+                    ReservationState = ReservationStates.Accepted,
+                    TotalCost = 3 * this.Apartments[0].PricePerNight
+                },
+                new Reservation()
+                {
+                    Apartment = this.Apartments[0],
+                    Guest = this.Guests[0],
+                    ReservationStartDate = this.MinDate.AddDays(4),
+                    NumberOfNightsRented = 1,
+                    ReservationState = ReservationStates.Completed,
+                    TotalCost = 1 * this.Apartments[0].PricePerNight
+                },
+                new Reservation()
+                {
+                    Apartment = this.Apartments[0],
+                    Guest = this.Guests[0],
+                    ReservationStartDate = MinDate,
+                    NumberOfNightsRented = 2,
+                    ReservationState = ReservationStates.Withdrawn,
+                    TotalCost = 2 * this.Apartments[0].PricePerNight
+                },
+                new Reservation()
+                {
+                    Apartment = this.Apartments[0],
+                    Guest = this.Guests[1],
+                    ReservationStartDate = this.MinDate.AddDays(8),
+                    NumberOfNightsRented = 2,
+                    ReservationState = ReservationStates.Created,
+                    TotalCost = 2 * this.Apartments[0].PricePerNight
+                },
+                new Reservation()
+                {
+                    Apartment = this.Apartments[1],
+                    Guest = this.Guests[0],
+                    ReservationStartDate = MinDate,
+                    NumberOfNightsRented = 3,
+                    ReservationState = ReservationStates.Denied,
+                    TotalCost = 3 * this.Apartments[1].PricePerNight
+                },
+                 new Reservation()
+                {
+                    Apartment = this.Apartments[0],
+                    Guest = this.Guests[1],
+                    ReservationStartDate = MinDate,
+                    NumberOfNightsRented = 3,
+                    ReservationState = ReservationStates.Denied,
+                    TotalCost = 3 * this.Apartments[0].PricePerNight
+                }
+            };
+
+            context.Reservations.AddRange(this.Reservations);
+            context.SaveChanges();
+        }
+
+        private void SeedComments(ApartmentReservationDbContext context)
+        {
+            var comments = new[]
+            {
+                new Comment()
+                {
+                    Apartment = Apartments[0],
+                    Guest = Guests[0],
+                    Approved = true,
+                    Rating = 4,
+                    Text = "Had fun, enjoyable experience. Neighbours were kinda anoying tho."
+                },
+                new Comment()
+                {
+                    Apartment = Apartments[0],
+                    Guest = Guests[1],
+                    Approved = false,
+                    Rating = 1,
+                    Text = "Bad experience! Would not recommend to anybody!"
+                }
+            };
+
+            context.Comments.AddRange(comments);
+            context.SaveChanges();
         }
     }
 }

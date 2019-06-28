@@ -14,6 +14,7 @@ namespace ApartmentReservation.Persistence
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<ApartmentAmenity> ApartmentAmenities { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ForRentalDate> ForRentalDates { get; set; }
         public DbSet<Guest> Guests { get; set; }
