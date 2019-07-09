@@ -8,6 +8,7 @@ using ApartmentReservation.Application.Features.Users.Queries;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -26,6 +27,9 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
             await this.authService.LoginAsync(dto, this.HttpContext).ConfigureAwait(false);
@@ -41,6 +45,8 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] CreateGuestCommand command)
         {
             if (this.User.Identity.IsAuthenticated)

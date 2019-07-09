@@ -9,6 +9,7 @@ using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -29,6 +30,8 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -55,6 +58,9 @@ namespace ApartmentReservation.WebUI.Controllers
         // GET: api/Apartments/5
         [HttpGet("{id}", Name = "GetApartment")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get(long id)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -69,6 +75,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.HostOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody]CreateApartmentCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -80,6 +90,10 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Put(long id, [FromBody]UpdateApartmentCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -93,6 +107,10 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Delete(long id)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -106,6 +124,10 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}/Amenities")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateApartmentAmenities(long id, [FromBody]UpdateApartmentAmenitiesCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -119,6 +141,10 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPut("{id}/ForRentalDates")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateForRentalDates(long id, [FromBody]UpdateForRentalDatesCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -132,6 +158,9 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost("{id}/Images")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddImages(long id, [FromForm]AddImagesToApartmentCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -145,6 +174,9 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost("{id}/delete-images")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteImages(long id, [FromBody]DeleteImagesFromApartmentCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
