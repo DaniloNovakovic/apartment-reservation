@@ -6,7 +6,7 @@ Apartment Reservation is a school project, built using ASP.NET Core and Entity F
 
 Use these instructions to get the project up and running.
 
-> Note: Application is currently not working properly on `Microsoft Edge` browser due to the it's [bug with `fetch`](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18775440/)
+> Note: Application is currently not working properly on `Microsoft Edge` browser due to the it's [bug with `fetch`](https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/18775440/) so it is advisable to use `Google Chrome` or `Mozilla Firefox` instead until this issue is resolved.
 
 ### Prerequisites
 
