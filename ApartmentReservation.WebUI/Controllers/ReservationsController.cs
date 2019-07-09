@@ -10,6 +10,7 @@ using ApartmentReservation.Common;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -29,6 +30,9 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get([FromQuery] GetAllReservationsQuery query)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -53,6 +57,9 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.GuestOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody] CreateReservationCommand command)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -65,6 +72,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet("{id}/Withdraw")]
         [Authorize(Policy = Policies.GuestOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Withdraw(long id)
         {
             return await this.UpdateReservationAsync(id, ReservationStates.Withdrawn, (args) =>
@@ -76,6 +87,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet("{id}/Deny")]
         [Authorize(Policy = Policies.HostOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Deny(long id)
         {
             return await this.UpdateReservationAsync(id, ReservationStates.Denied, (args) =>
@@ -86,6 +101,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet("{id}/Accept")]
         [Authorize(Policy = Policies.HostOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Accept(long id)
         {
             return await this.UpdateReservationAsync(id, ReservationStates.Accepted, (args) =>
@@ -95,6 +114,10 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet("{id}/Complete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Complete(long id)
         {
             return await this.UpdateReservationAsync(id, ReservationStates.Completed, (args) =>

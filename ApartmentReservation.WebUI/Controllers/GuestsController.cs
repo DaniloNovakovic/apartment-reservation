@@ -6,6 +6,7 @@ using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -26,6 +27,8 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Guests
         [Authorize(Policy = Policies.AdministratorOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get()
         {
             return this.Ok(await this.mediator.Send(new GetAllGuestsQuery()).ConfigureAwait(false));
@@ -33,6 +36,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Guests/5
         [HttpGet("{id}", Name = "GetGuest")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get(long id)
         {
             if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -51,6 +58,8 @@ namespace ApartmentReservation.WebUI.Controllers
         // POST: api/Guests
         [HttpPost]
         [Authorize(Policy = Policies.AdministratorOnly)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody] CreateGuestCommand command)
         {
             await this.mediator.Send(command).ConfigureAwait(false);

@@ -9,6 +9,7 @@ using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApartmentReservation.WebUI.Controllers
@@ -38,6 +39,10 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet("{id}/Approve")]
         [Authorize(Policy = Policies.HostOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Approve(long id)
         {
             if (await this.authService.CheckIfBanned(this.User).ConfigureAwait(false))
@@ -51,6 +56,8 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.GuestOnly)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody]CreateCommentCommand command)
         {
             bool isAllowed = await this.IsAllowedToCreateComment(command.ApartmentId, command.GuestId).ConfigureAwait(false);
