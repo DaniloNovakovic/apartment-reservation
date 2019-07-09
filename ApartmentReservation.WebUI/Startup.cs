@@ -79,7 +79,7 @@ namespace ApartmentReservation.WebUI
             });
 
             // Register the Swagger services
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(options => options.Title = "Apartment Reservation");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
