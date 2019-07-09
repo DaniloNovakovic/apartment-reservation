@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Features;
 using ApartmentReservation.Application.Features.Comments.Commands;
 using ApartmentReservation.Application.Features.Comments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
@@ -28,6 +30,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] GetAllCommentsQuery query)
         {
             if (!this.User.IsInRole(RoleNames.Host) && !this.User.IsInRole(RoleNames.Administrator))
@@ -56,7 +59,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.GuestOnly)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EntityCreatedResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody]CreateCommentCommand command)
         {

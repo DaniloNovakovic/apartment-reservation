@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Features;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
@@ -30,7 +32,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApartmentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
@@ -58,7 +60,7 @@ namespace ApartmentReservation.WebUI.Controllers
         // GET: api/Apartments/5
         [HttpGet("{id}", Name = "GetApartment")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApartmentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get(long id)
@@ -75,7 +77,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.HostOnly)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EntityCreatedResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

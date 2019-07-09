@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
 using ApartmentReservation.Application.Features.Hosts.Commands;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -27,6 +28,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts
         [Authorize(Policy = Policies.AdministratorOnly)]
+        [ProducesResponseType(typeof(HostDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             return this.Ok(await this.mediator.Send(new GetAllHostsQuery()).ConfigureAwait(false));
@@ -34,7 +36,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts/5
         [HttpGet("{id}", Name = "GetHost")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(HostDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Features;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
@@ -30,7 +32,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ReservationDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get([FromQuery] GetAllReservationsQuery query)
@@ -57,7 +59,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.GuestOnly)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EntityCreatedResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody] CreateReservationCommand command)

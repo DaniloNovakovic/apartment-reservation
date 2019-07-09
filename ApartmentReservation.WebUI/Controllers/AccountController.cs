@@ -27,8 +27,8 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
@@ -45,8 +45,8 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(GuestDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] CreateGuestCommand command)
         {
             if (this.User.Identity.IsAuthenticated)
