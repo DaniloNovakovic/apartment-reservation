@@ -105,7 +105,11 @@ namespace ApartmentReservation.WebUI
             // Register the Swagger generator and the Swagger UI middlewares
             app.UseOpenApi();
             app.UseSwaggerUi3();
-            //app.UseReDoc();
+            app.UseReDoc(options =>
+            {
+                options.Path = "/redoc";
+                options.DocumentPath = "/swagger/v1/swagger.json";
+            });
 
             app.UseMvc(routes =>
             {

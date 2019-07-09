@@ -28,3 +28,5 @@ Follow these steps to get your development environment set up:
 * ASP.NET Core 2.1
 * Entity Framework Core 2.1
 
+## API Doc
+Swagger API Doc can be found on `/swagger` or `/redoc` route.
