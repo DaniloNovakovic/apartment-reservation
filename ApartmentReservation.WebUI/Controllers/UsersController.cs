@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Users.Commands;
@@ -28,11 +29,11 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Users
         [Authorize(Policy = Policies.AdministratorOnly)]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get([FromQuery]GetAllUsersQuery query)
         {
-            return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
+            return Ok(await mediator.Send(query).ConfigureAwait(false));
         }
 
         // GET: api/Users/5
@@ -43,17 +44,17 @@ namespace ApartmentReservation.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(long id)
         {
-            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            if (await authService.CheckIfBanned(User).ConfigureAwait(false))
             {
-                return this.Forbid();
+                return Forbid();
             }
 
-            if (this.IsUserAStranger(id))
+            if (IsUserAStranger(id))
             {
-                return this.Unauthorized();
+                return Unauthorized();
             }
 
-            return this.Ok(await this.mediator.Send(new GetUserByIdQuery() { Id = id }).ConfigureAwait(false));
+            return Ok(await mediator.Send(new GetUserByIdQuery() { Id = id }).ConfigureAwait(false));
         }
 
         [HttpGet("{id}/Ban")]
@@ -64,8 +65,8 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> BanUser(long id)
         {
             var request = new BanUserCommand() { UserId = id };
-            await this.mediator.Send(request).ConfigureAwait(false);
-            return this.Ok();
+            await mediator.Send(request).ConfigureAwait(false);
+            return Ok();
         }
 
         [HttpGet("{id}/Unban")]
@@ -76,8 +77,8 @@ namespace ApartmentReservation.WebUI.Controllers
         public async Task<IActionResult> UnbanUser(long id)
         {
             var request = new UnbanUserCommand() { UserId = id };
-            await this.mediator.Send(request).ConfigureAwait(false);
-            return this.Ok();
+            await mediator.Send(request).ConfigureAwait(false);
+            return Ok();
         }
 
         // PUT: api/Users/5
@@ -88,21 +89,21 @@ namespace ApartmentReservation.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(long id, [FromBody] UpdateUserCommand command)
         {
-            if (await authService.CheckIfBanned(this.User).ConfigureAwait(false))
+            if (await authService.CheckIfBanned(User).ConfigureAwait(false))
             {
-                return this.Forbid();
+                return Forbid();
             }
 
-            if (this.IsUserAStranger(id))
+            if (IsUserAStranger(id))
             {
-                return this.Unauthorized();
+                return Unauthorized();
             }
 
             command.Id = id;
 
-            await this.mediator.Send(command).ConfigureAwait(false);
+            await mediator.Send(command).ConfigureAwait(false);
 
-            return this.NoContent();
+            return NoContent();
         }
 
         // DELETE: api/Users/5
@@ -113,20 +114,20 @@ namespace ApartmentReservation.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(long id)
         {
-            if (this.IsUserAStranger(id))
+            if (IsUserAStranger(id))
             {
-                return this.Unauthorized();
+                return Unauthorized();
             }
 
-            await this.mediator.Send(new DeleteUserCommand() { Id = id }).ConfigureAwait(false);
+            await mediator.Send(new DeleteUserCommand() { Id = id }).ConfigureAwait(false);
 
-            return this.NoContent();
+            return NoContent();
         }
 
         private bool IsUserAStranger(long id)
         {
-            return !this.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
-                && !this.HttpContext.User.IsInRole(RoleNames.Administrator);
+            return !HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, id.ToString())
+                && !HttpContext.User.IsInRole(RoleNames.Administrator);
         }
     }
 }

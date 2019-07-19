@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -30,7 +31,7 @@ namespace ApartmentReservation.WebUI.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CommentDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] GetAllCommentsQuery query)
         {
             if (!this.User.IsInRole(RoleNames.Host) && !this.User.IsInRole(RoleNames.Administrator))

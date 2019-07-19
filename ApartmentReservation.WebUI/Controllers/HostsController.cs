@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Hosts;
@@ -28,7 +29,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Hosts
         [Authorize(Policy = Policies.AdministratorOnly)]
-        [ProducesResponseType(typeof(HostDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<HostDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             return this.Ok(await this.mediator.Send(new GetAllHostsQuery()).ConfigureAwait(false));

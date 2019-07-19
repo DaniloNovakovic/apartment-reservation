@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Amenities.Commands;
 using ApartmentReservation.Application.Features.Amenities.Queries;
@@ -24,7 +25,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Amenities
         [HttpGet]
-        [ProducesResponseType(typeof(AmenityDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<AmenityDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get([FromQuery]GetAllAmenitiesQuery query)
         {

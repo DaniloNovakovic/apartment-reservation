@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Guests.Commands;
@@ -28,7 +29,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         // GET: api/Guests
         [Authorize(Policy = Policies.AdministratorOnly)]
-        [ProducesResponseType(typeof(GuestDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<GuestDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get()
         {

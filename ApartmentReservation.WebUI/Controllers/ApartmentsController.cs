@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -32,7 +33,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(ApartmentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ApartmentDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get([FromQuery]GetAllApartmentsQuery query)
         {
