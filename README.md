@@ -1,6 +1,6 @@
 # ApartmentReservation
 
-[![Build Status](https://dev.azure.com/dakenzi97/ApartmentReservations/_apis/build/status/DaniloNovakovic.apartment-reservation?branchName=master)](https://dev.azure.com/dakenzi97/ApartmentReservations/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/dakenzi97/ApartmentReservations/_apis/build/status/apartment-reservation%20-%20CI?branchName=master)](https://dev.azure.com/dakenzi97/ApartmentReservations/_build/latest?definitionId=3&branchName=master)
 
 Apartment Reservation is a school project, built using ASP.NET Core, Entity Framework Core and React.
 
