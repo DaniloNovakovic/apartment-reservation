@@ -37,4 +37,4 @@ Follow these steps to get your development environment set up:
 ## API Doc
 Swagger API Doc can be found on `/swagger` or `/redoc` route.
 
-More detailed documentation (currently only in Serbian language) can be found in `doc` folder.
+More detailed documentation (currently only in Serbian language) can be found [here](doc/DokumentacijaDanilo.pdf).
