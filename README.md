@@ -4,6 +4,8 @@
 
 Apartment Reservation is a school project, built using ASP.NET Core, Entity Framework Core and React.
 
+![Reservation Demo](doc/reservation-demo.gif)
+
 ## Getting Started
 
 Use these instructions to get the project up and running.
@@ -35,6 +37,7 @@ Follow these steps to get your development environment set up:
 * React 16.8
 
 ## API Doc
+
 Swagger API Doc can be found on `/swagger` or `/redoc` route.
 
-More detailed documentation (currently only in Serbian language) can be found in `doc` folder.
+More detailed documentation (currently only in Serbian language) can be found can be found [here](doc/documentation-rs.pdf).
