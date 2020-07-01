@@ -94,7 +94,7 @@ namespace ApartmentReservation.WebUI.Controllers
 
             var query = new GetAllReservationsQuery() { ApartmentId = apartmentId, GuestId = guestId };
             var reservations = await this.mediator.Send(query).ConfigureAwait(false);
-            string[] allowedStates = new[] { ReservationStates.Completed, ReservationStates.Denied };
+            string[] allowedStates = new[] { ReservationStates.Completed };
             return reservations.Any(r => allowedStates.Contains(r.ReservationState));
         }
     }

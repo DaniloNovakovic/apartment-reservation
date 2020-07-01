@@ -20,6 +20,12 @@ namespace ApartmentReservation.Persistence
         public DateTime MaxDate { get; } = new DateTime(year: 2019, month: 7, day: 24); // Wednesday
         public Reservation[] Reservations { get; private set; }
 
+        public ApartmentReservationInitializer()
+        {
+            MinDate = DateTime.Now.AddDays(-4);
+            MaxDate = MinDate.AddMonths(1);
+        }
+
         public static void Initialize(ApartmentReservationDbContext context)
         {
             var initializer = new ApartmentReservationInitializer();
