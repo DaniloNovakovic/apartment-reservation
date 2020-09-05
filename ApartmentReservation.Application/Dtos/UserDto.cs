@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Interfaces;
 using FluentValidation;
 

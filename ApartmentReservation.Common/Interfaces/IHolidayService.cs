@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApartmentReservation.Application.Interfaces
+namespace ApartmentReservation.Common.Interfaces
 {
     public interface IHolidayService
     {

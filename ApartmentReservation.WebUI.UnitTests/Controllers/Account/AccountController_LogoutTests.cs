@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using Xunit;
 
 namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account

@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

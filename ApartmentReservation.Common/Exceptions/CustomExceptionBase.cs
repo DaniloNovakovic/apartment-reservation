@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ApartmentReservation.Application.Exceptions
+namespace ApartmentReservation.Common.Exceptions
 {
     public class CustomExceptionBase : Exception, ICustomExceptionHandler
     {
@@ -25,7 +25,7 @@ namespace ApartmentReservation.Application.Exceptions
         public virtual void Handle(ExceptionContext context)
         {
             context.HttpContext.Response.ContentType = "application/json";
-            context.HttpContext.Response.StatusCode = (int)this.StatusCode;
+            context.HttpContext.Response.StatusCode = (int)StatusCode;
             context.Result = new JsonResult(new
             {
                 error = new[] { context.Exception.Message }

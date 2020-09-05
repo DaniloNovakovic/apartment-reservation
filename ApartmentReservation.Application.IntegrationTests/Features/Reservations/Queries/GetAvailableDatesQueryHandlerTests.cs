@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Reservations.Queries;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;

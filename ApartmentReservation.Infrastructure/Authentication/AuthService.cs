@@ -2,13 +2,13 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Persistence.Authentication
 {
     public class AuthService : IAuthService
     {
@@ -26,26 +26,26 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
             if (httpContext.User.Identity.IsAuthenticated)
                 throw new AlreadyLoggedInException();
 
-            var dbUser = await this.GetUserAsync(loginUserDto.Username).ConfigureAwait(false);
+            var dbUser = await GetUserAsync(loginUserDto.Username).ConfigureAwait(false);
 
             if (dbUser is null)
                 throw new NotFoundException($"Could not find user with username = '{loginUserDto.Username}'");
 
-            var role = this.roleFactory.GetRole(dbUser.RoleName);
+            var role = roleFactory.GetRole(dbUser.RoleName);
 
             await role.LoginAsync(loginUserDto, dbUser, httpContext).ConfigureAwait(false);
         }
 
         public async Task LogoutAsync(string roleName, HttpContext httpContext)
         {
-            var role = this.roleFactory.GetRole(roleName);
+            var role = roleFactory.GetRole(roleName);
 
             await role.LogoutAsync(httpContext).ConfigureAwait(false);
         }
 
         protected async Task<User> GetUserAsync(string username)
         {
-            return await this.context.Users.SingleOrDefaultAsync(u => u.Username == username && !u.IsDeleted).ConfigureAwait(false);
+            return await context.Users.SingleOrDefaultAsync(u => u.Username == username && !u.IsDeleted).ConfigureAwait(false);
         }
 
         public async Task<User> GetUserAsync(ClaimsPrincipal userPrincipal)
@@ -54,7 +54,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
             if (long.TryParse(nameIdentifier, out long userId))
             {
-                return await this.context.Users.SingleOrDefaultAsync(u => u.Id == userId && !u.IsDeleted).ConfigureAwait(false);
+                return await context.Users.SingleOrDefaultAsync(u => u.Id == userId && !u.IsDeleted).ConfigureAwait(false);
             }
 
             return null;

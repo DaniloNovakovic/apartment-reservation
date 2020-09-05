@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Common.Constants
 {
     public static class Policies
     {

@@ -1,4 +1,4 @@
-﻿using ApartmentReservation.Application.Infrastructure.Authentication;
+﻿using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Application.Dtos

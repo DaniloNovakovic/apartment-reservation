@@ -1,4 +1,4 @@
-﻿namespace ApartmentReservation.Application.Infrastructure.Authentication
+﻿namespace ApartmentReservation.Common.Constants
 {
     public static class RoleNames
     {

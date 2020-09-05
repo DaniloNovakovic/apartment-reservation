@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json.Linq;
 

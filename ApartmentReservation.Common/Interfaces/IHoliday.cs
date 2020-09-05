@@ -1,4 +1,4 @@
-﻿namespace ApartmentReservation.Application.Interfaces
+﻿namespace ApartmentReservation.Common.Interfaces
 {
     public interface IHoliday
     {

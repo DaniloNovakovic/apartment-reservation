@@ -1,4 +1,4 @@
-﻿using ApartmentReservation.Application.Infrastructure.AutoMapper;
+﻿using ApartmentReservation.Infrastructure;
 using AutoMapper;
 
 namespace ApartmentReservation.Application.IntegrationTests

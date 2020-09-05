@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

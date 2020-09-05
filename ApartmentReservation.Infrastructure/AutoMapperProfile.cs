@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ApartmentReservation.Application.Infrastructure.AutoMapper
+namespace ApartmentReservation.Infrastructure
 {
     public class AutoMapperProfile : Profile
     {

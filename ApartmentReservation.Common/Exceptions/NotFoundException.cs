@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace ApartmentReservation.Application.Exceptions
+namespace ApartmentReservation.Common.Exceptions
 {
     public class NotFoundException : CustomExceptionBase
     {

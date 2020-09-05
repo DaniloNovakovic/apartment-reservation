@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Application.Features.Guests.Commands;
 using ApartmentReservation.Application.Features.Users.Queries;
 using ApartmentReservation.Application.Interfaces;

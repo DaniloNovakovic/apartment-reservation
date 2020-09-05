@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ApartmentReservation.Application.Interfaces
+namespace ApartmentReservation.Common.Interfaces
 {
     public interface ICustomExceptionHandler
     {

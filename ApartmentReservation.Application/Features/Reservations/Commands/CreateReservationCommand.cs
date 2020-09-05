@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
+using ApartmentReservation.Common.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

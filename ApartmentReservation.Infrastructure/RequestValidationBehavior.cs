@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Common.Exceptions;
 using FluentValidation;
 using MediatR;
 
-namespace ApartmentReservation.Application.Infrastructure
+namespace ApartmentReservation.Infrastructure
 {
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
@@ -22,7 +22,7 @@ namespace ApartmentReservation.Application.Infrastructure
         {
             var context = new ValidationContext(request);
 
-            var failures = this.validators
+            var failures = validators
                 .Select(v => v.Validate(context))
                 .SelectMany(result => result.Errors)
                 .Where(f => f != null)

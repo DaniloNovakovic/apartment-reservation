@@ -1,14 +1,14 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Persistence.Authentication
 {
     public class Role
     {
@@ -29,7 +29,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
                 throw new UnauthorizedException($"Access denied: User `{dbUser.Username}` has been banned by the administrator!");
             }
 
-            var claims = this.claimsFactory.GenerateClaims(dbUser);
+            var claims = claimsFactory.GenerateClaims(dbUser);
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

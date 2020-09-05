@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Users.Queries;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Xunit;

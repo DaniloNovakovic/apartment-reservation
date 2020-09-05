@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Persistence.Authentication
 {
     internal class AdministratorClaimsFactory : IClaimsFactory
     {

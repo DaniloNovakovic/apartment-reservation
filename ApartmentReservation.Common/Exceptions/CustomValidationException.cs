@@ -6,7 +6,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace ApartmentReservation.Application.Exceptions
+namespace ApartmentReservation.Common.Exceptions
 {
     public class CustomValidationException : CustomExceptionBase
     {
@@ -29,7 +29,7 @@ namespace ApartmentReservation.Application.Exceptions
                     .Select(e => e.ErrorMessage)
                     .ToArray();
 
-                this.Failures.Add(propertyName, propertyFailures);
+                Failures.Add(propertyName, propertyFailures);
             }
         }
 
@@ -47,7 +47,7 @@ namespace ApartmentReservation.Application.Exceptions
         public override void Handle(ExceptionContext context)
         {
             context.HttpContext.Response.ContentType = "application/json";
-            context.HttpContext.Response.StatusCode = (int)this.StatusCode;
+            context.HttpContext.Response.StatusCode = (int)StatusCode;
 
             var errors = new List<string>();
 

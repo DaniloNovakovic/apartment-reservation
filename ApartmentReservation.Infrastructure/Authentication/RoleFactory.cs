@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
-namespace ApartmentReservation.Application.Infrastructure.Authentication
+namespace ApartmentReservation.Persistence.Authentication
 {
     public class RoleFactory
     {
@@ -14,7 +15,7 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         public RoleFactory()
         {
-            this.dict = new Dictionary<string, Role>
+            dict = new Dictionary<string, Role>
             {
                 [RoleNames.Administrator] = new Role(new AdministratorClaimsFactory()),
                 [RoleNames.Guest] = new Role(new GuestClaimsFactory()),
@@ -24,12 +25,12 @@ namespace ApartmentReservation.Application.Infrastructure.Authentication
 
         public virtual void RegisterRole(string roleName, Role roleToRegister)
         {
-            this.dict[roleName] = roleToRegister;
+            dict[roleName] = roleToRegister;
         }
 
         public virtual Role GetRole(string roleName)
         {
-            return this.dict.TryGetValue(roleName, out var role) ? role : this.nullRole;
+            return dict.TryGetValue(roleName, out var role) ? role : nullRole;
         }
 
         private class NullObjectRole : Role

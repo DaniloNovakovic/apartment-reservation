@@ -7,7 +7,6 @@ using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features;
 using ApartmentReservation.Application.Features.Reservations.Commands;
 using ApartmentReservation.Application.Features.Reservations.Queries;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
