@@ -6,7 +6,7 @@ using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

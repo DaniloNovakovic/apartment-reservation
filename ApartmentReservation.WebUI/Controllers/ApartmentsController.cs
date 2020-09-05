@@ -9,7 +9,7 @@ using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Domain.Entities

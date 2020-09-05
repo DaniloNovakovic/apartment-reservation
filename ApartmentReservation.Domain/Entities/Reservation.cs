@@ -1,5 +1,5 @@
 ﻿using System;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 
 namespace ApartmentReservation.Domain.Entities
 {

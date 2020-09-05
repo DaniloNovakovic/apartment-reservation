@@ -1,4 +1,4 @@
-﻿namespace ApartmentReservation.Domain.Constants
+﻿namespace ApartmentReservation.Common.Constants
 {
     public enum Gender
     {

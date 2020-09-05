@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Apartments.Queries;
 using ApartmentReservation.Application.Infrastructure.Authentication;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Xunit;
 
