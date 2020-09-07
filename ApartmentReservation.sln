@@ -36,9 +36,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.WebUI.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentReservation.Application.IntegrationTests", "ApartmentReservation.Application.IntegrationTests\ApartmentReservation.Application.IntegrationTests.csproj", "{B8D8993C-24AF-40FB-945E-0A2FBFCC0582}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commands", "Commands", "{49CF02DD-E0CD-4F8A-991B-4C0FE98BD08E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandModel", "CommandModel", "{49CF02DD-E0CD-4F8A-991B-4C0FE98BD08E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queries", "Queries", "{376E978A-757D-47AF-AC5D-09BBD06B9DE8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QueryModel", "QueryModel", "{376E978A-757D-47AF-AC5D-09BBD06B9DE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentReservation.Domain.Read", "ApartmentReservation.Domain.Read\ApartmentReservation.Domain.Read.csproj", "{F143B589-C6F0-4151-85EA-5950D05B0479}"
 EndProject
