@@ -37,6 +37,12 @@ namespace ApartmentReservation.Persistence
 
             foreach (var entityEntry in entities)
             {
+                var prevSyncNeeded = entityEntry.OriginalValues.GetValue<bool>(nameof(ISyncable.IsSyncNeeded));
+                var currSyncNeeded = entityEntry.CurrentValues.GetValue<bool>(nameof(ISyncable.IsSyncNeeded));
+
+                if (prevSyncNeeded && !currSyncNeeded)
+                    continue; // IsSyncNeeded was set to false by replicator
+
                 ((ISyncable)entityEntry.Entity).IsSyncNeeded = true;
             }
 
