@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApartmentReservation.Application\ApartmentReservation.Application.csproj" />
     <ProjectReference Include="..\ApartmentReservation.Infrastructure\ApartmentReservation.Infrastructure.csproj" />
+    <ProjectReference Include="..\ApartmentReservation.Persistence.Read\ApartmentReservation.Persistence.Read.csproj" />
     <ProjectReference Include="..\ApartmentReservation.Persistence\ApartmentReservation.Persistence.csproj" />
   </ItemGroup>
 
