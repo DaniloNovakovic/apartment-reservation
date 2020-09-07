@@ -6,8 +6,10 @@ using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Common.Interfaces;
 using ApartmentReservation.Infrastructure;
+using ApartmentReservation.Infrastructure.Replicators;
 using ApartmentReservation.Persistence;
 using ApartmentReservation.Persistence.Authentication;
+using ApartmentReservation.Persistence.Read;
 using ApartmentReservation.WebUI.Filters;
 using AutoMapper;
 using FluentValidation.AspNetCore;
@@ -20,6 +22,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ApartmentReservation.WebUI
 {
@@ -40,6 +43,16 @@ namespace ApartmentReservation.WebUI
             services.AddDbContext<IApartmentReservationDbContext, ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
+            // No SQL
+            services.Configure<QueryDatabaseSettings>(
+                Configuration.GetSection(nameof(QueryDatabaseSettings)));
+
+            services.AddSingleton<IQueryDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<QueryDatabaseSettings>>().Value);
+
+            services.AddSingleton<IQueryDbContext, QueryDbContext>();
+
+            // Services
             services.AddScoped<RoleFactory>();
             services.AddScoped<IAuthService, AuthService>();
 
@@ -71,6 +84,13 @@ namespace ApartmentReservation.WebUI
                 });
 
             services.AddAuthorization(Policies.AddPolicies);
+
+            // Add background (hosted) services
+
+            services.Configure<DbReplicationSettings>(
+                Configuration.GetSection(nameof(DbReplicationSettings)));
+
+            services.AddHostedService<UserReplicatorService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
