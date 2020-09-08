@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Hosts;
+using ApartmentReservation.Application.Helpers;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Common.Interfaces;
@@ -57,6 +58,7 @@ namespace ApartmentReservation.WebUI
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddTransient<IHolidayService, HolidayService>();
+            services.AddTransient<ICostCalculator, CostCalculator>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);
@@ -92,7 +94,7 @@ namespace ApartmentReservation.WebUI
 
             services.AddHostedService<UserReplicatorService>();
             services.AddHostedService<ReservationReplicationService>();
-            // services.AddHostedService<ApartmentReplicationService>();
+            services.AddHostedService<ApartmentReplicationService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
