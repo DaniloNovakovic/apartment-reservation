@@ -56,7 +56,7 @@ export class ViewApartmentComments extends React.Component {
                 <Media as="li" key={`comment-${index}`}>
                   <Media.Body className="review">
                     {index !== 0 && <hr />}
-                    <h5 className="username">{item.guest.username}</h5>
+                    <h5 className="username">{item.guestUsername}</h5>
                     <ReactStars
                       className="rating"
                       count={5}

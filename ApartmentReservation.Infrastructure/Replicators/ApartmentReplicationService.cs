@@ -168,7 +168,7 @@ namespace ApartmentReservation.Infrastructure.Replicators
                 Id = c.Id,
                 Approved = c.Approved,
                 GuestId = c.Guest.UserId,
-                GuestUserName = c.Guest.User.Username,
+                GuestUsername = c.Guest.User.Username,
                 Rating = c.Rating,
                 Text = c.Text
             };
