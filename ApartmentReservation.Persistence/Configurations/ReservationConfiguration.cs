@@ -8,6 +8,7 @@ namespace ApartmentReservation.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Reservation> builder)
         {
+            builder.Property(u => u.IsSyncNeeded).HasDefaultValue(true);
         }
     }
 }
