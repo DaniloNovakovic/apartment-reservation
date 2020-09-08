@@ -7,6 +7,7 @@ namespace ApartmentReservation.Domain.Read.Models
     public class ApartmentModel : Record
     {
         public long? HostId { get; set; }
+        public bool IsHostBanned { get; set; }
 
         public string ActivityState { get; set; }
         public string ApartmentType { get; set; }
@@ -19,10 +20,10 @@ namespace ApartmentReservation.Domain.Read.Models
         public string Title { get; set; }
         public double Rating { get; set; }
 
-        public ICollection<ImageModel> Images { get; set; } = new HashSet<ImageModel>();
-        public ICollection<AmenityModel> Amenities { get; set; } = new HashSet<AmenityModel>();
-        public ICollection<DateTime> ForRentalDates { get; set; } = new HashSet<DateTime>();
-        public ICollection<DateTime> AvailableDates { get; set; } = new HashSet<DateTime>();
-        public ICollection<CommentModel> Comments { get; set; } = new HashSet<CommentModel>();
+        public IEnumerable<ImageModel> Images { get; set; } = new HashSet<ImageModel>();
+        public IEnumerable<AmenityModel> Amenities { get; set; } = new HashSet<AmenityModel>();
+        public IEnumerable<DateTime> ForRentalDates { get; set; } = new HashSet<DateTime>();
+        public IEnumerable<DateTime> AvailableDates { get; set; } = new HashSet<DateTime>();
+        public IEnumerable<CommentModel> Comments { get; set; } = new HashSet<CommentModel>();
     }
 }

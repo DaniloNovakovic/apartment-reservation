@@ -28,6 +28,8 @@ namespace ApartmentReservation.Persistence.Configurations
                 .WithOne(i => i.Apartment)
                 .HasForeignKey(i => i.ApartmentId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Property(a => a.IsSyncNeeded).HasDefaultValue(true);
         }
     }
 }

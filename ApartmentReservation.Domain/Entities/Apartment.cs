@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Apartment : Logical, IApartment
+    public class Apartment : Logical, IApartment, ISyncable
     {
         public Apartment()
         {
@@ -43,5 +45,38 @@ namespace ApartmentReservation.Domain.Entities
 
         public ICollection<Reservation> Reservations { get; set; }
         public string Title { get; set; } = "";
+        public bool IsSyncNeeded { get; set; }
+
+        public IEnumerable<DateTime> GetAvailableDates()
+        {
+            var forRentalDates = ForRentalDates.Where(frd => !frd.IsDeleted).ToList();
+
+            string[] reservationStatesToIgnore = new[] { ReservationStates.Denied, ReservationStates.Withdrawn };
+            var reservations = Reservations
+                .Where(r => !r.IsDeleted && !reservationStatesToIgnore.Contains(r.ReservationState)).ToList();
+
+            return forRentalDates
+                .Where(forRentalDate => IsDateAvailable(forRentalDate.Date, reservations))
+                .Select(forRentalDate => forRentalDate.Date)
+                .ToList();
+        }
+
+        private static bool IsDateAvailable(DateTime date, IEnumerable<Reservation> reservations)
+        {
+            if (DateTimeHelpers.IsBeforeToday(date))
+            {
+                return false;
+            }
+
+            foreach (var reservation in reservations)
+            {
+                if (DateTimeHelpers.IsContainedInDayRange(date, reservation.ReservationStartDate, reservation.NumberOfNightsRented))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

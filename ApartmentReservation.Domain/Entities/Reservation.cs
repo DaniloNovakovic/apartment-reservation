@@ -1,9 +1,10 @@
 ﻿using System;
 using ApartmentReservation.Common.Constants;
+using ApartmentReservation.Domain.Interfaces;
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class Reservation : Logical
+    public class Reservation : Logical, ISyncable
     {
         public long Id { get; set; }
         public Apartment Apartment { get; set; }
@@ -21,5 +22,7 @@ namespace ApartmentReservation.Domain.Entities
         public long? GuestId { get; set; }
 
         public string ReservationState { get; set; } = ReservationStates.Created;
+
+        public bool IsSyncNeeded { get; set; } = true;
     }
 }

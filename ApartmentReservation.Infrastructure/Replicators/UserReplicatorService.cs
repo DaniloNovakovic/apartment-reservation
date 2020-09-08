@@ -68,20 +68,7 @@ namespace ApartmentReservation.Infrastructure.Replicators
 
                 foreach (var dbUser in dbUsers)
                 {
-                    Task task;
-
-                    var replacement = MapToQueryModel(dbUser);
-                    var filter = Builders<UserModel>.Filter.Eq(u => u.Id, replacement.Id);
-
-                    if (dbUser.IsDeleted)
-                    {
-                        task = queryDb.Users.DeleteOneAsync(filter, stoppingToken);
-                    }
-                    else
-                    {
-                        var options = new ReplaceOptions() { IsUpsert = true };
-                        task = queryDb.Users.ReplaceOneAsync(filter, replacement, options, stoppingToken);
-                    }
+                    Task task = SyncUserAsync(queryDb, dbUser, stoppingToken);
 
                     tasksToAwait.Add(task);
 
@@ -92,6 +79,20 @@ namespace ApartmentReservation.Infrastructure.Replicators
 
                 await Task.WhenAll(tasksToAwait).ConfigureAwait(false);
             }
+        }
+
+        private Task SyncUserAsync(IQueryDbContext queryDb, Domain.Entities.User dbUser, CancellationToken stoppingToken)
+        {
+            var replacement = MapToQueryModel(dbUser);
+            var filter = Builders<UserModel>.Filter.Eq(u => u.Id, replacement.Id);
+
+            if (dbUser.IsDeleted)
+            {
+                return queryDb.Users.DeleteOneAsync(filter, stoppingToken);
+            }
+
+            var options = new ReplaceOptions() { IsUpsert = true };
+            return queryDb.Users.ReplaceOneAsync(filter, replacement, options, stoppingToken);
         }
 
         private UserModel MapToQueryModel(Domain.Entities.User dbUser)
