@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common.Exceptions;
+using ApartmentReservation.Domain.Read.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace ApartmentReservation.Application.Features.Users.Queries
 {
@@ -15,25 +16,23 @@ namespace ApartmentReservation.Application.Features.Users.Queries
 
     public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetUserByIdQueryHandler(IApartmentReservationDbContext context)
+        public GetUserByIdQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var dbUser = await this.context.Users
-                .SingleOrDefaultAsync(u => u.Id == request.Id && !u.IsDeleted, cancellationToken)
-                .ConfigureAwait(false);
+            var dbUser = await context.Users.Find(u => u.Id == request.Id).SingleOrDefaultAsync(cancellationToken);
 
             if (dbUser is null)
             {
                 throw new NotFoundException($"User with id={request.Id} could not be found!");
             }
 
-            return new UserDto(dbUser) { Banned = dbUser.IsBanned };
+            return CustomMapper.Map<UserDto>(dbUser);
         }
     }
 }
