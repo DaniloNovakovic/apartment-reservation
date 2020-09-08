@@ -4,8 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace ApartmentReservation.Application.Features.Guests.Queries
 {
@@ -15,17 +16,17 @@ namespace ApartmentReservation.Application.Features.Guests.Queries
 
     public class GetAllGuestsQueryHandler : IRequestHandler<GetAllGuestsQuery, IEnumerable<GuestDto>>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetAllGuestsQueryHandler(IApartmentReservationDbContext context)
+        public GetAllGuestsQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<IEnumerable<GuestDto>> Handle(GetAllGuestsQuery request, CancellationToken cancellationToken)
         {
-            var guests = await this.context.Guests.Where(g => !g.IsDeleted).ToListAsync(cancellationToken).ConfigureAwait(false);
-            return guests.Select(g => new GuestDto(g));
+            var query = await this.context.Users.Find(u => u.RoleName == RoleNames.Guest).ToListAsync(cancellationToken).ConfigureAwait(false);
+            return query.Select(h => CustomMapper.Map<GuestDto>(h));
         }
     }
 }
