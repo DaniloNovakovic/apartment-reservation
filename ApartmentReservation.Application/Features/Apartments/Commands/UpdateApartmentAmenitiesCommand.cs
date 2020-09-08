@@ -45,6 +45,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             UpdateApartmentAmenities(request, dbApartment);
 
+            dbApartment.IsSyncNeeded = true;
+
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return Unit.Value;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,13 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
         public async Task<Unit> Handle(UpdateForRentalDatesCommand request, CancellationToken cancellationToken)
         {
+            var apartment = await context.Apartments.SingleOrDefaultAsync(a => a.Id == request.ApartmentId, cancellationToken);
+
+            if (apartment == null)
+            {
+                throw new NotFoundException($"Apartment with id {request.ApartmentId} not found!");
+            }
+
             var forRentalDates = await this.context.ForRentalDates
                 .Where(d => d.ApartmentId == request.ApartmentId && !d.IsDeleted)
                 .ToDictionaryAsync(
@@ -62,6 +70,9 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             {
                 item.ForRentalDate.IsDeleted = true;
             }
+
+
+            apartment.IsSyncNeeded = true;
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
