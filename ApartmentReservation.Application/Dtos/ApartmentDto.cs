@@ -52,6 +52,8 @@ namespace ApartmentReservation.Application.Dtos
         public IEnumerable<DateTime> ForRentalDates { get; set; }
         public IEnumerable<DateTime> AvailableDates { get; set; }
         public UserPublicDto Host { get; set; }
+        public long? HostId { get; set; }
+
         public IEnumerable<ImageDto> Images { get; set; }
         public LocationDto Location { get; set; }
         public int NumberOfGuests { get; set; }
