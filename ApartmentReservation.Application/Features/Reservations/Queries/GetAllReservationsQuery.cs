@@ -5,9 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Entities;
+using ApartmentReservation.Domain.Read.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace ApartmentReservation.Application.Features.Reservations.Queries
 {
@@ -22,32 +23,29 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
     public class GetAllReservationsQueryHandler : IRequestHandler<GetAllReservationsQuery, IEnumerable<ReservationDto>>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetAllReservationsQueryHandler(IApartmentReservationDbContext context)
+        public GetAllReservationsQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<IEnumerable<ReservationDto>> Handle(GetAllReservationsQuery request, CancellationToken cancellationToken)
         {
-            var query = this.context.Reservations
-                .Include(r => r.Guest).ThenInclude(g => g.User)
-                .Include(r => r.Apartment).ThenInclude(a => a.Host).ThenInclude(h => h.User)
-                .Where(r => !r.IsDeleted && !r.Apartment.IsDeleted && !r.Guest.IsDeleted);
+            IMongoQueryable<ReservationModel> query = this.context.Reservations.AsQueryable();
 
             query = this.ApplyFilters(request, query);
 
             var reservations = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return reservations.Select(r => new ReservationDto(r));
+            return reservations.Select(r => CustomMapper.Map<ReservationDto>(r));
         }
 
-        private IQueryable<Reservation> ApplyFilters(GetAllReservationsQuery filters, IQueryable<Reservation> query)
+        private IMongoQueryable<ReservationModel> ApplyFilters(GetAllReservationsQuery filters, IMongoQueryable<ReservationModel> query)
         {
             if (filters.HostId != null)
             {
-                query = query.Where(r => r.Apartment.HostId == filters.HostId);
+                query = query.Where(r => r.HostId == filters.HostId);
             }
 
             if (filters.GuestId != null)
@@ -56,7 +54,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             }
             if (!string.IsNullOrEmpty(filters.GuestUsername))
             {
-                query = query.Where(r => string.Equals(r.Guest.User.Username, filters.GuestUsername, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(r => string.Equals(r.GuestUsername, filters.GuestUsername, StringComparison.OrdinalIgnoreCase));
             }
 
             if (filters.ApartmentId != null)

@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,36 +15,60 @@ namespace ApartmentReservation.Persistence.Authentication
 {
     public class AuthService : IAuthService
     {
-        private readonly RoleFactory roleFactory;
         private readonly IApartmentReservationDbContext context;
 
-        public AuthService(RoleFactory roleFactory, IApartmentReservationDbContext context)
+        public AuthService( IApartmentReservationDbContext context)
         {
-            this.roleFactory = roleFactory;
             this.context = context;
         }
 
-        public async Task LoginAsync(LoginUserDto loginUserDto, HttpContext httpContext)
+        public async Task<UserDto> LoginAsync(LoginUserDto loginUserDto, HttpContext httpContext)
         {
             if (httpContext.User.Identity.IsAuthenticated)
-                throw new AlreadyLoggedInException();
+                await httpContext
+                .SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme)
+                .ConfigureAwait(false);
 
             var dbUser = await GetUserAsync(loginUserDto.Username).ConfigureAwait(false);
 
             if (dbUser is null)
                 throw new NotFoundException($"Could not find user with username = '{loginUserDto.Username}'");
 
-            var role = roleFactory.GetRole(dbUser.RoleName);
+            if (dbUser.Password != loginUserDto.Password)
+                throw new UnauthorizedException("Incorrect password!");
 
-            await role.LoginAsync(loginUserDto, dbUser, httpContext).ConfigureAwait(false);
+            if (dbUser.IsBanned)
+            {
+                throw new UnauthorizedException($"Access denied: User `{dbUser.Username}` has been banned by the administrator!");
+            }
+            List<Claim> claims = GenerateClaims(dbUser);
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await httpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity)).ConfigureAwait(false);
+
+            return new UserDto(dbUser);
         }
 
-        public async Task LogoutAsync(string roleName, HttpContext httpContext)
+        public async Task LogoutAsync(HttpContext httpContext)
         {
-            var role = roleFactory.GetRole(roleName);
-
-            await role.LogoutAsync(httpContext).ConfigureAwait(false);
+            await httpContext
+                .SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme)
+                .ConfigureAwait(false);
         }
+
+        private static List<Claim> GenerateClaims(User dbUser)
+        {
+            return new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, dbUser.Username),
+                new Claim(ClaimTypes.Role, dbUser.RoleName)
+            };
+        }
+
 
         protected async Task<User> GetUserAsync(string username)
         {
