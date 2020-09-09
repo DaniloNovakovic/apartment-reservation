@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Users.Commands;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Moq;

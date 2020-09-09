@@ -34,7 +34,7 @@ export function login(username, password) {
 }
 
 export function logout() {
-  return fetch("api/Account/Logout").then(_ => localStorage.removeItem("user"));
+    return fetch("api/Account/Logout").then(_ => localStorage.clear());
 }
 
 function getAll(filters = {}) {

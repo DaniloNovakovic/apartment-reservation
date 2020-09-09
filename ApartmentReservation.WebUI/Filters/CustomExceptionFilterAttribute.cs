@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

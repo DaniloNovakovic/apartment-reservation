@@ -2,24 +2,14 @@ import { queryStringify } from "../helpers/queryHelpers";
 import { handleResponse } from "./userService";
 
 export const commentService = {
-  getAll,
   canPostComment,
   post,
-  approve
+  approve,
 };
-
-function getAll(filters = {}) {
-  const requestOptions = {
-    method: "GET"
-  };
-  let query = queryStringify(filters);
-
-  return fetch(`api/Comments${query}`, requestOptions).then(handleResponse);
-}
 
 function approve(commentId) {
   const requestOptions = {
-    method: "GET"
+    method: "GET",
   };
   return fetch(`api/Comments/${commentId}/Approve`, requestOptions).then(
     handleResponse
@@ -28,7 +18,7 @@ function approve(commentId) {
 
 function canPostComment(apartmentId, guestId) {
   const requestOptions = {
-    method: "GET"
+    method: "GET",
   };
   let query = queryStringify({ apartmentId, guestId });
 
@@ -42,9 +32,9 @@ function post(data) {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   };
 
   return fetch(`api/Comments`, requestOptions).then(handleResponse);

@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +53,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                         AmenityId = item.Id.Value,
                         ApartmentId = dbApartment.Id
                     });
+
+                    dbApartment.IsSyncNeeded = true;
                 }
             }
 

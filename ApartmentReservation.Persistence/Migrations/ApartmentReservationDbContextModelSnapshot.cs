@@ -15,7 +15,7 @@ namespace ApartmentReservation.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -65,6 +65,8 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<bool>("IsSyncNeeded");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -92,6 +94,10 @@ namespace ApartmentReservation.Persistence.Migrations
                     b.Property<long?>("HostId");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsSyncNeeded")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<long?>("LocationId");
 
@@ -251,6 +257,10 @@ namespace ApartmentReservation.Persistence.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<bool>("IsSyncNeeded")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
+
                     b.Property<int>("NumberOfNightsRented");
 
                     b.Property<DateTime>("ReservationStartDate");
@@ -281,6 +291,10 @@ namespace ApartmentReservation.Persistence.Migrations
                     b.Property<bool>("IsBanned");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsSyncNeeded")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName");
 

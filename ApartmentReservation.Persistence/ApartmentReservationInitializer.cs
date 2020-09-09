@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Common;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

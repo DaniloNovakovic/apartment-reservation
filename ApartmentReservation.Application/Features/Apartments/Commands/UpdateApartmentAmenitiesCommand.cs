@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +44,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
             }
 
             UpdateApartmentAmenities(request, dbApartment);
+
+            dbApartment.IsSyncNeeded = true;
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

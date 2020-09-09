@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Features.Amenities.Commands;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using Xunit;
 

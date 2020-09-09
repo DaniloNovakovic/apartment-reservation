@@ -1,15 +1,15 @@
-﻿using System;
+﻿using ApartmentReservation.Application.Dtos;
+using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common;
+using ApartmentReservation.Domain.Read.Models;
+using MediatR;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Features.Reservations.Queries;
-using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Common;
-using ApartmentReservation.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Apartments.Queries
 {
@@ -32,36 +32,27 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
     public class GetAllApartmentsQueryHandler : IRequestHandler<GetAllApartmentsQuery, IEnumerable<ApartmentDto>>
     {
-        private readonly IApartmentReservationDbContext context;
-        private readonly IMediator mediator;
+        private readonly IQueryDbContext context;
 
-        public GetAllApartmentsQueryHandler(IApartmentReservationDbContext context, IMediator mediator)
+        public GetAllApartmentsQueryHandler(IQueryDbContext context)
         {
             this.context = context;
-            this.mediator = mediator;
         }
 
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
-            var query = this.GetApartmentsWithIncludedRelations();
+            var query = this.context.Apartments.AsQueryable();
 
             query = ApplyBasicFilters(request, query);
 
             var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            var tasks = apartments.Select(async item => new ApartmentDto(item)
-            {
-                Rating = await this.context.Comments.Where(c => !c.IsDeleted && c.ApartmentId == item.Id)
-                    .DefaultIfEmpty()
-                    .AverageAsync(c => (double)c.Rating, cancellationToken).ConfigureAwait(false),
-                AvailableDates = await this.mediator.Send(new GetAvailableDatesQuery() { ApartmentId = item.Id }, cancellationToken).ConfigureAwait(false)
-            });
+            var filtered = this.ApplyComplexFilters(request, apartments);
 
-            var apartmentDtos = await Task.WhenAll(tasks).ConfigureAwait(false);
-            return this.ApplyComplexFilters(request, apartmentDtos);
+            return filtered.Select(a => CustomMapper.Map(a)).ToList();
         }
 
-        private IEnumerable<ApartmentDto> ApplyComplexFilters(GetAllApartmentsQuery filter, IEnumerable<ApartmentDto> apartmentDtos)
+        private IEnumerable<ApartmentModel> ApplyComplexFilters(GetAllApartmentsQuery filter, IEnumerable<ApartmentModel> apartmentDtos)
         {
             var query = apartmentDtos;
 
@@ -99,37 +90,27 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
             return query.ToArray();
         }
 
-        private IQueryable<Apartment> GetApartmentsWithIncludedRelations()
-        {
-            return this.context.Apartments
-                .Include("ApartmentAmenities.Amenity")
-                .Include(a => a.ForRentalDates)
-                .Include(a => a.Images)
-                .Include(a => a.Location).ThenInclude(l => l.Address)
-                .Include(a => a.Host).ThenInclude(h => h.User)
-                .Where(a => !a.IsDeleted && !a.Host.User.IsBanned);
-        }
-
-        private static IQueryable<Apartment> ApplyBasicFilters(GetAllApartmentsQuery filters, IQueryable<Apartment> query)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "RCS1155:Use StringComparison when comparing strings.", Justification = "Current version of MongoDB.Driver.Linq doesn't support it")]
+        private static IMongoQueryable<ApartmentModel> ApplyBasicFilters(GetAllApartmentsQuery filters, IMongoQueryable<ApartmentModel> query)
         {
             if (!string.IsNullOrWhiteSpace(filters.ActivityState))
             {
-                query = query.Where(apartment => string.Equals(apartment.ActivityState, filters.ActivityState, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(apartment => apartment.ActivityState.ToLower() == filters.ActivityState.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.ApartmentType))
             {
-                query = query.Where(apartment => string.Equals(apartment.ApartmentType, filters.ApartmentType, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(apartment => apartment.ApartmentType.ToLower() == filters.ApartmentType.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.CityName))
             {
-                query = query.Where(a => string.Equals(a.Location.Address.CityName, filters.CityName, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(a => a.Location.Address.CityName.ToLower() == filters.CityName.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.CountryName))
             {
-                query = query.Where(a => string.Equals(a.Location.Address.CountryName, filters.CountryName, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(a => a.Location.Address.CountryName.ToLower() == filters.CountryName.ToLower());
             }
 
             if (filters.FromPrice != null)

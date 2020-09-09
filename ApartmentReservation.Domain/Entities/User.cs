@@ -2,7 +2,7 @@
 
 namespace ApartmentReservation.Domain.Entities
 {
-    public class User : Logical, IUser
+    public class User : Logical, IUser, ISyncable
     {
         public long Id { get; set; }
 
@@ -19,5 +19,7 @@ namespace ApartmentReservation.Domain.Entities
         public string RoleName { get; set; }
 
         public bool IsBanned { get; set; } = false;
+
+        public bool IsSyncNeeded { get; set; } = true;
     }
 }

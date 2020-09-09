@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using Xunit;
 
 namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
@@ -13,7 +13,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
 
             await controller.Logout().ConfigureAwait(false);
 
-            this.authServiceMock.Verify(a => a.LogoutAsync(RoleNames.Administrator, controller.HttpContext));
+            this.authServiceMock.Verify(a => a.LogoutAsync(controller.HttpContext));
         }
     }
 }

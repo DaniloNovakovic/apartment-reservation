@@ -1,5 +1,5 @@
-﻿using ApartmentReservation.Application.Infrastructure.Authentication;
-using ApartmentReservation.Application.Interfaces;
+﻿using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.WebUI.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Http;

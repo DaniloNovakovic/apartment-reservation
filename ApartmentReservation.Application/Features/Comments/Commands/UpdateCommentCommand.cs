@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using MediatR;
 
 namespace ApartmentReservation.Application.Features.Comments.Commands
@@ -38,6 +38,9 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
             {
                 comment.Text = request.Text;
             }
+
+            var apartment = await this.context.Apartments.FindAsync(comment.ApartmentId).ConfigureAwait(false);
+            apartment.IsSyncNeeded = true;
 
             await this.context.SaveChangesAsync(cancellationToken);
 

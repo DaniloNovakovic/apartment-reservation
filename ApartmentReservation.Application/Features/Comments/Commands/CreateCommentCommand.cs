@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Exceptions;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +45,9 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
                 Rating = request.Rating,
                 Text = request.Text
             }).Entity;
+
+
+            apartment.IsSyncNeeded = true;
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Comments.Commands;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using Xunit;
 

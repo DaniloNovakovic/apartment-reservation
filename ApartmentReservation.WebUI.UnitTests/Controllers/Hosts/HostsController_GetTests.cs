@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

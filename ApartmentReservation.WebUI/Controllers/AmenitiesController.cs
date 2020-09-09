@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Features.Amenities.Commands;
 using ApartmentReservation.Application.Features.Amenities.Queries;
-using ApartmentReservation.Application.Infrastructure.Authentication;
+using ApartmentReservation.Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Exceptions;
+using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Application.Features.Guests.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

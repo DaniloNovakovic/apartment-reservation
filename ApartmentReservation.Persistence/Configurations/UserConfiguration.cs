@@ -11,6 +11,8 @@ namespace ApartmentReservation.Persistence.Configurations
             builder.Property(u => u.Password).IsRequired();
 
             builder.HasAlternateKey(u => u.Username);
+
+            builder.Property(u => u.IsSyncNeeded).HasDefaultValue(true);
         }
     }
 }

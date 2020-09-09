@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Features;
+﻿using ApartmentReservation.Application.Features;
 using ApartmentReservation.Application.Features.Comments.Commands;
-using ApartmentReservation.Application.Features.Comments.Queries;
 using ApartmentReservation.Application.Features.Reservations.Queries;
-using ApartmentReservation.Application.Infrastructure.Authentication;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ApartmentReservation.WebUI.Controllers
 {
@@ -28,17 +24,6 @@ namespace ApartmentReservation.WebUI.Controllers
         {
             this.mediator = mediator;
             this.authService = authService;
-        }
-
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<CommentDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromQuery] GetAllCommentsQuery query)
-        {
-            if (!this.User.IsInRole(RoleNames.Host) && !this.User.IsInRole(RoleNames.Administrator))
-            {
-                query.Approved = true;
-            }
-            return this.Ok(await this.mediator.Send(query).ConfigureAwait(false));
         }
 
         [HttpGet("{id}/Approve")]
@@ -62,7 +47,7 @@ namespace ApartmentReservation.WebUI.Controllers
         [Authorize(Policy = Policies.GuestOnly)]
         [ProducesResponseType(typeof(EntityCreatedResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Post([FromBody]CreateCommentCommand command)
+        public async Task<IActionResult> Post([FromBody] CreateCommentCommand command)
         {
             bool isAllowed = await this.IsAllowedToCreateComment(command.ApartmentId, command.GuestId).ConfigureAwait(false);
 

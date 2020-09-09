@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Constants;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using FluentValidation;
 using MediatR;

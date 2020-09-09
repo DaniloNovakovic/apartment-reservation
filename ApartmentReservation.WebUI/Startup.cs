@@ -2,12 +2,15 @@ using System;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Features.Apartments.Commands;
 using ApartmentReservation.Application.Features.Hosts;
-using ApartmentReservation.Application.Infrastructure;
-using ApartmentReservation.Application.Infrastructure.Authentication;
-using ApartmentReservation.Application.Infrastructure.AutoMapper;
+using ApartmentReservation.Application.Helpers;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
+using ApartmentReservation.Common.Interfaces;
 using ApartmentReservation.Infrastructure;
+using ApartmentReservation.Infrastructure.Replicators;
 using ApartmentReservation.Persistence;
+using ApartmentReservation.Persistence.Authentication;
+using ApartmentReservation.Persistence.Read;
 using ApartmentReservation.WebUI.Filters;
 using AutoMapper;
 using FluentValidation.AspNetCore;
@@ -20,6 +23,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ApartmentReservation.WebUI
 {
@@ -40,10 +44,20 @@ namespace ApartmentReservation.WebUI
             services.AddDbContext<IApartmentReservationDbContext, ApartmentReservationDbContext>(optionsAction: (options) =>
           options.UseSqlServer(connectionString, b => b.MigrationsAssembly("ApartmentReservation.Persistence")));
 
-            services.AddScoped<RoleFactory>();
+            // No SQL
+            services.Configure<QueryDatabaseSettings>(
+                Configuration.GetSection(nameof(QueryDatabaseSettings)));
+
+            services.AddSingleton<IQueryDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<QueryDatabaseSettings>>().Value);
+
+            services.AddSingleton<IQueryDbContext, QueryDbContext>();
+
+            // Services
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddTransient<IHolidayService, HolidayService>();
+            services.AddTransient<ICostCalculator, CostCalculator>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).GetType().Assembly);
@@ -71,6 +85,16 @@ namespace ApartmentReservation.WebUI
                 });
 
             services.AddAuthorization(Policies.AddPolicies);
+
+            // Add background (hosted) services
+
+            services.Configure<DbReplicationSettings>(
+                Configuration.GetSection(nameof(DbReplicationSettings)));
+
+            services.AddHostedService<UserReplicatorService>();
+            services.AddHostedService<ReservationReplicationService>();
+            services.AddHostedService<ApartmentReplicationService>();
+            services.AddHostedService<AmenityReplicatorService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
