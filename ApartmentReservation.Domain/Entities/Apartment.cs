@@ -47,7 +47,7 @@ namespace ApartmentReservation.Domain.Entities
         public string Title { get; set; } = "";
         public bool IsSyncNeeded { get; set; }
 
-        public IEnumerable<DateTime> GetAvailableDates()
+        public DateTime[] GetAvailableDates()
         {
             var forRentalDates = ForRentalDates.Where(frd => !frd.IsDeleted).ToList();
 
@@ -58,7 +58,7 @@ namespace ApartmentReservation.Domain.Entities
             return forRentalDates
                 .Where(forRentalDate => IsDateAvailable(forRentalDate.Date, reservations))
                 .Select(forRentalDate => forRentalDate.Date)
-                .ToList();
+                .ToArray();
         }
 
         private static bool IsDateAvailable(DateTime date, IEnumerable<Reservation> reservations)

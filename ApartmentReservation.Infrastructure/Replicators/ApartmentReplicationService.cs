@@ -102,12 +102,12 @@ namespace ApartmentReservation.Infrastructure.Replicators
         #region Mapping
         private ApartmentModel MapToQueryModel(Domain.Entities.Apartment dbApartment)
         {
-            var amenities = dbApartment.Amenities.Where(a=>!a.IsDeleted).Select(MapAmenity).ToList();
+            var amenities = dbApartment.Amenities.Where(a=>!a.IsDeleted).Select(MapAmenity).ToArray();
             var availableDates = dbApartment.GetAvailableDates();
-            var forRentalDates = dbApartment.ForRentalDates.Where(frd=>!frd.IsDeleted).Select(d => d.Date).ToList();
-            var images = dbApartment.Images.Where(i=>!i.IsDeleted).Select(MapImage).ToList();
+            var forRentalDates = dbApartment.ForRentalDates.Where(frd=>!frd.IsDeleted).Select(d => d.Date).ToArray();
+            var images = dbApartment.Images.Where(i=>!i.IsDeleted).Select(MapImage).ToArray();
             var location = MapLocation(dbApartment.Location);
-            var comments = dbApartment.Comments.Where(c => !c.IsDeleted).Select(MapComment).ToList();
+            var comments = dbApartment.Comments.Where(c => !c.IsDeleted).Select(MapComment).ToArray();
             var rating = comments.DefaultIfEmpty(new CommentModel { Rating = 0 }).Average(c=>(double)c.Rating);
 
             return new ApartmentModel
