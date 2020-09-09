@@ -41,6 +41,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             return reservations.Select(r => CustomMapper.Map<ReservationDto>(r));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "RCS1155:Use StringComparison when comparing strings.", Justification = "Current version of MongoDB.Driver.Linq doesn't support it")]
         private IMongoQueryable<ReservationModel> ApplyFilters(GetAllReservationsQuery filters, IMongoQueryable<ReservationModel> query)
         {
             if (filters.HostId != null)
@@ -54,7 +55,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
             }
             if (!string.IsNullOrEmpty(filters.GuestUsername))
             {
-                query = query.Where(r => string.Equals(r.GuestUsername, filters.GuestUsername, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(r => r.GuestUsername.ToLower() == filters.GuestUsername.ToLower());
             }
 
             if (filters.ApartmentId != null)
@@ -64,7 +65,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Queries
 
             if (!string.IsNullOrEmpty(filters.ReservationState))
             {
-                query = query.Where(r => string.Equals(r.ReservationState, filters.ReservationState, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(r => r.ReservationState.ToLower() == filters.ReservationState.ToLower());
             }
 
             return query;

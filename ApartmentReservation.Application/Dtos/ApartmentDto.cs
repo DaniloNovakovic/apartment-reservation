@@ -27,5 +27,6 @@ namespace ApartmentReservation.Application.Dtos
         public IEnumerable<DateTime> ForRentalDates { get; set; } = new List<DateTime>();
         public IEnumerable<DateTime> AvailableDates { get; set; } = new List<DateTime>();
         public IEnumerable<ImageDto> Images { get; set; } = new List<ImageDto>();
+        public IEnumerable<CommentDto> Comments{ get; set; } = new List<CommentDto>();
     }
 }

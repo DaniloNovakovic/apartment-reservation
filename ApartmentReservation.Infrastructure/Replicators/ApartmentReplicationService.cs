@@ -158,7 +158,7 @@ namespace ApartmentReservation.Infrastructure.Replicators
 
         private static ImageModel MapImage(Domain.Entities.Image i)
         {
-            return new ImageModel { Uri = i.ImageUri };
+            return new ImageModel { Id = i.Id, Uri = i.ImageUri };
         }
 
         private static CommentModel MapComment(Domain.Entities.Comment c)

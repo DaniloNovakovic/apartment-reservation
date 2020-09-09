@@ -18,24 +18,24 @@ export class ViewApartment extends Component {
     super(props);
     this.state = {
       apartmentId: props.match.params.id,
-      canPostComments: false
+      canPostComments: false,
     };
   }
-  setCurrApartment = apartment => {
+  setCurrApartment = (apartment) => {
     this.props.setCurrentApartment(apartment);
     this.setState({ loading: false });
   };
 
   componentDidMount() {
     this.setState({ loading: true });
-    apartmentService.getById(this.state.apartmentId).then(apartment => {
+    apartmentService.getById(this.state.apartmentId).then((apartment) => {
       this.setCurrApartment(apartment);
     });
 
     if (this.props.user) {
       commentService
         .canPostComment(this.state.apartmentId, this.props.user.id)
-        .then(res => {
+        .then((res) => {
           this.setState({ canPostComments: res.allowed });
         });
     }
@@ -53,12 +53,12 @@ export class ViewApartment extends Component {
       images = [],
       amenities = [],
       forRentalDates = [],
-      availableDates = []
+      availableDates = [],
+      comments = [],
     } = apartment;
 
     const isGuest = user && user.roleName === roleNames.Guest;
-    const isHostOfCurrentApartment =
-      apartment && apartment.host && user.id === apartment.host.id;
+    const isHostOfCurrentApartment = apartment && user && user.id === apartment.hostId;
 
     const allowEdit =
       user && (user.roleName === roleNames.Admin || isHostOfCurrentApartment);
@@ -87,7 +87,7 @@ export class ViewApartment extends Component {
             />
             <hr />
             <ViewApartmentComments
-              apartment={apartment}
+              comments={comments}
               canPostComments={canPostComments}
               canApprove={isHostOfCurrentApartment}
             />
@@ -114,14 +114,14 @@ export class ViewApartment extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
-    apartment: state.apartment.currentApartment
+    apartment: state.apartment.currentApartment,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { setCurrentApartment, deleteApartment }
-)(ViewApartment);
+export default connect(mapStateToProps, {
+  setCurrentApartment,
+  deleteApartment,
+})(ViewApartment);

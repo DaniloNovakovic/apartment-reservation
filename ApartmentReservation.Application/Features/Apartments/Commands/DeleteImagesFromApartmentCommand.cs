@@ -45,7 +45,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
             foreach (var img in images)
             {
-                if (request.Images.Any(i => i.Uri == img.ImageUri))
+                if (request.Images.Any(i => i.Id == img.Id))
                 {
                     img.IsDeleted = true;
 

@@ -66,6 +66,7 @@ namespace ApartmentReservation.Application
 
             dto.Amenities = apartment.Amenities.Select(a => CustomMapper.Map<AmenityDto>(a)).ToList();
             dto.Images = apartment.Images.Select(i => CustomMapper.Map<ImageDto>(i));
+            dto.Comments = apartment.Comments.Select(c => CustomMapper.Map<CommentDto>(c));
             dto.Location = Map(apartment.Location);
             dto.HostId = apartment.HostId;
 

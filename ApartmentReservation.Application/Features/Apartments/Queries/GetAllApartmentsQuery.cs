@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ApartmentReservation.Application.Dtos;
-using ApartmentReservation.Application.Features.Reservations.Queries;
+﻿using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
-using ApartmentReservation.Domain.Entities;
 using ApartmentReservation.Domain.Read.Models;
 using MediatR;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApartmentReservation.Application.Features.Apartments.Queries
 {
@@ -44,7 +42,7 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
         public async Task<IEnumerable<ApartmentDto>> Handle(GetAllApartmentsQuery request, CancellationToken cancellationToken)
         {
             var query = this.context.Apartments.AsQueryable();
-            
+
             query = ApplyBasicFilters(request, query);
 
             var apartments = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -92,27 +90,27 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
             return query.ToArray();
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "RCS1155:Use StringComparison when comparing strings.", Justification = "Current version of MongoDB.Driver.Linq doesn't support it")]
         private static IMongoQueryable<ApartmentModel> ApplyBasicFilters(GetAllApartmentsQuery filters, IMongoQueryable<ApartmentModel> query)
         {
             if (!string.IsNullOrWhiteSpace(filters.ActivityState))
             {
-                query = query.Where(apartment => string.Equals(apartment.ActivityState, filters.ActivityState, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(apartment => apartment.ActivityState.ToLower() == filters.ActivityState.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.ApartmentType))
             {
-                query = query.Where(apartment => string.Equals(apartment.ApartmentType, filters.ApartmentType, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(apartment => apartment.ApartmentType.ToLower() == filters.ApartmentType.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.CityName))
             {
-                query = query.Where(a => string.Equals(a.Location.Address.CityName, filters.CityName, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(a => a.Location.Address.CityName.ToLower() == filters.CityName.ToLower());
             }
 
             if (!string.IsNullOrEmpty(filters.CountryName))
             {
-                query = query.Where(a => string.Equals(a.Location.Address.CountryName, filters.CountryName, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(a => a.Location.Address.CountryName.ToLower() == filters.CountryName.ToLower());
             }
 
             if (filters.FromPrice != null)
