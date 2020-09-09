@@ -20,10 +20,10 @@ namespace ApartmentReservation.Domain.Read.Models
         public string Title { get; set; }
         public double Rating { get; set; }
 
-        public IEnumerable<ImageModel> Images { get; set; } = new HashSet<ImageModel>();
-        public IEnumerable<AmenityModel> Amenities { get; set; } = new HashSet<AmenityModel>();
-        public IEnumerable<DateTime> ForRentalDates { get; set; } = new HashSet<DateTime>();
-        public IEnumerable<DateTime> AvailableDates { get; set; } = new HashSet<DateTime>();
-        public IEnumerable<CommentModel> Comments { get; set; } = new HashSet<CommentModel>();
+        public ImageModel[] Images { get; set; } = Array.Empty<ImageModel>();
+        public AmenityModel[] Amenities { get; set; } = Array.Empty<AmenityModel>();
+        public DateTime[] ForRentalDates { get; set; } = Array.Empty<DateTime>();
+        public DateTime[] AvailableDates { get; set; } = Array.Empty<DateTime>();
+        public CommentModel[] Comments { get; set; } = Array.Empty<CommentModel>();
     }
 }

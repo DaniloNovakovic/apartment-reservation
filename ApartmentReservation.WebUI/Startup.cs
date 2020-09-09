@@ -94,6 +94,7 @@ namespace ApartmentReservation.WebUI
             services.AddHostedService<UserReplicatorService>();
             services.AddHostedService<ReservationReplicationService>();
             services.AddHostedService<ApartmentReplicationService>();
+            services.AddHostedService<AmenityReplicatorService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
