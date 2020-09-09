@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Features.Reservations.Queries;
+using ApartmentReservation.Application.Features.Reservations.Queries.Legacy;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;

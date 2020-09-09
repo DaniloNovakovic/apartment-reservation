@@ -12,25 +12,7 @@ namespace ApartmentReservation.WebUI.UnitTests.Controllers.Account
     public class AccountController_RegisterTests : AccountControllerTestsBase
     {
         [Fact]
-        public async Task Register_UserIsAuthenticated_ThrowAlreadyLoggedInException()
-        {
-            var controller = this.GetAuthenticatedController();
-
-            var command = new CreateGuestCommand()
-            {
-                Username = "guest",
-                Password = "guest"
-            };
-
-            await Assert
-                .ThrowsAsync<AlreadyLoggedInException>(async () => await controller.Register(command).ConfigureAwait(false))
-                .ConfigureAwait(false);
-
-            this.mediatorMock.Verify(m => m.Send(command, CancellationToken.None), Times.Never);
-        }
-
-        [Fact]
-        public async Task Register_UserIsUnauthenticated_CreatesGuestUsingMediatorAndReturnsCreatedGuest()
+        public async Task Register_CreatesGuestUsingMediatorAndReturnsCreatedGuest()
         {
             var expectedGuestDto = new GuestDto() { Id = 5, Username = "guest", Password = "guest" };
             this.mediatorMock.Setup(m => m.Send(It.IsAny<CreateGuestCommand>(), It.IsAny<CancellationToken>()))

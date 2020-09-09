@@ -24,7 +24,7 @@ namespace ApartmentReservation.Application.Helpers
             this.holidayService = holidayService;
         }
 
-        public async Task<double> CalculateTotalCostAsync(GetTotalCostQuery request, CancellationToken cancellationToken = default)
+        public async Task<double> CalculateTotalCostAsync(GetTotalCostArgs request, CancellationToken cancellationToken = default)
         {
             var apartment = await context.Apartments
                 .SingleOrDefaultAsync(a => a.Id == request.ApartmentId && !a.IsDeleted, cancellationToken)

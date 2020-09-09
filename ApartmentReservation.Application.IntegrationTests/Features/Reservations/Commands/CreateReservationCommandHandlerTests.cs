@@ -5,13 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Application.Features.Reservations.Commands;
-using ApartmentReservation.Application.Features.Reservations.Queries;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Moq;
 using Xunit;
+using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Application.Features.Reservations.Queries.Legacy;
 
 namespace ApartmentReservation.Application.IntegrationTests.Features.Reservations.Commands
 {
@@ -21,6 +22,7 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
         private readonly DateTime minDate = DateTime.Now;
         private readonly DateTime maxDate = DateTime.Now.AddDays(DaysToAdd);
         private readonly Mock<IMediator> mediatorMock;
+        private readonly Mock<ICostCalculator> costCalculatorMock;
         private readonly CreateReservationCommandHandler sut;
         private Guest guest;
         private Apartment apartment;
@@ -29,9 +31,10 @@ namespace ApartmentReservation.Application.IntegrationTests.Features.Reservation
         public CreateReservationCommandHandlerTests()
         {
             this.mediatorMock = new Mock<IMediator>();
-            this.sut = new CreateReservationCommandHandler(this.Context, this.mediatorMock.Object);
+            this.costCalculatorMock = new Mock<ICostCalculator>();
+            this.sut = new CreateReservationCommandHandler(this.Context, this.mediatorMock.Object, this.costCalculatorMock.Object);
 
-            this.mediatorMock.Setup(m => m.Send(It.IsAny<GetTotalCostQuery>(), It.IsAny<CancellationToken>()))
+            this.costCalculatorMock.Setup(m => m.CalculateTotalCostAsync(It.IsAny<GetTotalCostArgs>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(25);
         }
 
