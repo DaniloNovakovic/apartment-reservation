@@ -53,6 +53,8 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                         AmenityId = item.Id.Value,
                         ApartmentId = dbApartment.Id
                     });
+
+                    dbApartment.IsSyncNeeded = true;
                 }
             }
 

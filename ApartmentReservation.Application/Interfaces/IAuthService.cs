@@ -8,9 +8,9 @@ namespace ApartmentReservation.Application.Interfaces
 {
     public interface IAuthService
     {
-        Task LoginAsync(LoginUserDto user, HttpContext httpContext);
+        Task<UserDto> LoginAsync(LoginUserDto user, HttpContext httpContext);
 
-        Task LogoutAsync(string roleName, HttpContext httpContext);
+        Task LogoutAsync(HttpContext httpContext);
 
         Task<User> GetUserAsync(ClaimsPrincipal userPrincipal);
 

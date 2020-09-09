@@ -9,31 +9,16 @@ export class ViewApartmentComments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments: []
+      comments: props.comments,
     };
-    this.promise = null;
   }
-  componentDidMount() {
-    const apartmentId = this.props.apartment && this.props.apartment.id;
-    this.promise = makeCancelable(commentService.getAll({ apartmentId }));
-    this.promise
-      .then(comments => {
-        this.setState({ ...this.state, comments });
-      })
-      .catch(_ => {});
-  }
-  componentWillUnmount() {
-    if (this.promise) {
-      this.promise.cancel();
-    }
-  }
-  approve = index => {
+  approve = (index) => {
     const { comments = [] } = this.state;
     if (index < 0 || index >= comments.length) return;
 
     let currComment = comments[index];
     this.promise = makeCancelable(commentService.approve(currComment.id));
-    this.promise.then(_ => {
+    this.promise.then((_) => {
       let newComments = [...comments];
       newComments[index] = { ...currComment, approved: true };
       this.setState({ ...this.state, comments: newComments });
@@ -50,13 +35,13 @@ export class ViewApartmentComments extends React.Component {
         {comments.length === 0 ? (
           <p>No comments available</p>
         ) : (
-          <ul className="list-unstyled">
-            {comments.map((item, index) => {
+        <ul className="list-unstyled">
+            {comments.filter(item => item.approved).map((item, index) => {
               return (
-                <Media as="li" key={`comment-${index}`}>
+                <Media as="li" key={`comment-${item.id}`}>
                   <Media.Body className="review">
                     {index !== 0 && <hr />}
-                    <h5 className="username">{item.guest.username}</h5>
+                    <h5 className="username">{item.guestUsername}</h5>
                     <ReactStars
                       className="rating"
                       count={5}

@@ -4,9 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
-using ApartmentReservation.Domain.Entities;
+using ApartmentReservation.Domain.Read.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace ApartmentReservation.Application.Features.Users.Queries
 {
@@ -19,25 +20,25 @@ namespace ApartmentReservation.Application.Features.Users.Queries
 
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDto>>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetAllUsersQueryHandler(IApartmentReservationDbContext context)
+        public GetAllUsersQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var query = this.context.Users.Where(u => !u.IsDeleted);
+            IMongoQueryable<UserModel> query = this.context.Users.AsQueryable();
 
             query = ApplyFilters(request, query);
 
             var users = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return users.Select(u => new UserDto(u) { Banned = u.IsBanned });
+            return users.Select(u => CustomMapper.Map<UserDto>(u));
         }
 
-        private static IQueryable<User> ApplyFilters(GetAllUsersQuery filters, IQueryable<User> query)
+        private static IMongoQueryable<UserModel> ApplyFilters(GetAllUsersQuery filters, IMongoQueryable<UserModel> query)
         {
             if (!string.IsNullOrWhiteSpace(filters.Gender))
             {

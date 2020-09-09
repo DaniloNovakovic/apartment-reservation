@@ -54,7 +54,6 @@ namespace ApartmentReservation.WebUI
             services.AddSingleton<IQueryDbContext, QueryDbContext>();
 
             // Services
-            services.AddScoped<RoleFactory>();
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddTransient<IHolidayService, HolidayService>();

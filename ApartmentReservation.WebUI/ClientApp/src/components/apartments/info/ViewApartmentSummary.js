@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import EditApartmentModal from "./edit/EditApartmentSummaryModal";
 import EditApartmentSummaryForm from "./edit/EditApartmentSummaryForm";
 
-export const ViewApartmentsHeader = props => (
+export const ViewApartmentsHeader = (props) => (
   <header className="view-apartment-page-header">
     <h1>{props.title || "Apartment"}</h1>
     <p>
@@ -21,10 +21,10 @@ export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
     apartmentType,
     numberOfRooms,
     numberOfGuests,
-    activityState
+    activityState,
   } = apartment || {};
   const address = (location && location.address) || {};
-  const host = apartment.host || {};
+  const hostId = apartment.hostId;
 
   return (
     <article className="view-apartment-page-summary">
@@ -54,7 +54,7 @@ export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
           <b>Check-Out Time:</b> {apartment.checkOutTime}
         </p>
 
-        <Link to={`/?hostId=${host.id}`}>
+        <Link to={`/?hostId=${hostId}`}>
           See more apartments from this host
         </Link>
       </div>
@@ -62,7 +62,7 @@ export const ViewApartmentSummary = ({ apartment, allowEdit = false }) => {
         <EditApartmentModal
           formData={{
             ...apartment,
-            cityName: address.cityName
+            cityName: address.cityName,
           }}
           form={EditApartmentSummaryForm}
         />

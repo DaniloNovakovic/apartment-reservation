@@ -32,15 +32,14 @@ namespace ApartmentReservation.WebUI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
-            await this.authService.LoginAsync(dto, this.HttpContext).ConfigureAwait(false);
-            return this.Ok(await this.mediator.Send(new GetUserByUsernameQuery() { Username = dto.Username }));
+            var userDto = await this.authService.LoginAsync(dto, this.HttpContext).ConfigureAwait(false);
+            return this.Ok(userDto);
         }
 
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            string roleName = this.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value ?? "";
-            await this.authService.LogoutAsync(roleName, this.HttpContext).ConfigureAwait(false);
+            await this.authService.LogoutAsync(this.HttpContext).ConfigureAwait(false);
             return this.NoContent();
         }
 
@@ -51,7 +50,7 @@ namespace ApartmentReservation.WebUI.Controllers
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                throw new AlreadyLoggedInException();
+                await this.authService.LogoutAsync(this.HttpContext).ConfigureAwait(false);
             }
 
             return this.Ok(await this.mediator.Send(command).ConfigureAwait(false));

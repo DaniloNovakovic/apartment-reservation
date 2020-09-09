@@ -158,7 +158,7 @@ namespace ApartmentReservation.Infrastructure.Replicators
 
         private static ImageModel MapImage(Domain.Entities.Image i)
         {
-            return new ImageModel { Uri = i.ImageUri };
+            return new ImageModel { Id = i.Id, Uri = i.ImageUri };
         }
 
         private static CommentModel MapComment(Domain.Entities.Comment c)
@@ -168,7 +168,7 @@ namespace ApartmentReservation.Infrastructure.Replicators
                 Id = c.Id,
                 Approved = c.Approved,
                 GuestId = c.Guest.UserId,
-                GuestUserName = c.Guest.User.Username,
+                GuestUsername = c.Guest.User.Username,
                 Rating = c.Rating,
                 Text = c.Text
             };

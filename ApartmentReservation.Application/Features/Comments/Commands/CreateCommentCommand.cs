@@ -46,6 +46,9 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
                 Text = request.Text
             }).Entity;
 
+
+            apartment.IsSyncNeeded = true;
+
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return new EntityCreatedResult() { Id = addedComment.Id };

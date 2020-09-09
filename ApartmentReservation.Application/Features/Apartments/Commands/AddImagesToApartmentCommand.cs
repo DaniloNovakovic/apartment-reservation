@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApartmentReservation.Application.Features.Apartments.Commands
 {
@@ -33,6 +36,13 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
 
         public async Task<Unit> Handle(AddImagesToApartmentCommand request, CancellationToken cancellationToken)
         {
+            var apartment = await context.Apartments.SingleOrDefaultAsync(a => a.Id == request.ApartmentId, cancellationToken);
+
+            if(apartment == null)
+            {
+                throw new NotFoundException($"Apartment with id {request.ApartmentId} not found!");
+            }
+
             string imagesFolderPath = Path.Combine(this.env.WebRootPath, "images");
 
             foreach (var formFile in request.Images)
@@ -46,9 +56,11 @@ namespace ApartmentReservation.Application.Features.Apartments.Commands
                         await formFile.CopyToAsync(stream, cancellationToken).ConfigureAwait(false);
                     }
 
-                    this.AddImage(imgFileName, request.ApartmentId);
+                    AddImage(imgFileName, request.ApartmentId);
                 }
             }
+
+            apartment.IsSyncNeeded = true;
 
             await this.context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

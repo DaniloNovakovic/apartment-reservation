@@ -45,6 +45,7 @@ export class PostComment extends Component {
   };
   render() {
     const { alert } = this.state;
+
     return alert && alert.type ? (
       <Alert variant={alert.type}>{alert.text}</Alert>
     ) : (
@@ -57,6 +58,7 @@ export class PostComment extends Component {
               <ReactStars
                 count={5}
                 value={this.state.rating}
+                half={false}
                 onChange={this.ratingChanged}
               />
             </FormGroup>

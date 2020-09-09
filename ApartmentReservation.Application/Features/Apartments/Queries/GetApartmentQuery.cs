@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
@@ -7,6 +8,7 @@ using ApartmentReservation.Common.Exceptions;
 using ApartmentReservation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace ApartmentReservation.Application.Features.Apartments.Queries
 {
@@ -17,42 +19,19 @@ namespace ApartmentReservation.Application.Features.Apartments.Queries
 
     public class GetApartmentQueryHandler : IRequestHandler<GetApartmentQuery, ApartmentDto>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetApartmentQueryHandler(IApartmentReservationDbContext context)
+        public GetApartmentQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<ApartmentDto> Handle(GetApartmentQuery request, CancellationToken cancellationToken)
         {
-            var dbApartment = await this.GetApartmentWithIncludedRelations(request);
+            var apartment = await context.Apartments.Find(a => a.Id == request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            if (dbApartment is null || dbApartment.IsDeleted)
-            {
-                throw new NotFoundException("Requested apartment not found");
-            }
-
-            return new ApartmentDto(dbApartment)
-            {
-                Rating = await this.context.Comments.Where(c => !c.IsDeleted && c.ApartmentId == dbApartment.Id)
-                    .DefaultIfEmpty()
-                    .AverageAsync(c => (double)c.Rating).ConfigureAwait(false)
-            };
-        }
-
-        private async Task<Apartment> GetApartmentWithIncludedRelations(GetApartmentQuery request)
-        {
-            return await this.context.Apartments
-                .Include("ApartmentAmenities.Amenity")
-                .Include(a => a.ForRentalDates)
-                .Include(a => a.Images)
-                .Include(a => a.Location)
-                .ThenInclude(l => l.Address)
-                .Include(a => a.Host)
-                .ThenInclude(h => h.User)
-                .SingleOrDefaultAsync(a => a.Id == request.Id && !a.IsDeleted)
-                .ConfigureAwait(false);
+            return CustomMapper.Map(apartment);
         }
     }
 }

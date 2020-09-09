@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Application.Interfaces;
+using ApartmentReservation.Common.Constants;
 using ApartmentReservation.Common.Exceptions;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace ApartmentReservation.Application.Features.Hosts
 {
@@ -16,26 +17,23 @@ namespace ApartmentReservation.Application.Features.Hosts
 
     public class GetHostQueryHandler : IRequestHandler<GetHostQuery, HostDto>
     {
-        private readonly IApartmentReservationDbContext context;
+        private readonly IQueryDbContext context;
 
-        public GetHostQueryHandler(IApartmentReservationDbContext context)
+        public GetHostQueryHandler(IQueryDbContext context)
         {
             this.context = context;
         }
 
         public async Task<HostDto> Handle(GetHostQuery request, CancellationToken cancellationToken)
         {
-            var host = await this.context.Hosts
-                .Include(h => h.User)
-                .SingleOrDefaultAsync(h => h.UserId == request.Id && !h.IsDeleted, cancellationToken)
-                .ConfigureAwait(false);
+            var dbUser = await context.Users.Find(u => u.Id == request.Id && u.RoleName == RoleNames.Host).SingleOrDefaultAsync(cancellationToken);
 
-            if (host == null)
+            if (dbUser is null)
             {
-                throw new NotFoundException($"Could not find user with id={request.Id}");
+                throw new NotFoundException($"User with id={request.Id} could not be found!");
             }
 
-            return new HostDto(host);
+            return CustomMapper.Map<HostDto>(dbUser);
         }
     }
 

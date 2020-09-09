@@ -21,11 +21,11 @@ export const ReservationsTable = ({ reservations, user }) => (
     <tbody>
       {reservations.map(item => (
         <tr key={item.id}>
-          {user.roleName !== roleNames.Guest && <td>{item.guest.username}</td>}
+          {user.roleName !== roleNames.Guest && <td>{item.guestUsername}</td>}
           {user.roleName !== roleNames.Host && (
-            <td>{item.apartment.host.username}</td>
+            <td>{item.hostUsername}</td>
           )}
-          <td>{item.apartment.title}</td>
+          <td>{item.apartmentTitle}</td>
           <td>{formatDateToYearMonthDayString(item.reservationStartDate)}</td>
           <td>{item.numberOfNightsRented}</td>
           <td>{item.totalCost}</td>

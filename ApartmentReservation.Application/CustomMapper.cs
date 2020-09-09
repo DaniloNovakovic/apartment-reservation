@@ -1,6 +1,7 @@
 ﻿using ApartmentReservation.Application.Dtos;
 using ApartmentReservation.Domain.Entities;
 using ApartmentReservation.Domain.Interfaces;
+using System.Linq;
 
 namespace ApartmentReservation.Application
 {
@@ -45,31 +46,50 @@ namespace ApartmentReservation.Application
             }
         }
 
-        public static Location Map(LocationDto source)
+        public static ApartmentDto Map(Domain.Read.Models.ApartmentModel apartment)
         {
-            var retVal = new Location();
-            if (source != null)
+            var dto = new ApartmentDto
             {
-                retVal.Longitude = source.Longitude;
-                retVal.Latitude = source.Latitude;
-                retVal.Address = Map(source.Address);
-            }
-            return retVal;
+                Id = apartment.Id,
+                ForRentalDates = apartment.ForRentalDates,
+                AvailableDates = apartment.AvailableDates,
+                CheckInTime = apartment.CheckInTime,
+                CheckOutTime = apartment.CheckOutTime,
+                ActivityState = apartment.ActivityState,
+                Rating = apartment.Rating,
+                Title = apartment.Title,
+                PricePerNight = apartment.PricePerNight,
+                ApartmentType = apartment.ApartmentType,
+                NumberOfGuests = apartment.NumberOfGuests,
+                NumberOfRooms = apartment.NumberOfRooms
+            };
+
+            dto.Amenities = apartment.Amenities.Select(a => CustomMapper.Map<AmenityDto>(a)).ToList();
+            dto.Images = apartment.Images.Select(i => CustomMapper.Map<ImageDto>(i));
+            dto.Comments = apartment.Comments.Select(c => CustomMapper.Map<CommentDto>(c));
+            dto.Location = Map(apartment.Location);
+            dto.HostId = apartment.HostId;
+
+            return dto;
         }
 
-        public static Address Map(AddressDto source)
+        public static LocationDto Map(Domain.Read.Models.LocationModel location)
         {
-            var retVal = new Address();
-            if (retVal != null)
+            var address = location.Address;
+
+            return new LocationDto()
             {
-                retVal.CityName = source.CityName;
-                retVal.CountryName = source.CountryName;
-                retVal.StreetName = source.StreetName;
-                retVal.StreetNumber = source.StreetNumber;
-                retVal.Id = source?.Id ?? default;
-                retVal.PostalCode = source.PostalCode;
-            }
-            return retVal;
+                Latitude = location.Latitude,
+                Longitude = location.Longitude,
+                Address = new AddressDto
+                {
+                    CityName = address.CountryName,
+                    CountryName = address.CountryName,
+                    StreetName = address.StreetName,
+                    StreetNumber = address.StreetNumber,
+                    PostalCode = address.PostalCode
+                }
+            };
         }
     }
 }

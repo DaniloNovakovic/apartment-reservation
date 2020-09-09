@@ -39,6 +39,9 @@ namespace ApartmentReservation.Application.Features.Comments.Commands
                 comment.Text = request.Text;
             }
 
+            var apartment = await this.context.Apartments.FindAsync(comment.ApartmentId).ConfigureAwait(false);
+            apartment.IsSyncNeeded = true;
+
             await this.context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
