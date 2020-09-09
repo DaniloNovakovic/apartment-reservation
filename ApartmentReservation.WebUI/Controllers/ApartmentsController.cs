@@ -71,7 +71,6 @@ namespace ApartmentReservation.WebUI.Controllers
             }
 
             var apartment = await this.mediator.Send(new GetApartmentQuery() { Id = id }).ConfigureAwait(false);
-            apartment.AvailableDates = await this.mediator.Send(new GetAvailableDatesQuery() { ApartmentId = id }).ConfigureAwait(false);
             return this.Ok(apartment);
         }
 

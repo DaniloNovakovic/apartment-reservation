@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApartmentReservation.Application.Features.Reservations.Queries;
+using ApartmentReservation.Application.Features.Reservations.Queries.Legacy;
 using ApartmentReservation.Application.Interfaces;
 using ApartmentReservation.Common;
 using ApartmentReservation.Common.Constants;
@@ -26,12 +26,16 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
     public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, EntityCreatedResult>
     {
         private readonly IApartmentReservationDbContext context;
+        private readonly ICostCalculator costCalculator;
+
+        // TODO: Refactor code so that handler doesn't rely on IMediator (Reason: Using IMediator inside command handler is bad practice)
         private readonly IMediator mediator;
 
-        public CreateReservationCommandHandler(IApartmentReservationDbContext context, IMediator mediator)
+        public CreateReservationCommandHandler(IApartmentReservationDbContext context, IMediator mediator, ICostCalculator costCalculator)
         {
             this.context = context;
             this.mediator = mediator;
+            this.costCalculator = costCalculator;
         }
 
         public async Task<EntityCreatedResult> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
@@ -58,8 +62,7 @@ namespace ApartmentReservation.Application.Features.Reservations.Commands
 
         private async Task<double> GetTotalCost(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            return await this.mediator
-                .Send(new GetTotalCostQuery()
+            return await this.costCalculator.CalculateTotalCostAsync(new GetTotalCostArgs()
                 {
                     ApartmentId = request.ApartmentId,
                     StartDate = request.StartDate,
